@@ -6,8 +6,18 @@ html
     // Viewport mobile tag for sensible mobile support
     meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1")
 
+    // CSS Dependencies
+    link(rel="stylesheet" href="/vendor/bower-components/bootstrap/dist/css/bootstrap.css")
+
+    // JS Dependencies
+    script(type="text/javascript" src="/vendor/bower-components/jquery/jquery.js")
+    script(type="text/javascript" src="/vendor/bower-components/underscore/underscore.js")
+    script(type="text/javascript" src="/vendor/bower-components/backbone/backbone.js")
+
   body
-    block body
+    .container
+        h3 Gutenberg
+        block body
 
     // A few key dependencies, linked in order
 
