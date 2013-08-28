@@ -7,8 +7,16 @@ require.config({
         'backbone'    : '../vendor/bower-components/backbone/backbone',
         'chaplin'     : '../vendor/bower-components/chaplin/chaplin',
         'text'        : '../vendor/bower-components/requirejs-text/text',
+        'sailsio'     : 'lib/sails.io',
+        'socketio'    : 'lib/socket.io'
     },
     shim        : {
+        sailsio     : {
+            exports     : 'sailsio'
+        },
+        socketio    : {
+            exports     : 'io'
+        },
         underscore  : {
             exports     : '_'
         },
@@ -23,6 +31,13 @@ require.config({
     urlArgs     : 'bust=' +  (new Date()).getTime()
 });
 
-require(['application', 'routes'], function(Application, routes){
-  new Application({ routes : routes, controllerSuffix : '-controller' });
+require(['application', 'routes', 'socketio'], function(Application, routes, io){
+  window.io = io;
+
+  require(['sailsio'], function(sailsio){
+    window.socket = io.connect()
+    socket.on('connect', function(){
+        new Application({ routes : routes, controllerSuffix : '-controller' });
+    });
+  });
 });
