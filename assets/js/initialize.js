@@ -1,14 +1,14 @@
 require.config({
     baseUrl     : './js/',
     paths       : {
-        'jquery'      : '../vendor/bower-components/jquery/jquery',
-        'underscore'  : '../vendor/bower-components/underscore/underscore',
-        'handlebars'  : '../vendor/bower-components/handlebars/handlebars',
-        'backbone'    : '../vendor/bower-components/backbone/backbone',
-        'chaplin'     : '../vendor/bower-components/chaplin/chaplin',
-        'text'        : '../vendor/bower-components/requirejs-text/text',
-        'sailsio'     : 'lib/sails.io',
-        'socketio'    : 'lib/socket.io'
+        'jquery'      : '../vendor/jquery',
+        'underscore'  : '../vendor/underscore',
+        'handlebars'  : '../vendor/handlebars',
+        'backbone'    : '../vendor/backbone',
+        'chaplin'     : '../vendor/chaplin',
+        'text'        : '../vendor/requirejs-text',
+        'sailsio'     : '../vendor/sails.io',
+        'socketio'    : '../vendor/socket.io'
     },
     shim        : {
         sailsio     : {

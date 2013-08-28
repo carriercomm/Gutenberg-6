@@ -12,9 +12,15 @@ define([
       this.collection.url = '/publication';
       this.collection.listen();
 
-      this.view       = new CollectionView({
+      this.view = new CollectionView({
         collection  : this.collection,
         region      : 'main'
+      });
+
+      // Bind the view to the updates
+      var view = this.view;
+      this.view.listenTo(this.collection, 'change', function(model){
+        view.renderItem(model);
       });
     },
 
