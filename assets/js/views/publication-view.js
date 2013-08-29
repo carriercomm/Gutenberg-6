@@ -6,8 +6,11 @@ define([
   'use strict';
 
   var view = View.extend({
-    className : 'row',
-    template  : template
+    template  : template,
+    regions   : {
+      'published'     : '#published-newsletters',
+      'unpublished'   : '#unpublished-newsletters'
+    }
   });
 
   return view;
