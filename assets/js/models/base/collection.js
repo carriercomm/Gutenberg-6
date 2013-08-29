@@ -6,13 +6,15 @@ define([
 
   var Collection = Chaplin.Collection.extend({
     model   : Model,
+    parms   : {},
     listen  : function(){
       var collection = this;
 
-      socket.request(this.url, {}, function(results){
+      socket.request(this.url, this.params, function(results){
         collection.add(results);
       });
 
+      // I think this handler might have to be way more sophisticated
       socket.on('message', function(message){
         if(message.verb == 'create') collection.add(message.data)
         else if(message.verb == 'destroy') collection.remove(message.id)
