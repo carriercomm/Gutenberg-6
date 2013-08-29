@@ -1,9 +1,8 @@
 define([
   'chaplin',
   'views/base/view',
-  'stickit',
   'text!templates/publicationMini.hbs'
-], function(Chaplin, View, stickit, template){
+], function(Chaplin, View, template){
   'use strict';
 
   var MiniView = View.extend({
