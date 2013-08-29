@@ -1,5 +1,5 @@
 /**
- * Publication
+ * Newsletter
  *
  * @module      :: Model
  * @description :: A short summary of how this model works and what it represents.
@@ -13,9 +13,13 @@ module.exports = {
       required  : true,
       maxLength : 256
     },
-    newsletter_ids : {
-      type        : 'array',
-      defaultsTo  : []
+    publication_id : {
+      type      : 'STRING',
+      defaultsTo: 0
+    },
+    published : {
+      type      : 'STRING',
+      defaultsTo: 'false'
     }
   }
 };
