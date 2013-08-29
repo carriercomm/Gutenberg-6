@@ -2,8 +2,10 @@ define([
   'controllers/base/controller',
   'models/base/collection',
   'models/base/model',
-  'views/publications-view'
-], function(Controller, Collection, Model, CollectionView){
+  'views/publications-view',
+  'views/publication-view',
+  'views/newsletters-view'
+], function(Controller, Collection, Model, PublicationsView, PublicationView, NewslettersView){
   'use strict';
 
   var Publications = Controller.extend({
@@ -12,7 +14,7 @@ define([
       this.collection.url = '/publication';
       this.collection.listen();
 
-      this.view = new CollectionView({
+      this.view = new PublicationsView({
         collection  : this.collection,
         region      : 'main'
       });
@@ -26,7 +28,44 @@ define([
 
     showOne : function(params){
       this.model      = new Model();
-      this.model.url  = '/publication';
+      this.model.url  = '/publication/' + params.id;
+      this.model.fetch();
+
+      // Set up published collections listener
+      var published     = new Collection();
+      published.url     = '/newsletter';
+      published.params  = {
+        publication_id  : params.id,
+        published       : 'true'
+      };
+      published.listen();
+
+      // Set up unpublished collection listener
+      var unpublished     = new Collection();
+      unpublished.url     = '/newsletter';
+      unpublished.params  = {
+        publication_id  : params.id,
+        published       : 'false'
+      };
+      unpublished.listen();
+
+
+      // Create Views
+      var wrapperView = new PublicationView({
+        autoRender  : true,
+        region      : 'main'
+      });
+
+      var publishedView = new NewslettersView({
+        region      : 'published',
+        collection  : published
+      });
+
+      var unpublishedView = new NewslettersView({
+        region      : 'unpublished',
+        collection  : unpublished
+      });
+
     }
   });
 
