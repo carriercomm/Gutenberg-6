@@ -8,9 +8,21 @@ require.config({
     'chaplin'     : '/vendor/chaplin',
     'text'        : '/vendor/requirejs-text',
     'sailsio'     : '/vendor/sails.io',
-    'socketio'    : '/vendor/socket.io'
+    'socketio'    : '/vendor/socket.io',
+    'jcolor'      : '/vendor/jquery.color',
+    'jcrop'       : '/vendor/jquery.Jcrop',
+    'bootstrap'   : '/vendor/bootstrap'
   },
   shim        : {
+    bootstrap     : {
+      exports         : 'bootstrap'
+    },
+    jcrop         : {
+      exports         : 'jcrop'
+    },
+    jcolor        : {
+      exports         : 'jcolor'
+    },
     sailsio       : {
         exports       : 'sailsio'
     },

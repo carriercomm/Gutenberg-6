@@ -18,3 +18,35 @@ body{
 #newsletter-view .add-story-wrapper{
   overflow        : hidden;
 }
+
+/* ----------------------- */
+
+/* Image Cropper */
+#image-cropper .jcrop-keymgr{
+  display         : none;
+  left            : -1000px !important;
+}
+#image-cropper .modal-dialog{
+  width           : 860px;
+}
+#image-cropper .croppable-items{
+  overflow        : hidden;
+}
+#image-cropper .croppable-item{
+  display         : block;
+  float           : left;
+  margin-right    : 10px;
+  margin-bottom   : 10px;
+}
+#image-cropper .image-preview-wrapper{
+  overflow        : hidden;
+}
+#image-cropper .image-preview-wrapper.selected{
+  border          : 1px solid grey;
+}
+#image-cropper .image-preview-wrapper img{
+  opacity         : .25;
+}
+#image-cropper .image-preview-wrapper.selected img{
+  opacity         : 1;
+}
