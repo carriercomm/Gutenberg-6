@@ -6,7 +6,7 @@ define([
   'use strict';
 
   var view = View.extend({
-    className     : 'row',
+    className     : 'story',
     template      : template
   });
 

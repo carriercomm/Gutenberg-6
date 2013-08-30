@@ -9,7 +9,10 @@ define([
   var view = CollectionView.extend({
     template      : newsletterTemplate,
     itemView      : StoryView,
-    listSelector  : '#stories'
+    listSelector  : '#stories',
+    attributes    : {
+      'id'        : 'newsletter-view'
+    }
   });
 
   return view;
