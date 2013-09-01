@@ -11,9 +11,14 @@ require.config({
     'socketio'    : '/vendor/socket.io',
     'jcolor'      : '/vendor/jquery.color',
     'jcrop'       : '/vendor/jquery.Jcrop',
-    'bootstrap'   : '/vendor/bootstrap'
+    'bootstrap'   : '/vendor/bootstrap',
+    'uploader'    : '/vendor/jquery.fineuploader-3.8.2'
   },
   shim        : {
+    uploader      : {
+      exports         : 'qq',
+      deps            : ['jquery']
+    },
     bootstrap     : {
       exports         : 'bootstrap'
     },

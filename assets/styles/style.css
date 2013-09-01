@@ -21,6 +21,25 @@ body{
 
 /* ----------------------- */
 
+/* Image Uploader */
+.qq-uploader .btn{
+  width           : 100%;
+}
+.qq-upload-list li{
+  border-radius   : 0;
+  border-bottom   : 1px solid #EDD995;
+}
+.qq-upload-list li:first-child{
+  border-radius   : 4px 4px 0 0;
+}
+.qq-upload-list li:last-child{
+  border-radius   : 0 0 4px 4px;
+  border-bottom   : none;
+}
+
+
+/* ----------------------- */
+
 /* Image Cropper */
 #image-cropper .jcrop-keymgr{
   display         : none;
