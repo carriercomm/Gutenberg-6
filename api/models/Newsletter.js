@@ -20,6 +20,15 @@ module.exports = {
     published : {
       type      : 'STRING',
       defaultsTo: 'false'
+    },
+    storyOrders : {
+      type        : 'JSON',
+      defaultsTo  : [
+        {
+          "Passport"  : [],
+          "Email"     : []
+        }
+      ]
     }
   }
 };
