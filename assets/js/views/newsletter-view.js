@@ -12,8 +12,15 @@ define([
     listSelector  : '#stories',
     attributes    : {
       'id'        : 'newsletter-view'
+    },
+    events        : {
+      'click #add-story'    : 'addNewStory'
     }
   });
+
+  view.prototype.addNewStory = function(e){
+
+  };
 
   return view;
 });

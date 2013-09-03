@@ -24,10 +24,6 @@ module.exports = {
     teaser : {
       type        : 'STRING',
       defaultsTo  : ''
-    },
-    images : {
-      type        : 'ARRAY',
-      defaultsTo  : []
-    },
+    }
   }
 };

@@ -1,6 +1,6 @@
 define([
   'controllers/base/controller',
-  'models/base/collection',
+  'models/stories',
   'models/base/model',
   'views/newsletter-view'
 ], function(Controller, Collection, Model, NewsletterView){
@@ -9,10 +9,6 @@ define([
   var Newsletter = Controller.extend({
 
     showOne : function(params){
-      this.model      = new Model();
-      this.model.url  = '/newsletter/' + params.id;
-      this.model.fetch();
-
       // Set up stories collections listener
       var stories     = new Collection();
       stories.url     = '/story';
@@ -21,8 +17,14 @@ define([
       };
       stories.listen();
 
+      var model = new Model();
+      model.url = '/newsletter/' + params.id;
+      model.fetch();
+      model.set('stories', stories);
+
       // Make a view
       var newsletter = new NewsletterView({
+        model       : model,
         collection  : stories,
         autoRender  : true,
         region      : 'main'
