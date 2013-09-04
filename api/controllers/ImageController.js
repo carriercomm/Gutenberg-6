@@ -6,6 +6,7 @@
  */
 
 var magik = require('imagemagick');
+var fs    = require('fs');
 
 module.exports = {
 
@@ -34,33 +35,40 @@ module.exports = {
 var saveImage = function(file, story_id, next){
 
   var tempPath  = file.path || file.qqfile.path;
-  var newPath   = 'assets/uploads/' + file.name;
+  var basePath  = 'assets/uploads/' + story_id;
+  var newPath   = basePath + '/' + file.name;
 
-  magik.identify(tempPath, function(err, properties){
-    if(err) console.error(err);
-    else {
+  // Create a directory for the image to live
+  fs.mkdir(basePath, function(error){
+    if(error) console.log(error);
 
-      // If the image is greater than 800px wide...
-      var newWidth = properties.width;
-      if(properties.width > 800) newWidth = 800
+    // Use imagemagik to write the file
+    magik.identify(tempPath, function(err, properties){
+      if(err) console.error(err);
+      else {
 
-      // Resize the image
-      magik.resize({
-        srcPath : tempPath,
-        dstPath : newPath,
-        width   : newWidth
-      }, function(err){
-        if(err) console.error(err);
+        // If the image is greater than 800px wide...
+        var newWidth = properties.width;
+        if(properties.width > 800) newWidth = 800
 
-        // Create the new image model
-        var image = Image.create({
-          url : newPath,
-          story_id : story_id
-        }).done(function(err, img){
-          next(img || {});
+        // Resize the image
+        magik.resize({
+          srcPath : tempPath,
+          dstPath : newPath,
+          width   : newWidth
+        }, function(err){
+          if(err) console.error(err);
+
+          // Create the new image model
+          var image = Image.create({
+            url : newPath.replace('assets', ''),
+            story_id : story_id
+          }).done(function(err, img){
+            next(img || {});
+          });
+
         });
-
-      });
-    }
+      }
+    });
   });
 }
