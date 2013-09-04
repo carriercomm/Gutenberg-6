@@ -7,3 +7,6 @@
 
 ### Upgrading Dependencies
 I've made minor modifications to `vendor/fineuploader-3.8.2.css` as this was the easiest way to avoid duplicating bootstrap code in the primary style file. This also keeps modifications to [FineUploader](http://fineuploader.com/) as minimal as possible. Beware of upgrades to FineUploader as you'll lose these slight changes to it's CSS file...
+
+## Scripts
+* Run script - `forever -w app.js`
