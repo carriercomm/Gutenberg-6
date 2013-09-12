@@ -5,7 +5,7 @@
  * @description	:: Contains logic for handling requests.
  */
 
-var magik = require('imagemagick');
+var magik = require('gm');
 var fs    = require('fs');
 
 module.exports = {
@@ -42,22 +42,18 @@ var saveImage = function(file, story_id, next){
   fs.mkdir(basePath, function(error){
     if(error) console.log(error);
 
-    // Use imagemagik to write the file
-    magik.identify(tempPath, function(err, properties){
+    // Use graphicsmagik to write the file
+    magik(tempPath).identify(function(err, properties){
+
       if(err) console.error(err);
       else {
-
         // If the image is greater than 800px wide...
-        var newWidth = properties.width;
-        if(properties.width > 800) newWidth = 800
+        var newWidth = properties.size.width;
+        if(properties.size.width > 800) newWidth = 800
 
         // Resize the image
-        magik.resize({
-          srcPath : tempPath,
-          dstPath : newPath,
-          width   : newWidth
-        }, function(err){
-          if(err) console.error(err);
+        magik(tempPath).resize(newWidth).write(newPath, function(err){
+          if(err) console.log(err);
 
           // Create the new image model
           var image = Image.create({
@@ -66,9 +62,9 @@ var saveImage = function(file, story_id, next){
           }).done(function(err, img){
             next(img || {});
           });
-
         });
+
       }
     });
   });
-}
+};
