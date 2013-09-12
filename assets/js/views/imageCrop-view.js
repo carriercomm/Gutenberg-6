@@ -1,57 +1,36 @@
 define([
+  'chaplin',
   'views/base/view',
   'jcrop',
   'text!templates/imageCrop.hbs'
-], function(View, jcrop, template){
+], function(Chaplin, View, jcrop, template){
   'use strict';
 
   var view = View.extend({
     className : 'modal fade in',
     template  : template,
     events    : {
-      'click .image-preview' : 'clickPreview'
+      'click .image-preview'  : 'clickPreview',
+      'click .save'           : 'saveImages'
     }
   });
 
   var initCrop = function(croppableItem, context){
 
-    var showCroppedPreview = function(coords){
-      var rx = previewW / coords.w;
-      var ry = previewH / coords.h;
+    // Cache some dommy stuff
+    var imgWidth    = $('#crop-target').width();
+    var imgHeight   = $('#crop-target').height();
+    var $cropPrev   = $('#' + croppableItem.domId);
 
-      $('#' + croppableItem.domId).css({
-        width       : Math.round(rx * imgWidth) + 'px',
-        height      : Math.round(ry * imgHeight) + 'px',
-        marginLeft  : '-' + Math.round(rx * coords.x) + 'px',
-        marginTop   : '-' + Math.round(ry * coords.y) + 'px'
-      });
+    // Setup crop options
+    var cropOpts      = croppableItem.cropOptions || {};
+    cropOpts.onChange = function(coords){
+      showPreview(croppableItem, coords, imgWidth, imgHeight, $cropPrev);
     };
 
-    var showFreePreview = function(coords){
-      $('#' + croppableItem.domId).parent().css({
-        width       : coords.w + 'px',
-        height      : coords.h + 'px',
-      });
-      $('#' + croppableItem.domId).css({
-        marginLeft  : '-' + coords.x + 'px',
-        marginTop   : '-' + coords.y + 'px'
-      });
-    };
-
-    var imgWidth  = $('#crop-target').width();
-    var imgHeight = $('#crop-target').height();
-
-    var cropOpts  = croppableItem.cropOptions || {};
-    var previewW  = croppableItem.width;
-    var previewH  = croppableItem.height;
-
-    // If no height or width is defined, use a free style preview
-    if(typeof previewH == 'undefined' || typeof previewW == 'undefined'){
-      cropOpts.onChange = showFreePreview;
-      cropOpts.onSelect = showFreePreview;
-    } else {
-      cropOpts.onChange = showCroppedPreview;
-      cropOpts.onSelect = showCroppedPreview;
+    // Show preview when initting
+    if(croppableItem.coords){
+      showPreview(croppableItem, croppableItem.coords, imgWidth, imgHeight, $cropPrev);
     }
 
     // Clean up old cropper and make a new one
@@ -59,18 +38,72 @@ define([
     context.crop = $.Jcrop('#crop-target', cropOpts);
   };
 
+
+  var showPreview = function(croppableItem, coords, imgWidth, imgHeight, $cropPrev){
+
+    if(typeof croppableItem.width == 'undefined' || typeof croppableItem.height == 'undefined'){
+      // If no height or width is defined, use a free style preview
+      $cropPrev.parent().css({
+        width       : coords.w + 'px',
+        height      : coords.h + 'px',
+      });
+      $cropPrev.css({
+        marginLeft  : '-' + coords.x + 'px',
+        marginTop   : '-' + coords.y + 'px'
+      });
+    } else{
+      // Crop method which has defined x,y bounds
+      var rx = croppableItem.width / coords.w;
+      var ry = croppableItem.height / coords.h;
+
+      $cropPrev.css({
+        width       : Math.round(rx * imgWidth) + 'px',
+        height      : Math.round(ry * imgHeight) + 'px',
+        marginLeft  : '-' + Math.round(rx * coords.x) + 'px',
+        marginTop   : '-' + Math.round(ry * coords.y) + 'px'
+      });
+    }
+
+    // Write coords to object
+    croppableItem.coords = coords
+  };
+
+
   view.prototype.clickPreview = function(e){
     e.preventDefault();
 
+    // Mark item as selected
     var $target = $(e.target);
     var id      = $target.attr('id');
     $(this.el).find('.image-preview-wrapper').removeClass('selected');
     $target.parent().addClass('selected');
 
+    // Find the correct element, init
     var cropppableItems = this.model.get('croppableItems');
     var croppableItem   = _.findWhere(cropppableItems, {'domId' : id}) || {};
-
     initCrop(croppableItem, this);
+  };
+
+
+  view.prototype.saveImages = function(){
+    // TODO: show a loader here before hiding the modal
+    this.model.save();
+    $('.modal').modal('hide');
+  };
+
+
+  view.prototype.render = function(){
+    Chaplin.View.prototype.render.apply(this, arguments);
+
+    // Loop over croppable items to set their initial state
+    // to match the servers cropped properties
+    var items = this.model.get('croppableItems');
+    var self  = this;
+    setTimeout(function(){
+      for(var i=0; i<items.length; i++){
+        initCrop(items[i], self);
+      }
+    }, 150);
   };
 
   return view;
