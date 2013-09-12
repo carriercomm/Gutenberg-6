@@ -14,8 +14,10 @@ define([
   var StoryView = View.extend({
     className     : 'story',
     template      : storyTemplate,
+    schedule      : {},
     events        : {
-      'click .destroy' : 'destroy'
+      'click .destroy'  : 'destroy',
+      'keyup'           : 'scheduleSave'
     }
   });
 
@@ -26,9 +28,39 @@ define([
   };
 
 
+  StoryView.prototype.scheduleSave = function(e){
+    var self = this;
+    clearTimeout(this.schedule);
+    this.schedule = setTimeout(function(){
+      self.save();
+    }, 100);
+  };
+
+
+  StoryView.prototype.save = function(){
+    this.model.set({
+      title   : $(this.el).find('.title').val(),
+      body    : $(this.el).find('.body').val(),
+      teaser  : $(this.el).find('.teaser').val()
+    });
+
+    this.model.save();
+  };
+
+
   StoryView.prototype.render = function(){
     Chaplin.View.prototype.render.apply(this, arguments);
+
     var story_id = this.model.get('id');
+    var self     = this;
+
+    this.model.on('change', function(){
+      var attrs = this.attributes
+      for(var key in attrs){
+        var selector = $('.' + key);
+        $(self.el).find(selector).val(attrs[key])
+      }
+    });
 
     // Optionally setup FineUploader if the module is loaded
     if(typeof Uploader != 'undefined'){
