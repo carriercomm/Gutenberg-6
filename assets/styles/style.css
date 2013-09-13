@@ -105,12 +105,21 @@ body{
   width           : 100%;
 }
 .qq-uploader input[type=file]{
-  position        : static !important;
-  height          : 0;
+  width           : 100%;
 }
 .qq-upload-list li{
+  font-size       : 85%;
   border-radius   : 0;
   border-bottom   : 1px solid #EDD995;
+}
+.qq-upload-list li .qq-upload-status-text{
+  display         : none;
+}
+.qq-upload-list li .qq-upload-size{
+  font-size       : 80%;
+}
+.qq-upload-list li.alert-success{
+  display         : none;
 }
 .qq-upload-list li:first-child{
   border-radius   : 4px 4px 0 0;
@@ -119,6 +128,7 @@ body{
   border-radius   : 0 0 4px 4px;
   border-bottom   : none;
 }
+.qq-uploader 
 
 /* ----------------------- */
 

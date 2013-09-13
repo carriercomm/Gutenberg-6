@@ -34,7 +34,7 @@ define([
     clearTimeout(this.schedule);
     this.schedule = setTimeout(function(){
       self.save();
-    }, 100);
+    }, 1500);
   };
 
 
@@ -66,17 +66,10 @@ define([
     // Optionally setup FineUploader if the module is loaded
     if(typeof Uploader != 'undefined'){
       $(this.el).find('.add-images').fineUploader({
-        request   : {
-          endpoint      : '/uploadImage?story_id=' + story_id
-        },
-        text      : {
-          uploadButton  : 'Upload Images'
-        },
-        template  : uploaderTemplate,
-        classes   : {
-          success       : 'alert alert-success',
-          fail          : 'alert alert-error'
-        }
+        request   : { endpoint      : '/uploadImage?story_id=' + story_id },
+        text      : { uploadButton  : 'Upload Images' },
+        classes   : { success       : 'alert alert-success', fail : 'alert alert-error' },
+        template  : uploaderTemplate
       });
     } else{
       var template = Handlebars.compile(dumbUploaderTemplate);

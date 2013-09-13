@@ -60,10 +60,22 @@ var saveImage = function(file, story_id, next){
             url : newPath.replace('assets', ''),
             story_id : story_id
           }).done(function(err, img){
-            next(img || {});
+
+            // This is lame, but it doesn't look like graphicmagick's
+            // callbacks are actually waiting until the file writing
+            // is done. So just timeout I guess...
+            setTimeout(function(){
+              next(img || {});
+
+              Image.publishCreate({
+                url       : newPath.replace('assets', ''),
+                story_id  : story_id,
+                id        : img.id
+              });
+            }, 2000);
+
           });
         });
-
       }
     });
   });
