@@ -12,9 +12,14 @@ require.config({
     'jcolor'      : '/vendor/jquery.color',
     'jcrop'       : '/vendor/jquery.Jcrop',
     'bootstrap'   : '/vendor/bootstrap',
-    'uploader'    : '/vendor/jquery.fineuploader-3.8.2'
+    'uploader'    : '/vendor/jquery.fineuploader-3.8.2',
+    'sortable'    : '/vendor/jquery.sortable'
   },
   shim        : {
+    sortable      : {
+      exports         : 'sortable',
+      deps            : ['jquery']
+    },
     uploader      : {
       exports         : 'qq',
       deps            : ['jquery']
