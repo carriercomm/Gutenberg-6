@@ -53,6 +53,11 @@ body{
 #stories .image-container .delete{
   left            : 5px;
 }
+@media (max-width: 992px){
+  #stories .content-editor{
+    margin-bottom : 50px;
+  }
+}
 
 /* ----------------------- */
 
