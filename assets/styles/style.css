@@ -33,15 +33,6 @@ body{
   background-color: #F2F2F2;
   margin-bottom   : 30px;
 }
-#stories .story .handle{
-  position        : absolute;
-  top             : 10%;
-  left            : -16px;
-  background      : url('/images/handle.png') no-repeat;
-  width           : 13px;
-  height          : 99px;
-  cursor          : move;
-}
 #stories .image-list{
   list-style-type : none;
   margin          : 0;
@@ -66,19 +57,14 @@ body{
   background-size : cover;
   background-position : center;
 }
-#stories .image-container:hover .btn{
+#stories .image-container:hover .btn-group{
   display         : block;
 }
-#stories .image-container .btn{
+#stories .image-container .btn-group{
   display         : none;
   position        : absolute;
   bottom          : 5px;
-}
-#stories .image-container .edit{
   right           : 5px;
-}
-#stories .image-container .delete{
-  left            : 5px;
 }
 @media (max-width: 1200px){
   #stories .image-list li{
