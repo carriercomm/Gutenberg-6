@@ -20,9 +20,9 @@ define([
         return image.get('sort_index');
       }
 
-      this.set('images', images);
       var self = this;
-      this.on('all', function(){
+      this.set('images', images);
+      this.listenTo(images, 'all', function(){
         self.set('images', images);
       });
     }

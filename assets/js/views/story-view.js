@@ -72,6 +72,21 @@ define([
   StoryView.prototype.initialize = function(){
     Chaplin.View.prototype.initialize.apply(this, arguments);
     this.listenTo(this.model, 'change:sort_index', this.adjustIndexerButtons);
+    this.listenTo(this.model, 'change', this.modelUpdate);
+    this.listenTo(this.model.get('images'), 'all', this.attachSorter);
+  };
+
+
+  StoryView.prototype.modelUpdate = function(model){
+    var self  = this;
+    var attrs = model.attributes
+
+    for(var key in attrs){
+      var selector  = $('.' + key);
+      var $el       = $(self.el).find(selector);
+
+      if(!$el.hasClass('preventUpdate')) $(self.el).find(selector).val(attrs[key]);
+    }
   };
 
 
@@ -93,53 +108,20 @@ define([
   };
 
 
-  StoryView.prototype.render = function(){
-    Chaplin.View.prototype.render.apply(this, arguments);
+  StoryView.prototype.attachSorter = function(){
+    var self = this;
+    var $el  = $(this.el);
 
-    this.adjustIndexerButtons();
-
-    var story_id = this.model.get('id');
-    var self     = this;
-
-    // Update the inputs only if the updates came from a seperate socket
-    this.model.on('change', function(){
-      var attrs = this.attributes
-      for(var key in attrs){
-        var selector  = $('.' + key);
-        var $el       = $(self.el).find(selector);
-
-        if(!$el.hasClass('preventUpdate')) $(self.el).find(selector).val(attrs[key]);
-      }
-    });
-
-    // Optionally setup FineUploader if the module is loaded
-    if(typeof Uploader != 'undefined'){
-      $(this.el).find('.add-images').fineUploader({
-        request   : { endpoint      : '/uploadImage?story_id=' + story_id },
-        text      : { uploadButton  : 'Upload Images' },
-        classes   : { success       : 'alert alert-success', fail : 'alert alert-error' },
-        template  : uploaderTemplate
-      });
-    } else{
-      var template = Handlebars.compile(dumbUploaderTemplate);
-      $(this.el).find('.add-images').replaceWith(template({ storyId : story_id }));
-    }
-
-
-    // -- > This eventually should go in it's own view, but I was having trouble with
-    // -- > the dom elements not appearing? 
-    // Create the images view
-    var imagesView = new CollectionView({
-      collection    : this.model.get('images'),
-      tagName       : 'ul',
-      className     : 'image-list',
-      listSelector  : '.image-list',
-      itemView      : ImageView,
-      container     : $(this.el).find('.image-list-container')
+    // Listen for updates to the image collection and
+    // Reattach sorter when new images are added
+    $el.find('.image-list').sortable('destroy');
+    $el.find('.image-list').sortable().bind('sortupdate', function(e, ui){
+      $el.find('.image-list').addClass('preventUpdate');
+      reindexImages();
     });
 
     var reindexImages = function(){
-      var $images = $(self.el).find('.image-list').find('li');
+      var $images = $el.find('.image-list').find('li');
       var savedModels = 0;
 
       $.each($images, function(index, el){
@@ -159,6 +141,40 @@ define([
         });
       });
     };
+  };
+
+
+  StoryView.prototype.render = function(){
+    Chaplin.View.prototype.render.apply(this, arguments);
+
+    this.adjustIndexerButtons();
+    this.attachSorter();
+
+    var story_id = this.model.get('id');
+    var self     = this;
+
+    // Optionally setup FineUploader if the module is loaded
+    if(typeof Uploader != 'undefined'){
+      $(this.el).find('.add-images').fineUploader({
+        request   : { endpoint      : '/uploadImage?story_id=' + story_id },
+        text      : { uploadButton  : 'Upload Images' },
+        classes   : { success       : 'alert alert-success', fail : 'alert alert-error' },
+        template  : uploaderTemplate
+      });
+    } else{
+      var template = Handlebars.compile(dumbUploaderTemplate);
+      $(this.el).find('.add-images').replaceWith(template({ storyId : story_id }));
+    }
+
+    // Create the images view
+    var imagesView = new CollectionView({
+      collection    : this.model.get('images'),
+      tagName       : 'ul',
+      className     : 'image-list',
+      listSelector  : '.image-list',
+      itemView      : ImageView,
+      container     : $(this.el).find('.image-list-container')
+    });
 
     // Listen for updates, but only rerender if allowed
     var resortable = true
@@ -168,18 +184,6 @@ define([
         imagesView.renderAllItems();
       }
     });
-
-    // Listen for updates to the image collection and
-    // reattach sorter when new images are added
-    var attachSorter = function(){
-      $(self.el).find('.image-list').sortable('destroy');
-      $(self.el).find('.image-list').sortable().bind('sortupdate', function(e, ui){
-        $(self.el).find('.image-list').addClass('preventUpdate');
-        reindexImages();
-      });
-    };
-    this.model.get('images').on('all', attachSorter);
-
   };
 
 
