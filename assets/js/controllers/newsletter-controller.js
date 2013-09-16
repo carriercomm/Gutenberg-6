@@ -58,7 +58,7 @@ define([
       });
 
       // Listen for changes and rerender
-      newsletter.listenTo(stories, 'change', function(model){
+      newsletter.listenTo(stories, 'change:sort_index', function(model){
         stories.sort();
         newsletter.renderAllItems();
       });
