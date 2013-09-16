@@ -21,6 +21,7 @@ define([
       'click .sort-button'    : 'handleSort',
       'focus input, textarea' : 'inputFocused',
       'blur input, textarea'  : 'inputBlurred',
+      'change input[type="checkbox"]' : 'checkboxChanged',
       'keyup'                 : 'scheduleSave'
     }
   });
@@ -33,6 +34,18 @@ define([
 
   StoryView.prototype.inputBlurred = function(e){
     $(e.target).removeClass('preventUpdate');
+  };
+
+
+  StoryView.prototype.checkboxChanged = function(e){
+    var attrs         = {};
+    var inputName     = $(e.target).attr('name');
+    var inputVal      = $(e.target).is(':checked');
+    attrs[inputName]  = inputVal;
+
+    this.model.save(attrs);
+
+    console.log(this.model);
   };
 
 
@@ -77,15 +90,20 @@ define([
   };
 
 
+  // Whenever the model updates, update the corresponding input fields
   StoryView.prototype.modelUpdate = function(model){
     var self  = this;
     var attrs = model.attributes
 
     for(var key in attrs){
-      var selector  = $('.' + key);
+      var selector  = '.' + key;
       var $el       = $(self.el).find(selector);
 
-      if(!$el.hasClass('preventUpdate')) $(self.el).find(selector).val(attrs[key]);
+      if(!$el.hasClass('preventUpdate')){
+        if($el.attr('type') == 'checkbox'){
+          attrs[key] ? $el.prop('checked', true) : $el.prop('checked', false)
+        } else $el.val(attrs[key]);
+      }
     }
   };
 
