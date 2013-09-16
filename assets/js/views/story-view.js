@@ -44,8 +44,6 @@ define([
     attrs[inputName]  = inputVal;
 
     this.model.save(attrs);
-
-    console.log(this.model);
   };
 
 

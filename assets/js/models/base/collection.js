@@ -32,8 +32,6 @@ define([
             model.set(message.data);
           }
         }
-
-        //console.log(message);
       });
     }
   });
