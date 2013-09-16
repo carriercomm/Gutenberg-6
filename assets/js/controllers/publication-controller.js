@@ -38,7 +38,7 @@ define([
         publication_id  : params.id,
         published       : 'true'
       };
-      published.listen();
+      published.listen({ parentIdentifier : 'publication_id' });
 
       // Set up unpublished collection listener
       var unpublished     = new Collection();
@@ -47,7 +47,7 @@ define([
         publication_id  : params.id,
         published       : 'false'
       };
-      unpublished.listen();
+      unpublished.listen({ parentIdentifier : 'publication_id' });
 
 
       // Create Views
