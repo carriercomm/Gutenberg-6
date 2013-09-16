@@ -16,6 +16,9 @@ define([
         story_id : data.id
       };
       images.listen({ parentIdentifier : 'story_id' });
+      images.comparator = function(image){
+        return image.get('sort_index');
+      }
 
       this.set('images', images);
     }

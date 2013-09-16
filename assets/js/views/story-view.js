@@ -67,6 +67,7 @@ define([
     var story_id = this.model.get('id');
     var self     = this;
 
+    // Update the inputs only if the updates came from a seperate socket
     this.model.on('change', function(){
       var attrs = this.attributes
       for(var key in attrs){
@@ -90,9 +91,11 @@ define([
       $(this.el).find('.add-images').replaceWith(template({ storyId : story_id }));
     }
 
+
+    // -- > This eventually should go in it's own view, but I was having trouble with
+    // -- > the dom elements not appearing? 
     // Create the images view
     var imagesView = new CollectionView({
-      autoRender    : true,
       collection    : this.model.get('images'),
       tagName       : 'ul',
       className     : 'image-list',
@@ -101,17 +104,47 @@ define([
       container     : $(this.el).find('.image-list-container')
     });
 
+    var reindexImages = function(){
+      var $images = $(self.el).find('.image-list').find('li');
+      var savedModels = 0;
+
+      $.each($images, function(index, el){
+        // Set the new sort index
+        var modelId = $(el).find('.image').data('id');
+        var model   = self.model.get('images').get(modelId);
+        model.set('sort_index', index);
+
+        // Remove the prevent class if all models have been succesfully saved
+        model.save(model.attributes, {
+          success : function(){
+            savedModels++;
+            if(savedModels == $images.length) {
+              $(self.el).find('.image-list').removeClass('preventUpdate');
+            }
+          }
+        });
+      });
+    };
+
+    // Listen for updates, but only rerender if allowed
+    var resortable = true
+    imagesView.listenTo(this.model.get('images'), 'change', function(model){
+      if(!$(self.el).find('.image-list').hasClass('preventUpdate')){
+        self.model.get('images').sort();
+        imagesView.renderAllItems();
+      }
+    });
+
     // Listen for updates to the image collection and
     // reattach sorter when new images are added
-    var self = this;
     var attachSorter = function(){
       $(self.el).find('.image-list').sortable('destroy');
-      $(self.el).find('.image-list').sortable();
+      $(self.el).find('.image-list').sortable().bind('sortupdate', function(e, ui){
+        $(self.el).find('.image-list').addClass('preventUpdate');
+        reindexImages();
+      });
     };
-    this.model.get('images').on({
-      'add'     : attachSorter,
-      'remove'  : attachSorter
-    });
+    this.model.get('images').on('all', attachSorter);
 
   };
 
