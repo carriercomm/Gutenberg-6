@@ -61,13 +61,11 @@ define([
 
 
   StoryView.prototype.save = function(){
-    this.model.set({
+    this.model.save({
       title   : $(this.el).find('.title').val(),
       body    : $(this.el).find('.body').val(),
       teaser  : $(this.el).find('.teaser').val()
     });
-
-    this.model.save();
   };
 
 
