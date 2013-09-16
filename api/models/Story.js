@@ -26,6 +26,10 @@ module.exports = {
     teaser : {
       type        : 'STRING',
       defaultsTo  : ''
+    },
+    sort_index : {
+      type      : 'INTEGER',
+      defaultsTo: 0
     }
   },
 

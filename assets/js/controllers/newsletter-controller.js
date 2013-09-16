@@ -1,9 +1,10 @@
 define([
+  'chaplin',
   'controllers/base/controller',
   'models/stories',
   'models/base/model',
   'views/newsletter-view'
-], function(Controller, Collection, Model, NewsletterView){
+], function(Chaplin, Controller, Collection, Model, NewsletterView){
   'use strict';
 
   var Newsletter = Controller.extend({
@@ -16,6 +17,9 @@ define([
         newsletter_id : params.id
       };
       stories.listen({ parentIdentifier : 'newsletter_id' });
+      stories.comparator = function(story){
+        return story.get('sort_index');
+      };
 
       var model = new Model();
       model.url = '/newsletter/' + params.id;
@@ -28,6 +32,33 @@ define([
         collection  : stories,
         autoRender  : true,
         region      : 'main'
+      });
+
+      // Listen for story index updates
+      Chaplin.mediator.subscribe('storyIndexUpdate', function(story, direction){
+        var oldIndex = story.get('sort_index');
+
+        if(direction == 'up' && oldIndex == 0) return false
+        if(direction == 'down' && oldIndex == stories.models.length - 1) return false
+
+        var newIndex    = (direction == 'up') ? oldIndex - 1 : oldIndex + 1;
+        var otherStory  = stories.findWhere({ 'sort_index' : newIndex});
+
+        story.set('sort_index', newIndex);
+        otherStory.set('sort_index', oldIndex);
+
+        story.save();
+        otherStory.save();
+        stories.sort();
+      });
+
+      // Listen for story deletes, and then reindex
+      Chaplin.mediator.subscribe('storyDelete', function(){
+        stories.sort();
+        for(var i=0; i<stories.models.length; i++){
+          stories.models[i].set('sort_index', i);
+          stories.models[i].save();
+        }
       });
     }
   });

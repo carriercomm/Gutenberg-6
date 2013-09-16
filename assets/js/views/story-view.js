@@ -18,6 +18,7 @@ define([
     schedule      : {},
     events        : {
       'click .destroy'        : 'destroy',
+      'click .sort-button'    : 'handleSort',
       'focus input, textarea' : 'inputFocused',
       'blur input, textarea'  : 'inputBlurred',
       'keyup'                 : 'scheduleSave'
@@ -35,9 +36,18 @@ define([
   };
 
 
+  StoryView.prototype.handleSort = function(e){
+    var direction = 'up';
+    if($(e.target).hasClass('down')) direction = 'down'
+
+    Chaplin.mediator.publish('storyIndexUpdate', this.model, direction);
+  };
+
+
   StoryView.prototype.destroy = function(e){
     e.preventDefault();
     this.model.destroy();
+    Chaplin.mediator.publish('storyDelete');
   };
 
 
