@@ -12,10 +12,6 @@ module.exports = {
       type      : 'STRING',
       required  : true,
       maxLength : 256
-    },
-    newsletter_ids : {
-      type        : 'array',
-      defaultsTo  : []
     }
   }
 };

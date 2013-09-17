@@ -1,5 +1,33 @@
 # Gutenberg
 
+
+## Creating Publications
+Publications are created via the interface. The `channel` property takes an optional configuration object. Sample:
+
+    [
+      {
+        "title"             : "Email",
+        "templates"         : {
+          "preview"         : "<div class=''></div>",
+          "publish"         : "<html><div class=''></div></html>"
+        },
+        "script"            : "..."
+      },
+      {
+        "title"             : "Passport",
+        "templates"         : {
+          "preview"         : "<div class=''></div>",
+          "publish"         : "<html><div class=''></div></html>"
+        },
+        "script"            : "..."
+      }
+    ]
+
+Notice the example above contains a template object with multiple properties specified (preview and publish). This kind of configuration is necessary because most e-mail templates will still be developed using table based html layouts. Table based markup is not condusive to drag and drop interfaces and therefore multiple templates are necessary.
+
+If no publish property is specified, the preview template will be used.
+
+
 ## Notes
 
 ### Dependencies not in the Repository
