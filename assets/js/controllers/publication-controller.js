@@ -36,7 +36,7 @@ define([
       published.url     = '/newsletter';
       published.params  = {
         publication_id  : params.id,
-        published       : 'true'
+        published       : true
       };
       published.listen({ parentIdentifier : 'publication_id' });
 
@@ -45,7 +45,7 @@ define([
       unpublished.url     = '/newsletter';
       unpublished.params  = {
         publication_id  : params.id,
-        published       : 'false'
+        published       : false
       };
       unpublished.listen({ parentIdentifier : 'publication_id' });
 
@@ -53,7 +53,8 @@ define([
       // Create Views
       var wrapperView = new PublicationView({
         autoRender  : true,
-        region      : 'main'
+        region      : 'main',
+        model       : this.model
       });
 
       var publishedView = new NewslettersView({
