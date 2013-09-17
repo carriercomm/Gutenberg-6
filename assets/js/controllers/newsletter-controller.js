@@ -3,23 +3,14 @@ define([
   'controllers/base/controller',
   'models/newsletter',
   'models/stories',
-  'views/newsletter-view'
-], function(Chaplin, Controller, Newsletter, Stories, NewsletterView){
+  'views/newsletter-view',
+  'views/stories-view'
+], function(Chaplin, Controller, Newsletter, Stories, NewsletterView, StoriesView){
   'use strict';
 
   var NewsletterController = Controller.extend({
 
-    showOne : function(params){
-      // Set up stories collections listener
-      var stories     = new Stories();
-      stories.url     = '/story';
-      stories.params  = {
-        newsletter_id : params.id
-      };
-      stories.listen({ parentIdentifier : 'newsletter_id' });
-      stories.comparator = function(story){
-        return story.get('sort_index');
-      };
+    show : function(params){
 
       // Setup the newsletter model
       var newsletter = new Newsletter();
@@ -30,7 +21,6 @@ define([
       // Make the newsletter view
       var newsletterView = new NewsletterView({
         model       : newsletter,
-        collection  : stories,
         autoRender  : true,
         region      : 'main'
       });
@@ -41,6 +31,24 @@ define([
         if(!$el.hasClass('preventUpdate')){
           $el.val(newsletter.get('title'));
         }
+      });
+
+      // Set up the stories collection
+      var stories     = new Stories();
+      stories.url     = '/story';
+      stories.params  = {
+        newsletter_id : params.id
+      };
+      stories.listen();
+      stories.comparator = function(story){
+        return story.get('sort_index');
+      };
+
+      // Make the newsletter view
+      var storiesView = new StoriesView({
+        collection  : stories,
+        autoRender  : true,
+        region      : 'stories'
       });
 
       // Listen for story index updates
@@ -69,7 +77,7 @@ define([
       // Listen for changes and rerender
       newsletterView.listenTo(stories, 'change:sort_index', function(model){
         stories.sort();
-        newsletterView.renderAllItems();
+        storiesView.renderAllItems();
       });
     }
   });

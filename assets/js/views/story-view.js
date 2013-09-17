@@ -63,10 +63,10 @@ define([
 
 
   StoryView.prototype.scheduleSave = function(e){
-    var self = this;
+    var model = this.model;
     clearTimeout(this.schedule);
     this.schedule = setTimeout(function(){
-      self.save();
+      model.save();
     }, 100);
   };
 
