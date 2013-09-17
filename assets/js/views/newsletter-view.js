@@ -17,9 +17,21 @@ define([
     },
     events        : {
       'click #add-story'        : 'addNewStory',
+      'focus input#story-title' : 'inputFocused',
+      'blur input#story-title'  : 'inputBlurred',
       'keyup input#story-title' : 'scheduleSave'
     }
   });
+
+
+  view.prototype.inputFocused = function(e){
+    $(e.target).addClass('preventUpdate');
+  };
+
+
+  view.prototype.inputBlurred = function(e){
+    $(e.target).removeClass('preventUpdate');
+  };
 
 
   view.prototype.scheduleSave = function(e){
@@ -41,18 +53,6 @@ define([
       success : function(){
         stories.add(story);
       }
-    });
-  };
-
-
-  view.prototype.initialize = function(e){
-    Chaplin.CollectionView.prototype.initialize.apply(this, arguments);
-
-    var $el   = $(this.el);
-    var self  = this;
-
-    this.listenTo(this.model, 'change:title', function(model){
-      $el.find('#story-title').val(self.model.get('title'));
     });
   };
 
