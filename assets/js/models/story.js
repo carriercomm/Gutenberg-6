@@ -7,6 +7,11 @@ define([
 
   var model = Model.extend({
 
+    blacklist : ['images'],
+    toJSON    : function(options){
+      return _.omit(this.attributes, this.blacklist);
+    },
+
     initialize : function(data){
       Model.prototype.initialize.apply(this, arguments);
 
