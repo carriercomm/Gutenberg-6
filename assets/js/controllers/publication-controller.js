@@ -8,7 +8,7 @@ define([
 ], function(Controller, Collection, Model, PublicationsView, PublicationView, NewslettersView){
   'use strict';
 
-  var Publications = Controller.extend({
+  var publicationController = Controller.extend({
     showAll : function(params){
       this.collection     = new Collection();
       this.collection.url = '/publication';
@@ -71,5 +71,5 @@ define([
     }
   });
 
-  return Publications;
+  return publicationController;
 })

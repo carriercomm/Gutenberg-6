@@ -1,17 +1,17 @@
 define([
   'chaplin',
   'controllers/base/controller',
+  'models/newsletter',
   'models/stories',
-  'models/base/model',
   'views/newsletter-view'
-], function(Chaplin, Controller, Collection, Model, NewsletterView){
+], function(Chaplin, Controller, Newsletter, Stories, NewsletterView){
   'use strict';
 
-  var Newsletter = Controller.extend({
+  var NewsletterController = Controller.extend({
 
     showOne : function(params){
       // Set up stories collections listener
-      var stories     = new Collection();
+      var stories     = new Stories();
       stories.url     = '/story';
       stories.params  = {
         newsletter_id : params.id
@@ -21,14 +21,15 @@ define([
         return story.get('sort_index');
       };
 
-      var model = new Model();
-      model.url = '/newsletter/' + params.id;
-      model.fetch();
-      model.set('stories', stories);
+      // Setup the newsletter model
+      var newsletter = new Newsletter();
+      newsletter.url = '/newsletter/' + params.id;
+      newsletter.listen();
+      newsletter.set('stories', stories);
 
-      // Make a view
-      var newsletter = new NewsletterView({
-        model       : model,
+      // Make the newsletter view
+      var newsletterView = new NewsletterView({
+        model       : newsletter,
         collection  : stories,
         autoRender  : true,
         region      : 'main'
@@ -58,12 +59,12 @@ define([
       });
 
       // Listen for changes and rerender
-      newsletter.listenTo(stories, 'change:sort_index', function(model){
+      newsletterView.listenTo(stories, 'change:sort_index', function(model){
         stories.sort();
-        newsletter.renderAllItems();
+        newsletterView.renderAllItems();
       });
     }
   });
 
-  return Newsletter;
+  return NewsletterController;
 })
