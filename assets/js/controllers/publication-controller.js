@@ -1,35 +1,55 @@
 define([
+  'chaplin',
   'controllers/base/controller',
   'models/base/collection',
   'models/base/model',
+  'models/newsletter',
   'views/publications-view',
   'views/publication-view',
   'views/newsletters-view'
-], function(Controller, Collection, Model, PublicationsView, PublicationView, NewslettersView){
+], function(Chaplin, Controller, Collection, Model, Newsletter, PublicationsView, PublicationView, NewslettersView){
   'use strict';
 
+  var days    = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  var months  = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
+
   var publicationController = Controller.extend({
+
+    initialize : function(){
+      Chaplin.Controller.prototype.initialize.apply(this, arguments);
+      this.subscribeEvent('create_newsletter', this.createNewsletter);
+    },
+
+
     list : function(params){
-      this.collection     = new Collection();
-      this.collection.url = '/publication';
-      this.collection.listen();
+      var publications = new Collection();
+      publications.url = '/publication';
+      publications.listen();
 
       this.view = new PublicationsView({
-        collection  : this.collection,
+        collection  : publications,
         region      : 'main'
       });
 
       // Bind the view to the updates
       var view = this.view;
-      this.view.listenTo(this.collection, 'change', function(model){
+      this.view.listenTo(publications, 'change', function(model){
         view.renderItem(model);
       });
     },
 
+
     show : function(params){
-      this.model      = new Model();
-      this.model.url  = '/publication/' + params.id;
-      this.model.fetch();
+      var self        = this;
+
+      // Fetch model and setup listener
+      this.model        = new Model();
+      this.model.url    = '/publication/' + params.id;
+      this.model.params = {
+        model           : 'publication',
+        id              : params.id
+      }
+      this.model.listen();
 
       // Set up published collections listener
       var published     = new Collection();
@@ -49,26 +69,43 @@ define([
       };
       unpublished.listen();
 
-      // Create Views
-      var wrapperView = new PublicationView({
+      // Create The wrapper View
+      this.view = new PublicationView({
         autoRender  : true,
         region      : 'main',
         model       : this.model
       });
 
+      // Create the subviews
       var publishedView = new NewslettersView({
         region      : 'published',
-        collection  : published
+        collection  : published,
+        title       : 'Published Newsletters'
       });
-      publishedView.setTitle('Published Newsletters');
-
       var unpublishedView = new NewslettersView({
         region      : 'unpublished',
-        collection  : unpublished
+        collection  : unpublished,
+        title       : 'Unpublished Newsletters'
       });
-      unpublishedView.setTitle('Unpublished Newsletters');
+    },
 
+
+    createNewsletter : function(publication){
+      var date          = new Date();
+      var time          = date.getTime();
+      var defaultTitle  = publication.get('title') + ' - ' + months[date.getMonth()] + ' ' + days[date.getDay()] + ' ' + date.getFullYear() + ' ' + time;
+      var newsletter    = new Newsletter();
+      newsletter.url    = '/newsletter/create';
+
+      var attrs         = {
+        publication_id  : publication.get('id'),
+        title           : defaultTitle,
+        published       : false
+      };
+
+      newsletter.save(attrs);
     }
+
   });
 
   return publicationController;

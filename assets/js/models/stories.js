@@ -8,5 +8,9 @@ define([
     model : Story
   });
 
+  collection.prototype.comparator = function(model){
+    return model.get('sort_index');
+  };
+
   return collection;
 });
