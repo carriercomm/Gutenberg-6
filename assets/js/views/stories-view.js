@@ -2,13 +2,12 @@ define([
   'chaplin',
   'views/base/collection-view',
   'views/story-view',
-  'text!templates/stories.hbs'
-], function(Chaplin, CollectionView, StoryView, template){
+], function(Chaplin, CollectionView, StoryView){
   'use strict';
 
   var view = CollectionView.extend({
     itemView      : StoryView,
-    template      : template,
+    template      : '<div id="stories-wrapper"></div>',
     listSelector  : '#stories-wrapper'
   });
 
