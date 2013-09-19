@@ -2,11 +2,11 @@ define(function(){
   'use strict';
 
   return function(match){
-    match('', 'publication#showAll');
-    match('publications', 'publication#showAll');
-    match('publication/:id', 'publication#showOne');
-    match('/publication/:id', 'publication#showOne');
-    match('newsletter/:id', 'newsletter#showOne');
-    match('/newsletter/:id', 'newsletter#showOne');
+    match('', 'publication#list');
+    match('publications', 'publication#list');
+    match('publication/:id', 'publication#show');
+    match('/publication/:id', 'publication#show');
+    match('newsletter/:id', 'newsletter#show');
+    match('/newsletter/:id', 'newsletter#show');
   }
 });

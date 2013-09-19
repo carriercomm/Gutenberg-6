@@ -1,19 +1,17 @@
 define([
   'chaplin',
-  'sortable',
-  'views/base/collection-view',
-  'views/story-view',
-  'models/story',
+  'views/base/view',
   'text!templates/newsletter.hbs'
-], function(Chaplin, Sortable, CollectionView, StoryView, Story, newsletterTemplate){
+], function(Chaplin, View, newsletterTemplate){
   'use strict';
 
-  var view = CollectionView.extend({
+  var view = View.extend({
     template      : newsletterTemplate,
-    itemView      : StoryView,
-    listSelector  : '#stories',
     attributes    : {
       'id'        : 'newsletter-view'
+    },
+    regions       : {
+      'stories'   : '#stories',
     },
     events        : {
       'click #add-story'        : 'addNewStory',
@@ -44,16 +42,7 @@ define([
 
   view.prototype.addNewStory = function(e){
     e.preventDefault();
-
-    var newsletter_id = this.model.get('id');
-    var stories       = this.model.get('stories');
-    var story         = new Story({ newsletter_id : newsletter_id, sort_index : stories.length });
-    story.url         = '/story/create'
-    story.save({
-      success : function(){
-        stories.add(story);
-      }
-    });
+    this.publishEvent('create_new_story', this.model);
   };
 
   return view;
