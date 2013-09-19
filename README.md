@@ -16,7 +16,7 @@ Publications are created via the interface. The `channel` property takes an opti
       {
         "title"             : "Passport",
         "templates"         : {
-          "preview"         : "{{#each story}}<div class='story row-fluid'><div class='span4'><div class='gallery'><img alt='' src='' /></div></div><div class='span7'><h2>{{title}}</h2><p>{{body}}</p></div></div>{{/each}}"
+          "preview"         : "{{#each story}}<div class='story row-fluid'><div class='span4'><div class='gallery'><img alt='' src='' /></div></div><div class='span7'><h2 class='title'>{{title}}</h2><p class='body'>{{body}}</p></div></div>{{/each}}"
         },
         "script"            : "..."
       }
