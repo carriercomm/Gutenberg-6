@@ -13,16 +13,33 @@ define([
 
   var NewsletterController = Controller.extend({
 
-    initialize : function(){
-      Chaplin.Controller.prototype.initialize.apply(this, arguments);
-      this.subscribeEvent('story_index_update', this.updateStoryIndices);
-      this.subscribeEvent('create_new_story', this.createNewStory);
-      this.subscribeEvent('delete_story', this.deleteStory);
+    beforeAction : function(){
+      Controller.prototype.beforeAction.apply(this, arguments);
+
+      // Have we set up the wrapping view yet?
+      this.view = new NewsletterView({
+        model       : this.model,
+        autoRender  : true,
+        region      : 'main'
+      });
+
+      // Setup the navigation
+      this.nav = new NewsletterNav({
+        autoRender  : true,
+        model       : this.model,
+        region      : 'nav'
+      });
     },
 
 
-    show : function(params){
+    initialize : function(params){
+      Chaplin.Controller.prototype.initialize.apply(this, arguments);
       var self = this;
+
+      // Subscribe to events from views
+      this.subscribeEvent('story_index_update', this.updateStoryIndices);
+      this.subscribeEvent('create_new_story', this.createNewStory);
+      this.subscribeEvent('delete_story', this.deleteStory);
 
       // Setup the newsletter model
       this.model        = new Newsletter();
@@ -41,34 +58,13 @@ define([
       this.collection.listen();
       this.model.set('stories', this.collection);
 
-      // Make the newsletter view
-      this.view = new NewsletterView({
-        model       : this.model,
-        autoRender  : true,
-        region      : 'main'
-      });
-
-      // Setup the navigation
-      var nav = new NewsletterNav({
-        autoRender  : true,
-        model       : self.model,
-        region      : 'nav'
-      });
-
-      // Make the stories view
-      var storiesView = new StoriesView({
-        collection  : this.collection,
-        autoRender  : true,
-        region      : 'stories'
-      });
-
-
       // Go fetch the publication templates and apply to the newsletter
       var publication = new Model();
       this.model.listen(function(results){
         publication.url = '/publication/' + results.publication_id
         publication.listen(function(){
           self.model.set('channels', publication.get('channels'));
+          self.nav.select(params.templateIndex);
         });
       });
 
@@ -80,6 +76,28 @@ define([
       // Listen for newsletter model title changes and update the view
       this.listenTo(this.model, 'change:title', function(model){
         self.publishEvent('update_title', this.model);
+      });
+    },
+
+
+    queryHandler : function(params){
+      params.templateIndex == 'create' ? this.editor() : this.preview(params)
+    },
+
+
+    preview : function(params){
+      //console.log(params)
+    },
+
+
+    editor : function(){
+      var self = this;
+
+      // Make a stories view
+      var storiesView = new StoriesView({
+        collection  : this.collection,
+        autoRender  : true,
+        region      : 'stories'
       });
 
       // Listen for changes and rerender
@@ -125,7 +143,7 @@ define([
         newIndex = (direction == 'up') ? oldIndex - 1 : oldIndex + 1;
       }
 
-      var otherStory = this.collection.findWhere({ 'sort_index' : newIndex});
+      var otherStory = this.collection.findWhere({ 'sort_index' : newIndex });
 
       story.save({ sort_index : newIndex });
       otherStory.save({ sort_index : oldIndex });
