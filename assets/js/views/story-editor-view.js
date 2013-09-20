@@ -19,9 +19,9 @@ define([
     events        : {
       'click .destroy'        : 'destroy',
       'click .sort-button'    : 'handleSort',
-      //'focus input, textarea' : 'inputFocused',
-      //'blur input, textarea'  : 'inputBlurred',
-      //'keyup .story-editor'   : 'scheduleSave',
+      'focus input, textarea' : 'inputFocused',
+      'blur input, textarea'  : 'inputBlurred',
+      'keyup .story-editor'   : 'scheduleSave',
       'change input[type="checkbox"]' : 'checkboxChanged'
     }
   });
@@ -137,7 +137,11 @@ define([
     var editor    = Handlebars.compile(textEditorTemplate);
     var selector  = '#editor-' + this.model.get('id');
     $(this.el).find('.editor-wrapper').append(editor(this.model.attributes));
-    $(this.el).find(selector).wysiwyg();
+
+    // Umm... wait till next tick i guess? Who knows
+    setTimeout(function(){
+      $(self.el).find(selector).wysiwyg();
+    });
 
     // Create the images view
     var imagesView = new ImagesView({
