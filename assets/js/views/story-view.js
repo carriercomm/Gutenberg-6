@@ -1,8 +1,7 @@
 define([
   'chaplin',
-  'handlebars',
   'views/base/view',
-], function(Chaplin, Handlebars, View){
+], function(Chaplin, View){
   'use strict';
 
   var view = View.extend({
