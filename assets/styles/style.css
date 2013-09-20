@@ -120,7 +120,7 @@ body{
 .editor-toolbar .btn.strike{
   text-decoration : line-through;
 }
-.editor-toolbar .btn.strike{
+.editor-toolbar .btn.underline{
   text-decoration : underline;
 }
 .editor div[data-role="editor-toolbar"] {
