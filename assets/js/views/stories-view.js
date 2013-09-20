@@ -27,15 +27,15 @@ define([
   };
 
 
-  view.prototype.render = function(channels){
+  view.prototype.render = function(){
     Chaplin.View.prototype.render.apply(this, arguments);
-
-    var passedOptions = { story : this.collection.toJSON() };
-    var html          = this.options.template(passedOptions);
 
     if(!$(this.el).find('.stories-list').hasClass('preventUpdate')){
       this.collection.sort();
     }
+
+    var passedOptions = { story : this.collection.toJSON() };
+    var html          = this.options.template(passedOptions);
 
     $(this.el).html(html);
   };
