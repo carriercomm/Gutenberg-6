@@ -142,17 +142,12 @@ define([
   };
 
 
-  view.prototype.render = function(){
-    Chaplin.View.prototype.render.apply(this, arguments);
-
+  // Create the wysiwyg editor and everything that goes with it
+  view.prototype.attachEditor = function(){
     var self = this;
-    this.attachUploader();
-
-    // Append the editor view
     var editor = Handlebars.compile(textEditorTemplate);
     $(this.el).find('.editor-wrapper').append(editor(this.model.attributes));
 
-    // Initialize the wysiwyg editor
     // Umm... wait till next tick i guess? Who knows
     setTimeout(function(){
       $(self.el).find('#editor-' + self.model.get('id')).wysiwyg({
@@ -160,8 +155,18 @@ define([
       });
     });
 
+    // Meh, whatever. This is a little hacky but works
+    var $toolbar = $(this.el).find('#editor-toolbar-' + this.model.get('id'));
+    $toolbar.find('.link-input').click(function(){
+      var selfie = $(this);
+      setTimeout(function(){
+        $(selfie).parent().parent().addClass('open');
+        $(selfie).focus();
+      }, 1);
+    });
+
     // Attach an on paste method to the editor
-    var $editor = $(self.el).find('.editor');
+    var $editor = $(this.el).find('.editor');
     $editor[0].onpaste = function(e){
       var pasteContent = e.clipboardData.getData('text/html');
       if(pasteContent == '') pasteContent = e.clipboardData.getData('text/plain');
@@ -170,6 +175,14 @@ define([
       $editor.html(cleanContent);
       return false
     };
+  };
+
+
+  view.prototype.render = function(){
+    Chaplin.View.prototype.render.apply(this, arguments);
+
+    this.attachUploader();
+    this.attachEditor();
 
     // Create the images view
     var imagesView = new ImagesView({

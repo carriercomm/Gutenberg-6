@@ -123,6 +123,13 @@ body{
 .editor-toolbar .btn.underline{
   text-decoration : underline;
 }
+.editor-toolbar .add-btn{
+  margin-top      : 5px;
+  font-family     : "Helvetica", "Arial", "Sans-Serif";
+}
+.editor-toolbar .link-dropdown{
+  padding         : 5px;
+}
 .editor div[data-role="editor-toolbar"] {
   -webkit-user-select   : none;
   -moz-user-select      : none;
