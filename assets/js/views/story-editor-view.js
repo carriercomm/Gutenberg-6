@@ -19,17 +19,16 @@ define([
     events        : {
       'click .destroy'        : 'destroy',
       'click .sort-button'    : 'handleSort',
-      'focus input, textarea' : 'inputFocused',
-      'blur input, textarea'  : 'inputBlurred',
+      'focus input, textarea, div[contenteditable=true]' : 'inputFocused',
+      'blur input, textarea, div[contenteditable=true]'  : 'inputBlurred',
       'keyup .story-editor'   : 'scheduleSave',
       'change input[type="checkbox"]' : 'checkboxChanged'
     }
   });
 
-
   view.prototype.initialize = function(){
     Chaplin.View.prototype.initialize.apply(this, arguments);
-    this.listenTo(this.model, 'change', this.modelUpdate);
+    this.listenTo(this.model, 'change', this.updateDomWithModel);
   };
 
 
@@ -75,24 +74,34 @@ define([
 
 
   view.prototype.saveModel = function(){
-    var attrs = {}
+    var self  = this;
+    var attrs = {};
 
-    var $inputs = $(this.el).find('.story-editor').find('input, textarea');
-    $.each($inputs, function(){
-      var name = $(this).attr('name');
-      var val  = $(this).val();
+    for(var key in this.model.attributes){
+      var selector  = '.' + key;
+      var $el       = $(self.el).find(selector);
 
-      if(($(this)[0].type) == 'checkbox') val = $(this).is(':checked');
-
-      attrs[name] = val;
-    });
+      if($el.length){
+        // If some kind of form element, get the val
+        if($el[0].nodeName == 'INPUT' || $el[0].nodeName == 'TEXTAREA'){
+          if($el.attr('type') == 'checkbox'){
+            attrs[key] = $el.prop('checked');
+          } else {
+            attrs[key] = $el.val();
+          }
+        } else {
+          // If a regular element, get the html
+          attrs[key] = $el.html();
+        }
+      }
+    }
 
     this.model.save(attrs);
   };
 
 
   // Whenever the model updates, update the corresponding input fields
-  view.prototype.modelUpdate = function(model){
+  view.prototype.updateDomWithModel = function(model){
     var self  = this;
     var attrs = model.attributes
 
@@ -100,10 +109,16 @@ define([
       var selector  = '.' + key;
       var $el       = $(self.el).find(selector);
 
-      if(!$el.hasClass('preventUpdate')){
-        if($el.attr('type') == 'checkbox'){
-          attrs[key] ? $el.prop('checked', true) : $el.prop('checked', false)
-        } else $el.val(attrs[key]);
+      if($el.length && !$el.hasClass('preventUpdate')){
+        // If some kind of form element, set the val
+        if($el[0].nodeName == 'INPUT' || $el[0].nodeName == 'TEXTAREA'){
+          if($el.attr('type') == 'checkbox'){
+            attrs[key] ? $el.prop('checked', true) : $el.prop('checked', false)
+          } else $el.val(attrs[key]);
+        } else {
+          // If a regular element, set the html
+          $el.html(attrs[key]);
+        }
       }
     }
   };
