@@ -1,9 +1,9 @@
 define([
   'chaplin',
-  'handlebars',
+  'ejs',
   'views/base/view',
   'views/story-view',
-], function(Chaplin, Handlebars, View, StoryView){
+], function(Chaplin, ejs, View, StoryView){
   'use strict';
 
   var view = View.extend({
@@ -22,7 +22,7 @@ define([
 
   view.prototype.registerTemplates = function(channels){
     var index             = this.options.params.templateIndex;
-    this.options.template = Handlebars.compile(channels[index].templates.preview);
+    this.options.template = ejs.compile(channels[index].templates.preview);
     this.render();
   };
 
