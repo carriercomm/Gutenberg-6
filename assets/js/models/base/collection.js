@@ -19,7 +19,7 @@ define([
       socket.on('message', function(message){
 
         // This needs to be here because the collection is not unbound
-        if(collection.length){
+        if(collection.models){
 
           if(message.verb == 'create') {
             // Loop over the message data and decide id the params match
