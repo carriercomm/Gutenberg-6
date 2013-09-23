@@ -17,7 +17,7 @@ module.exports = {
       defaultsTo: ''
     },
     story_id : {
-      type      : 'INTEGER',
+      type      : 'STRING',
       defaultsTo: 0
     },
     sort_index : {
