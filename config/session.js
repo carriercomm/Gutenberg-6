@@ -10,47 +10,20 @@
  * http://sailsjs.org/#documentation
  */
 
-module.exports.session = {
+if(process.env.NODE_ENV == 'production' || process.env.NODE_ENV == 'stage'){
 
-  // Session secret is automatically generated when your new app is created
-  // Replace at your own risk in production-- you will invalidate the cookies of your users,
-  // forcing them to log in again. 
-  secret: '3e3c3bcaa98b1df5f77cc01128d6fbc9'
+  module.exports.session = {
+    adapter     : 'mongo',
+    host        : process.env.MONGO_HOST,
+    port        : process.env.MONGO_PORT,
+    user        : process.env.MONGO_USER,
+    password    : process.env.MONGO_PASS,
+    database    : process.env.MONGO_DB_NAME,
+    collection  : 'sails'
+  }
+} else{
 
-
-  // In production, uncomment the following lines to set up a shared redis session store
-  // that can be shared across multiple Sails.js servers
-  // adapter: 'redis',
-  //
-  // The following values are optional, if no options are set a redis instance running
-  // on localhost is expected.
-  // Read more about options at: https://github.com/visionmedia/connect-redis
-  //
-  // host: 'localhost',
-  // port: 6379,
-  // ttl: <redis session TTL in seconds>,
-  // db: 0,
-  // pass: <redis auth password>
-  // prefix: 'sess:'
-
-
-  // Uncomment the following lines to use your Mongo adapter as a session store
-  // adapter: 'mongo',
-  //
-  // host: 'localhost',
-  // port: 27017,
-  // db: 'sails',
-  // collection: 'sessions',
-  //
-  // Optional Values:
-  //
-  // # Note: url will override other connection settings
-  // url: 'mongodb://user:pass@host:port/database/collection',
-  //
-  // username: '',
-  // password: '',
-  // auto_reconnect: false,
-  // ssl: false,
-  // stringify: true
-
-};
+  module.exports.session = {
+    secret: '3e3c3bcaa98b1df5f77cc01128d6fbc9'
+  }
+}

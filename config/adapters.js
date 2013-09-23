@@ -12,30 +12,35 @@
  * http://sailsjs.org/#documentation
  */
 
-module.exports.adapters = {
+if(process.env.NODE_ENV == 'production' || process.env.NODE_ENV == 'stage'){
 
-  // If you leave the adapter config unspecified 
-  // in a model definition, 'default' will be used.
-  'default': 'disk',
-
-  // In-memory adapter for DEVELOPMENT ONLY
-  memory: {
-    module: 'sails-memory'
-  },
-
-  // Persistent adapter for DEVELOPMENT ONLY
-  // (data IS preserved when the server shuts down)
-  disk: {
-    module: 'sails-disk'
-  },
-
-  // MySQL is the world's most popular relational database.
-  // Learn more: http://en.wikipedia.org/wiki/MySQL
-  mysql: {
-    module: 'sails-mysql',
-    host: 'YOUR_MYSQL_SERVER_HOSTNAME_OR_IP_ADDRESS',
-    user: 'YOUR_MYSQL_USER',
-    password: 'YOUR_MYSQL_PASSWORD',
-    database: 'YOUR_MYSQL_DB'
+  // Production Configuration options configured via env vars
+  module.exports.adapters = {
+    'default' : 'mongo',
+    mongo     : {
+      module    : 'sails-mongo',
+      host      : process.env.MONGO_HOST,
+      port      : process.env.MONGO_PORT,
+      user      : process.env.MONGO_USER,
+      password  : process.env.MONGO_PASS,
+      database  : process.env.MONGO_DB_NAME
+    }
   }
-};
+} else{
+
+  // Use disk for local dev unless mongo is specified
+  module.exports.adapters = {
+    'default' : 'disk',
+    disk      : {
+      module : 'sails-disk'
+    },
+    mongo     : {
+      module    : 'sails-mongo',
+      host      : 'localhost',
+      port      : 27017,
+      user      : '',
+      password  : '',
+      database  : 'gutenberg'
+    }
+  }
+}

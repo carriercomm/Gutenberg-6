@@ -37,4 +37,4 @@ I've made minor modifications to `vendor/fineuploader-3.8.2.css` as this was the
 
 
 ## Scripts
-* Run script - `USERNAME=username PASSWORD=password forever -w app.js`
+* Run script - `forever -w app.js`
