@@ -53,13 +53,13 @@ define([
     var direction = 'up';
     if($(e.target).hasClass('down')) direction = 'down'
 
-    Chaplin.mediator.publish('story_index_update', this.model, direction);
+    this.publishEvent('story_index_update', this.model, direction);
   };
 
 
   view.prototype.destroy = function(e){
     e.preventDefault();
-    Chaplin.mediator.publish('delete_story', this.model);
+    this.publishEvent('delete_story', this.model);
   };
 
 
