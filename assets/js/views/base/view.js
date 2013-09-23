@@ -1,7 +1,6 @@
 define([
   'handlebars',
-  'chaplin',
-  'lib/view-helper' // Just load the view helpers, no return value
+  'chaplin'
 ], function(Handlebars, Chaplin) {
   'use strict';
 

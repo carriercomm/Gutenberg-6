@@ -10,7 +10,8 @@
     "jade": "~0.35.0",
     "gm": "~1.13.0",
     "wrench": "1.5.1",
-    "sails": "~0.9.4"
+    "sails": "~0.9.4",
+    "sails-mongo": "~0.9.5"
   },
   "devDependencies": {
     "forever": "0.10.0"
