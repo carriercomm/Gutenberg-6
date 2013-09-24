@@ -59,7 +59,8 @@ define([
 
   view.prototype.destroy = function(e){
     e.preventDefault();
-    this.publishEvent('delete_story', this.model);
+    var confirm = window.confirm('Are you sure you want to delete this story? All corresponding images will also be deleted. This data is not recoverable!');
+    if(confirm) this.publishEvent('delete_story', this.model);
   };
 
 
