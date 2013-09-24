@@ -4,6 +4,7 @@ require.config({
     'jquery'      : '/vendor/jquery',
     'underscore'  : '/vendor/underscore',
     'handlebars'  : '/vendor/handlebars',
+    'ejs'         : '/vendor/ejs',
     'backbone'    : '/vendor/backbone',
     'chaplin'     : '/vendor/chaplin',
     'text'        : '/vendor/requirejs-text',
@@ -18,6 +19,9 @@ require.config({
     'hotkeys'     : '/vendor/jquery.hotkeys'
   },
   shim        : {
+    ejs           : {
+      exports         : 'ejs'
+    },
     hotkeys       : {
       exports         : 'hotkeys',
       deps            : ['jquery']
@@ -58,6 +62,10 @@ require.config({
     },
     handlebars    : {
         exports       : 'Handlebars'
+    },
+    ejs       : {
+      exports         : 'ejs',
+      deps            : ['text']
     }
   },
   urlArgs         : 'bust=' +  (new Date()).getTime()

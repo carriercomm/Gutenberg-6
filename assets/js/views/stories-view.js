@@ -1,9 +1,9 @@
 define([
   'chaplin',
-  'handlebars',
+  'ejs',
   'views/base/view',
   'views/story-view',
-], function(Chaplin, Handlebars, View, StoryView){
+], function(Chaplin, ejs, View, StoryView){
   'use strict';
 
   var view = View.extend({
@@ -22,7 +22,7 @@ define([
 
   view.prototype.registerTemplates = function(channels){
     var index             = this.options.params.templateIndex;
-    this.options.template = Handlebars.compile(channels[index].templates.preview);
+    this.options.template = ejs.compile(channels[index].templates.preview);
     this.render();
   };
 
@@ -33,8 +33,19 @@ define([
     if(!$(this.el).find('.stories-list').hasClass('preventUpdate')){
       this.collection.sort();
     }
+    
+    // The regular toJSON method cannot be used here since i'm using
+    // it to blacklist attributes for socket saves. 
+    var stories = [];
+    for(var i=0; i<this.collection.models.length; i++){
+      var story  = _.clone(this.collection.models[i]);
+      var images = story.get('images');
 
-    var passedOptions = { story : this.collection.toJSON() };
+      story.attributes.images = images.length ? images.toJSON() : []
+      stories.push(story.attributes);
+    }
+
+    var passedOptions = { stories : stories };
     var html          = this.options.template(passedOptions);
 
     $(this.el).html(html);

@@ -5,21 +5,32 @@
 Publications are created via the interface. The `channel` property takes an optional configuration object. Sample:
 
     [
-      {
-        "title"             : "Email",
-        "templates"         : {
-          "preview"         : "<div class=''></div>",
-          "publish"         : "<html><div class=''></div></html>"
+        {
+            "title": "Email",
+            "templates": {
+                "preview"   : "...full html page... (pulled in via iframe)",
+                "publish"   : "...abbreviated or full html page..."
+            },
+            "crop" : {
+                "width"         : "200",
+                "height"        : "200",
+                "cropOptions"   : { "aspectRatio" : "1" }
+            },
+            "script": "...a post publish script you can use to deploy your published html page..."
         },
-        "script"            : "..."
-      },
-      {
-        "title"             : "Passport",
-        "templates"         : {
-          "preview"         : "{{#each story}}<div class='story row-fluid'><div class='span4'><div class='gallery'><img alt='' src='' /></div></div><div class='span7'><h2 class='title'>{{title}}</h2><p class='body'>{{body}}</p></div></div>{{/each}}"
-        },
-        "script"            : "..."
-      }
+        {
+            "title": "Passport",
+            "templates": {
+                "preview"   : "...full html page... (pulled in via iframe)",
+                "publish"   : "...abbreviated or full html page..."
+            },
+            "crop" : {
+                "width"         : "300",
+                "height"        : "150",
+                "cropOptions"   : { "aspectRatio" : "2" }
+            },
+            "script": "...a post publish script you can use to deploy your published html page..."
+        }
     ]
 
 Notice the example above contains a template object with multiple properties specified (preview and publish). This kind of configuration is necessary because most e-mail templates will still be developed using table based html layouts. Table based markup is not condusive to drag and drop interfaces and therefore multiple templates are necessary.
