@@ -1,0 +1,5 @@
+name: Gutenberg
+framework:
+  type: node
+services:
+  fs_gutenberg_photos: filesystem

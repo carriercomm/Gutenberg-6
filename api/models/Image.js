@@ -8,6 +8,7 @@
 
 var magik = require('gm');
 var fs    = require('fs');
+var path  = require('path');
 
 module.exports = {
 
@@ -29,7 +30,7 @@ module.exports = {
   beforeDestroy : function(props, next){
     // Delete the image reference when deleting the model
     Image.findOne({ id: props.where.id }).exec(function(err, model){
-      var imagePath = process.cwd() + '/assets' + model.url;
+      var imagePath = model.path;
 
       fs.unlink(imagePath, function (err) {
         if (err) console.log(err);
@@ -44,13 +45,15 @@ module.exports = {
 
     var cropImage = function(originalFile, storyId, imageId, opts){
 
-      var originalFile = 'assets' + originalFile;
       magik(originalFile).identify(function(err, properties){
 
         // Setup some filepaths
-        var croppedDir    = 'assets/uploads/' + storyId + '/crops';
+        var baseDir = 'uploads';
+        if(process.env.STACKATO_FILESYSTEM) baseDir == process.env.STACKATO_FILESYSTEM
+
+        var croppedDir    = path.join(baseDir, storyId, 'crops');
         var fileExtension = properties.format.toLowerCase();
-        var newFilePath   = croppedDir + '/' + imageId + '-' + opts.domId + '.' + fileExtension;
+        var newFilePath   = path.join(croppedDir, imageId + '-' + opts.domId + '.' + fileExtension);
 
         // Create a directory for the cropped images to live
         fs.mkdir(croppedDir, function(error){
@@ -75,7 +78,7 @@ module.exports = {
       var croppableItems = props.croppableItems;
       for(var i=0; i<croppableItems.length; i++){
         if(croppableItems[i].coords){
-          cropImage(props.url, props.story_id, props.id, croppableItems[i]);
+          cropImage(props.path, props.story_id, props.id, croppableItems[i]);
         }
       }
     }
