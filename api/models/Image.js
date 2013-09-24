@@ -8,6 +8,7 @@
 
 var magik = require('gm');
 var fs    = require('fs');
+var path  = require('path');
 
 module.exports = {
 
@@ -47,9 +48,12 @@ module.exports = {
       magik(originalFile).identify(function(err, properties){
 
         // Setup some filepaths
-        var croppedDir    = 'assets/uploads/' + storyId + '/crops';
+        var baseDir = 'uploads';
+        if(process.env.STACKATO_FILESYSTEM) baseDir == process.env.STACKATO_FILESYSTEM
+
+        var croppedDir    = path.join(baseDir, storyId, 'crops');
         var fileExtension = properties.format.toLowerCase();
-        var newFilePath   = croppedDir + '/' + imageId + '-' + opts.domId + '.' + fileExtension;
+        var newFilePath   = path.join(croppedDir, imageId + '-' + opts.domId + '.' + fileExtension);
 
         // Create a directory for the cropped images to live
         fs.mkdir(croppedDir, function(error){
