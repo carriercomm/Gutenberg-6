@@ -1,4 +1,8 @@
 name: Gutenberg
+requirements:
+  ubuntu:
+    - imagemagick
+    - graphicsmagick
 framework:
   type: node
 services:
