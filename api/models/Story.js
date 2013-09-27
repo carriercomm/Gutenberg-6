@@ -12,7 +12,7 @@ module.exports = {
   attributes: {
     newsletter_id : {
       type        : 'STRING',
-      defaultsTo  : 0,
+      defaultsTo  : '0',
       required    : true
     },
     title : {
@@ -54,5 +54,5 @@ module.exports = {
     });
 
     next();
-  },
+  }
 };
