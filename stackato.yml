@@ -1,9 +1,11 @@
 name: Gutenberg
 requirements:
-  ubuntu:
-    - imagemagick
-    - graphicsmagick
+  running:
+    unix:
+      - imagemagick
+      - graphicsmagick
 framework:
   type: node
 services:
   fs_gutenberg_photos: filesystem
+ignores: ["node_modules", ".git", "uploads", ".tmp"]
