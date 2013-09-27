@@ -7,6 +7,10 @@ define([
   var model = Model.extend({
 
     blacklist : ['stories', 'channels'],
+    defaults  : {
+      'title' : '',
+      'tags'  : ''
+    },
     toJSON    : function(options){
       return _.omit(this.attributes, this.blacklist);
     }

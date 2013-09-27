@@ -15,24 +15,32 @@ define([
       'nav'       : '#nav-container'
     },
     events        : {
-      'click #add-story'        : 'addNewStory',
-      'focus input#story-title' : 'inputFocused',
-      'blur input#story-title'  : 'inputBlurred',
-      'keyup input#story-title' : 'scheduleSave'
+      'click #add-story'              : 'addNewStory',
+      'focus .newsletter-attrs input' : 'inputFocused',
+      'blur .newsletter-attrs input'  : 'inputBlurred',
+      'keyup .newsletter-attrs input' : 'scheduleSave'
     }
   });
 
 
   view.prototype.initialize = function(){
     Chaplin.View.prototype.initialize.apply(this, arguments);
-    this.subscribeEvent('update_title', this.updateTitle);
+    this.listenTo(this.model, 'change', this.updateDomWithModel);
   };
 
 
-  view.prototype.updateTitle = function(){
-    var $el = $(this.el).find('#story-title');
-    if(!$el.hasClass('preventUpdate')){
-      $el.val(this.model.get('title'));
+  view.prototype.updateDomWithModel = function(model){
+
+    var attrs = model.attributes
+    var $wrapper = $(this.el).find('.newsletter-attrs');
+
+    for(var key in attrs){
+      var selector  = '.' + key;
+      var $el       = $wrapper.find(selector);
+
+      if($el.length && !$el.hasClass('preventUpdate')){
+        $el.val(attrs[key]);
+      }
     }
   };
 
@@ -48,9 +56,22 @@ define([
 
 
   view.prototype.scheduleSave = function(e){
-    var self = this;
+    var self      = this;
+    var attrs     = {};
+    var $wrapper  = $(this.el).find('.newsletter-attrs');
+
+    for(var key in this.model.attributes){
+      var selector  = '.' + key;
+      var $el       = $wrapper.find(selector);
+
+      if($el.length){
+        attrs[key] = $el.val();
+      }
+    }
+
+    clearTimeout(this.schedule);
     this.schedule = setTimeout(function(){
-      self.model.save({ title : $(self.el).find('#story-title').val() });
+      self.model.save(attrs);
     }, 100);
   };
 
