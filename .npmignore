@@ -1,0 +1,4 @@
+.git
+.tmp/disk.db
+node_modules
+uploads/*/**
