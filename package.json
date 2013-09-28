@@ -1,7 +1,7 @@
 {
   "name": "Gutenberg",
   "private": true,
-  "version": "0.0.0-20",
+  "version": "0.0.0-24",
   "description": "a Sails application",
   "dependencies": {
     "grunt": "0.4.1",
@@ -14,7 +14,9 @@
     "sails-mongo": "~0.9.5"
   },
   "devDependencies": {
-    "forever": "0.10.0"
+    "forever": "0.10.0",
+    "grunt-contrib-requirejs": "~0.4.1",
+    "grunt-contrib-handlebars": "~0.5.11"
   },
   "scripts": {
     "start": "node app.js",
