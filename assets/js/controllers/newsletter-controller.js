@@ -40,6 +40,16 @@ define([
         id              : params.id
       };
 
+      // Set up a publication model for easy reference
+      // to configuration options
+      var publication = new Model();
+
+      // Fetch the newsletter and then the publication
+      this.model.listen(function(results){
+        publication.url = '/publication/' + results.publication_id
+        publication.listen();
+      });
+
       // Set up the stories collection
       this.collection        = new Stories();
       this.collection.url    = '/story';
@@ -49,19 +59,17 @@ define([
       this.collection.listen();
       this.model.set('stories', this.collection);
 
-      // Go fetch the publication templates and apply to the newsletter
-      var publication = new Model();
-      this.model.listen(function(results){
-        publication.url = '/publication/' + results.publication_id
-        publication.listen(function(){
-          self.model.set('channels', publication.get('channels'));
-          //self.nav.select(params.templateIndex);
-        });
-      });
-
-      // Listen for channel updates, update the newsletter
+      // Listen for publication channel updates
       this.listenTo(publication, 'change:channels', function(model){
+
+        // Setup the channel model in the newsletter
+        var channels = publication.get('channels');
+        var index    = params.templateIndex;
+        if(index && index != 'create') channels[index].active = true
         self.model.set('channels', model.get('channels'));
+
+        // Notify everyone that the channels are now registered and 
+        // config options are available for use
         self.publishEvent('channels_registered', model.get('channels'));
       });
 
