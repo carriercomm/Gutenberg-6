@@ -7,30 +7,18 @@ define([
   'models/story',
   'views/base/collection-view',
   'views/newsletter-view',
+  'views/newsletter-pre-view',
   'views/newsletter-nav-view',
+  'views/stories-pre-view',
   'views/stories-view',
   'views/story-editor-view'
-], function(Chaplin, Controller, Model, Newsletter, Stories, Story, CollectionView, NewsletterView, NewsletterNav, StoriesView, StoryEditorView){
+], function(Chaplin, Controller, Model, Newsletter, Stories, Story, CollectionView, NewsletterView, NewsletterPreView, NewsletterNav, StoriesPreView, StoriesView, StoryEditorView){
   'use strict';
 
   var NewsletterController = Controller.extend({
 
     beforeAction : function(){
       Controller.prototype.beforeAction.apply(this, arguments);
-
-      // Have we set up the wrapping view yet?
-      this.view = new NewsletterView({
-        model       : this.model,
-        autoRender  : true,
-        region      : 'main'
-      });
-
-      // Setup the navigation
-      this.nav = new NewsletterNav({
-        autoRender  : true,
-        model       : this.model,
-        region      : 'nav'
-      });
     },
 
 
@@ -66,7 +54,7 @@ define([
         publication.url = '/publication/' + results.publication_id
         publication.listen(function(){
           self.model.set('channels', publication.get('channels'));
-          self.nav.select(params.templateIndex);
+          //self.nav.select(params.templateIndex);
         });
       });
 
@@ -83,18 +71,20 @@ define([
     },
 
 
+    // Decide if we should render a preview or the editor view
     queryHandler : function(params){
       if(typeof(params.templateIndex) == 'undefined') params.templateIndex = 'create'
-      params.templateIndex == 'create' ? this.editor() : this.preview(params)
+      params.templateIndex == 'create' ? this.editor() : this.previewContainer(params)
     },
 
 
+    // Used to display only the preview mode with no frills attached. Commonly called 
+    // by the iFrame within the previewContainer
     preview : function(params){
-      // Make a stories view
-      var storiesView = new StoriesView({
+      var storiesView = new StoriesPreView({
         collection    : this.collection,
         autoRender    : false,
-        region        : 'stories',
+        region        : 'main',
         template      : '<div id="stories-wrapper"></div>',
         listSelector  : '#stories-wrapper',
         params        : params
@@ -102,10 +92,47 @@ define([
     },
 
 
+    // Makes a view, builds an iFrame, and the iFrame then calls the preview method above
+    previewContainer : function(params){
+      this.view = new NewsletterPreView({
+        model       : this.model,
+        autoRender  : true,
+        region      : 'main'
+      });
+
+      this.nav = new NewsletterNav({
+        autoRender  : true,
+        model       : this.model,
+        region      : 'nav'
+      });
+
+      var storiesView = new StoriesPreView({
+        collection    : this.collection,
+        autoRender    : false,
+        region        : 'main',
+        template      : '<div id="stories-wrapper"></div>',
+        listSelector  : '#stories-wrapper',
+        params        : params
+      });
+    },
+
+
+    // The standard editor view
     editor : function(){
       var self = this;
 
-      // Make the editor stories view
+      this.view = new NewsletterView({
+        model       : this.model,
+        autoRender  : true,
+        region      : 'main'
+      });
+
+      this.nav = new NewsletterNav({
+        autoRender  : true,
+        model       : this.model,
+        region      : 'nav'
+      });
+
       var storiesView = new CollectionView({
         collection    : this.collection,
         autoRender    : true,

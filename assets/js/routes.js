@@ -11,5 +11,9 @@ define(function(){
     // Newsletter
     match('newsletter/:id', 'newsletter#queryHandler');
     match('/newsletter/:id', 'newsletter#queryHandler');
+
+    // iFrame Previews
+    match('preview/:id', 'newsletter#preview');
+    match('/preview/:id', 'newsletter#preview');
   }
 });
