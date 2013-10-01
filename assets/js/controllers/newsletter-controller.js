@@ -6,13 +6,14 @@ define([
   'models/stories',
   'models/story',
   'views/base/collection-view',
-  'views/newsletter-view',
+  'views/newsletter-editor-view',
   'views/newsletter-pre-view',
   'views/newsletter-nav-view',
   'views/stories-pre-view',
   'views/stories-view',
   'views/story-editor-view'
-], function(Chaplin, Controller, Model, Newsletter, Stories, Story, CollectionView, NewsletterView, NewsletterPreView, NewsletterNav, StoriesPreView, StoriesView, StoryEditorView){
+], function(Chaplin, Controller, Model, Newsletter, Stories, Story, CollectionView, 
+  NewsletterEditorView, NewsletterPreView, NewsletterNav, StoriesPreView, StoriesView, StoryEditorView){
   'use strict';
 
   var NewsletterController = Controller.extend({
@@ -121,7 +122,7 @@ define([
     editor : function(){
       var self = this;
 
-      this.view = new NewsletterView({
+      this.view = new NewsletterEditorView({
         model       : this.model,
         autoRender  : true,
         region      : 'main'

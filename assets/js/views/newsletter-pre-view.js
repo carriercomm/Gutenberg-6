@@ -8,7 +8,7 @@ define([
   var view = View.extend({
     template      : newsletterTemplate,
     attributes    : {
-      'id'        : 'newsletter-view'
+      'id'        : 'newsletter-pre-view'
     },
     regions       : {
       'stories'   : '#stories',

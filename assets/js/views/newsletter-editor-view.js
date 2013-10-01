@@ -1,14 +1,14 @@
 define([
   'chaplin',
   'views/base/view',
-  'text!templates/newsletter.hbs'
-], function(Chaplin, View, newsletterTemplate){
+  'text!templates/newsletterEditor.hbs'
+], function(Chaplin, View, template){
   'use strict';
 
   var view = View.extend({
-    template      : newsletterTemplate,
+    template      : template,
     attributes    : {
-      'id'        : 'newsletter-view'
+      'id'        : 'newsletter-editor-view'
     },
     regions       : {
       'stories'   : '#stories',
