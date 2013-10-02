@@ -10,10 +10,9 @@ define([
   'views/newsletter-pre-view',
   'views/newsletter-nav-view',
   'views/stories-pre-view',
-  'views/stories-view',
   'views/story-editor-view'
 ], function(Chaplin, Controller, Model, Newsletter, Stories, Story, CollectionView, 
-  NewsletterEditorView, NewsletterPreView, NewsletterNav, StoriesPreView, StoriesView, StoryEditorView){
+  NewsletterEditorView, NewsletterPreView, NewsletterNav, StoriesPreView, StoryEditorView){
   'use strict';
 
   var NewsletterController = Controller.extend({
