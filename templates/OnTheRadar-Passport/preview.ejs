@@ -1,20 +1,79 @@
-<% for(var i=0; i<stories.length; i++) {%>
+<script type='text/javascript' src='//use.typekit.net/wcx3ncz.js'></script>
+<link href='http://passport.vml.com/sites/all/modules/custom/judeui/app.css?cacheBuster=1377623457018' rel='stylesheet'>
 
-  <% if(stories[i].body == ''){ %>
-    <h6><%= stories[i].title %></h6>
-  <% } %>
+<div class='container-fluid' id='main'>
+  <div class='row-fluid'>
+    <div id='content' class='span10'>
+      <article class='full group'>
+        <header></header>
+        <div id='group_content'>
+          <article class='full post'>
 
-  <div class='story row' style='margin-bottom:15px'>
-    <div class='col-lg-4 col-md-4'>
-      <div class='gallery'>
-        <% if(stories[i].images[0]){ %>
-          <img style='width:100%;' src='<%= stories[i].images[0].url %>'>
-        <% } %>
-      </div>
-    </div>
-    <div class='col-lg-8 col-md-8'>
-      <h2 class='title'><%= stories[i].title %></h2>
-      <p class='body'><%- stories[i].body %></p>
+            <header>
+              <div class='row-fluid'>
+                <div class='img span12'>
+                  <img src='http://f.cl.ly/items/0n0c0r1g2T2n2m373T11/header.jpg' class='headliner' />
+                </div>
+                <div class='row-fluid'>
+                  <h1 class='title' style='display:none;'><%= newsletter.title %></h1>
+                </div>
+                <div class='row-fluid user_wrap'>
+                  <a href='http://passport.vml.com' target='_blank' class='span1 photo'>
+                    <img src='http://passport.vml.com/sites/default/files/styles/square/public/batman.jpg' />
+                  </a>
+                  <div class='span11 meta'>
+                    <span>
+                      <a href='http://passport.vml.com' class='author'>Admin</a>
+                    </span>
+                    <span class='divider'> | </span>
+                    <span class='timestamp'>Right Now</span>
+                    <span class='divider'> | </span>
+                    <span class='comment_count'>0 Comments</span>
+                    <div class='tags'>
+                      <%= newsletter.tags %>
+                    </div>
+                    <div class='groups'>
+                      <a href='http://passport.vml.com/group/587' target='_blank'>On the Radar</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </header>
+
+            <section id='article' class='user_generated'>
+
+              <% for(var i=0; i<stories.length; i++) {%>
+
+                <% if(stories[i].body == ''){ %>
+                  <h6><%= stories[i].title %></h6>
+                <% } else{ %>
+                  <div class='wysiwyg-two-col row-fluid'>
+                    <div class='wysiwyg-left-col span4'>
+                      <div class='gallery'>
+                        <% if(stories[i].images[0]){ %>
+                          <img style='width:100%;' src='<%= stories[i].images[0].url %>'>
+                        <% } %>
+                      </div>
+                    </div>
+                    <div class='wysiwyg-right-col span7'>
+                      <h2><%= stories[i].title %></h2>
+                      <p><%- stories[i].body %></p>
+                    </div>
+                  </div>
+                <% } %>
+              <% } %>
+
+            </section>
+          </article>
+        </div>
+      </article>
     </div>
   </div>
-<% } %>
+</div>
+<script type='text/javascript'>
+  setTimeout(function(){
+    $(function(){
+      try{Typekit.load();}catch(e){}
+    });
+  }, 1000);
+</script>
