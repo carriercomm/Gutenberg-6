@@ -23,6 +23,7 @@ define([
 
       // Subscribe to events from views
       this.subscribeEvent('story_index_update', this.updateStoryIndices);
+      this.subscribeEvent('story_channel_index_update', this.updateStoryChannelIndices);
       this.subscribeEvent('create_new_story', this.createNewStory);
       this.subscribeEvent('delete_story', this.deleteStory);
 
@@ -196,6 +197,12 @@ define([
       story.save({ sort_index : newIndex });
       otherStory.save({ sort_index : oldIndex });
       this.collection.sort();
+    },
+
+
+    updateStoryChannelIndices : function(a, b){
+      console.log('a', a)
+      console.log('b', b)
     }
   });
 
