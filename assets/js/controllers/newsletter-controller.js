@@ -6,33 +6,16 @@ define([
   'models/stories',
   'models/story',
   'views/base/collection-view',
-  'views/newsletter-view',
+  'views/newsletter-editor-view',
+  'views/newsletter-pre-view',
   'views/newsletter-nav-view',
-  'views/stories-view',
+  'views/stories-pre-view',
   'views/story-editor-view'
-], function(Chaplin, Controller, Model, Newsletter, Stories, Story, CollectionView, NewsletterView, NewsletterNav, StoriesView, StoryEditorView){
+], function(Chaplin, Controller, Model, Newsletter, Stories, Story, CollectionView, 
+  NewsletterEditorView, NewsletterPreView, NewsletterNav, StoriesPreView, StoryEditorView){
   'use strict';
 
   var NewsletterController = Controller.extend({
-
-    beforeAction : function(){
-      Controller.prototype.beforeAction.apply(this, arguments);
-
-      // Have we set up the wrapping view yet?
-      this.view = new NewsletterView({
-        model       : this.model,
-        autoRender  : true,
-        region      : 'main'
-      });
-
-      // Setup the navigation
-      this.nav = new NewsletterNav({
-        autoRender  : true,
-        model       : this.model,
-        region      : 'nav'
-      });
-    },
-
 
     initialize : function(params){
       Chaplin.Controller.prototype.initialize.apply(this, arguments);
@@ -40,6 +23,7 @@ define([
 
       // Subscribe to events from views
       this.subscribeEvent('story_index_update', this.updateStoryIndices);
+      this.subscribeEvent('story_index_swap', this.storyIndexSwap);
       this.subscribeEvent('create_new_story', this.createNewStory);
       this.subscribeEvent('delete_story', this.deleteStory);
 
@@ -51,28 +35,38 @@ define([
         id              : params.id
       };
 
+      // Set up a publication model for easy reference
+      // to configuration options
+      var publication = new Model();
+
+      // Fetch the newsletter and then the publication
+      this.model.listen(function(results){
+        publication.url = '/publication/' + results.publication_id
+        publication.listen();
+      });
+
       // Set up the stories collection
       this.collection        = new Stories();
       this.collection.url    = '/story';
       this.collection.params = {
         newsletter_id : params.id
       };
-      this.collection.listen();
-      this.model.set('stories', this.collection);
-
-      // Go fetch the publication templates and apply to the newsletter
-      var publication = new Model();
-      this.model.listen(function(results){
-        publication.url = '/publication/' + results.publication_id
-        publication.listen(function(){
-          self.model.set('channels', publication.get('channels'));
-          self.nav.select(params.templateIndex);
-        });
+      this.collection.listen(function(){
+        self.publishEvent('collection_registered');
       });
 
-      // Listen for channel updates, update the newsletter
+      // Listen for publication channel updates
       this.listenTo(publication, 'change:channels', function(model){
+
+        // Setup the channel model in the newsletter
+        var channels = publication.get('channels');
+        var index    = params.templateIndex;
+        if(index && index != 'create') channels[index].active = true
         self.model.set('channels', model.get('channels'));
+        self.collection.channels = model.get('channels');
+
+        // Notify everyone that the channels are now registered and 
+        // config options are available for use
         self.publishEvent('channels_registered', model.get('channels'));
       });
 
@@ -83,29 +77,82 @@ define([
     },
 
 
+    // Decide if we should render a preview or the editor view
     queryHandler : function(params){
       if(typeof(params.templateIndex) == 'undefined') params.templateIndex = 'create'
-      params.templateIndex == 'create' ? this.editor() : this.preview(params)
+      params.templateIndex == 'create' ? this.editor() : this.previewContainer(params)
     },
 
 
+    // Used to display only the preview mode with no frills attached. Commonly called 
+    // by the iFrame within the previewContainer
     preview : function(params){
-      // Make a stories view
-      var storiesView = new StoriesView({
+      var self = this;
+
+      // Wait for both the collection and channels to finish registering
+      // then index the channel stoires
+      var eventCount = 0;
+      this.subscribeEvent('collection_registered', function(){
+        eventCount += 1;
+        if(eventCount == 2) self.updateStoryChannelIndices();
+      });
+      this.subscribeEvent('channels_registered', function(){
+        eventCount += 1;
+        if(eventCount == 2) self.updateStoryChannelIndices();
+      });
+
+      var storiesView = new StoriesPreView({
+        model         : this.model,
         collection    : this.collection,
         autoRender    : false,
-        region        : 'stories',
-        template      : '<div id="stories-wrapper"></div>',
-        listSelector  : '#stories-wrapper',
         params        : params
+      });
+
+      // Kill all of the application stylesheets and render
+      $('link[rel="stylesheet"]').attr('disabled', 'disabled');
+    },
+
+
+    // Makes a view, builds an iFrame, and the iFrame then calls the preview method above
+    previewContainer : function(params){
+
+      // This method seems to fire before window.location properties
+      // are fully updates, hence the complicated solution below
+      var query     = $.param(params);
+      var href      = window.location.href;
+      var search    = window.location.search;
+      var iframeURL = href.replace('/newsletter/', '/preview/').replace(search, '') + '?' + query;
+
+      this.view = new NewsletterPreView({
+        autoRender  : true,
+        region      : 'main',
+        iframeURL   : iframeURL
+      });
+
+      this.nav = new NewsletterNav({
+        autoRender  : true,
+        model       : this.model,
+        region      : 'nav'
       });
     },
 
 
+    // The standard editor view
     editor : function(){
       var self = this;
 
-      // Make the editor stories view
+      this.view = new NewsletterEditorView({
+        model       : this.model,
+        autoRender  : true,
+        region      : 'main'
+      });
+
+      this.nav = new NewsletterNav({
+        autoRender  : true,
+        model       : this.model,
+        region      : 'nav'
+      });
+
       var storiesView = new CollectionView({
         collection    : this.collection,
         autoRender    : true,
@@ -124,8 +171,7 @@ define([
 
 
     createNewStory : function(newsletter){
-      var stories       = newsletter.get('stories');
-      var lastStory     = stories.min(function(model){
+      var lastStory     = this.collection.min(function(model){
         return model.get('sort_index')
       });
       var story         = new Story({
@@ -163,6 +209,56 @@ define([
       story.save({ sort_index : newIndex });
       otherStory.save({ sort_index : oldIndex });
       this.collection.sort();
+    },
+
+
+    updateStoryChannelIndices : function(){
+      var collection    = this.collection;
+      var activeChannel = _.findWhere(collection.channels, { 'active' : true });
+      var namespace     = 'sort_channel_' + activeChannel.title + '_index';
+
+      // Create some util arrays to help me count which models are indexed
+      // and which still need to be indexed
+      var indexedModels = [];
+      var nonIndexedModels = [];
+      collection.each(function(model){
+        if(model.get(namespace) == undefined) nonIndexedModels.push(model);
+        else indexedModels.push(model);
+      });
+
+      // Get the highest value for the specified channel index
+      var max = -1
+      if(indexedModels.length) {
+        var maxModel = _.max(indexedModels, function(model){
+          return model.get(namespace);
+        });
+        max = maxModel.get(namespace);
+      }
+
+      // Index all the one's that need to be indexed
+      for(var i=0; i<nonIndexedModels.length; i++){
+        var attr = {}
+        attr[namespace] = max+=1
+        nonIndexedModels[i].set(attr);
+        nonIndexedModels[i].save();
+      };
+    },
+
+
+    storyIndexSwap : function(idA, idB, channelTitle){
+      var namespace = 'story_index'
+      if(channelTitle) namespace = 'sort_channel_' + channelTitle + '_index';
+
+      var storyA = this.collection.findWhere({id : idA});
+      var storyB = this.collection.findWhere({id : idB});
+      var indexA = storyA.get(namespace);
+      var indexB = storyB.get(namespace);
+
+      storyA.attributes[namespace] = indexB;
+      storyB.attributes[namespace] = indexA;
+
+      storyA.save();
+      storyB.save();
     }
   });
 

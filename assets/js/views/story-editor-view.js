@@ -5,11 +5,12 @@ define([
   'uploader',
   'views/base/view',
   'views/images-view',
-  'text!templates/story.hbs',
+  'text!templates/story-editor.hbs',
   'text!templates/text-editor.hbs',
   'text!templates/uploader.hbs',
   'text!templates/uploader-dumb.hbs'
-], function(Chaplin, Handlebars, Wysiwyg, Uploader, View, ImagesView, storyTemplate, textEditorTemplate, uploaderTemplate, dumbUploaderTemplate){
+], function(Chaplin, Handlebars, Wysiwyg, Uploader, View, ImagesView, 
+  storyTemplate, textEditorTemplate, uploaderTemplate, dumbUploaderTemplate){
   'use strict';
 
   var view = View.extend({
@@ -29,6 +30,7 @@ define([
   view.prototype.initialize = function(){
     Chaplin.View.prototype.initialize.apply(this, arguments);
     this.listenTo(this.model, 'change', this.updateDomWithModel);
+    this.subscribeEvent('channels_registered', this.redrawChannels);
   };
 
 
@@ -43,6 +45,8 @@ define([
 
 
   view.prototype.checkboxChanged = function(e){
+    // The only thing this does is ensure the model property is present
+    this.model.set(e.target.name, false);
     this.scheduleSave();
   };
 
@@ -61,6 +65,26 @@ define([
     e.preventDefault();
     var confirm = window.confirm('Are you sure you want to delete this story? All corresponding images will also be deleted. This data is not recoverable!');
     if(confirm) this.publishEvent('delete_story', this.model);
+  };
+
+
+  view.prototype.redrawChannels = function(channels){
+
+    var $channels = $(this.el).find('.channel_selectors');
+
+    for(var i=0; i<channels.length; i++){
+      var namespace = 'in_channel_' + channels[i].title;
+      var checked   = '';
+      if(this.model.get(namespace)) checked = 'checked'
+
+      var template  = "<label class='pull-right'>" +
+        "Include Story in " + channels[i].title + "?" +
+        "<input type='checkbox' " + checked + " class='" + namespace + "' name='" + namespace + "'>"
+      "</label>";
+
+      //$channels.append(template)
+    }
+
   };
 
 
@@ -184,6 +208,8 @@ define([
 
     this.attachUploader();
     this.attachEditor();
+
+    if(this.model.collection.channels) this.redrawChannels(this.model.collection.channels);
 
     // Create the images view
     var imagesView = new ImagesView({

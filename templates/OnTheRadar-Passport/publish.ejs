@@ -1,0 +1,21 @@
+<% for(var i=0; i<stories.length; i++) {%>
+
+  <% if(stories[i].body == ''){ %>
+    <h6><%= stories[i].title %></h6>
+  <% } else{ %>
+    <div class='wysiwyg-two-col row-fluid'>
+      <div class='wysiwyg-left-col span4'>
+        <div class='gallery'>
+          <% if(stories[i].images[0]){ %>
+            <img style='width:100%;' src='<%= stories[i].images[0].url %>'>
+          <% } %>
+        </div>
+      </div>
+      <div class='wysiwyg-right-col span7'>
+        <h2><%= stories[i].title %></h2>
+        <p><%- stories[i].body %></p>
+      </div>
+    </div>
+  <% } %>
+
+<% } %>
