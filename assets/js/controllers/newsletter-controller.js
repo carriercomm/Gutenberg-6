@@ -23,7 +23,7 @@ define([
 
       // Subscribe to events from views
       this.subscribeEvent('story_index_update', this.updateStoryIndices);
-      this.subscribeEvent('story_channel_index_update', this.updateStoryChannelIndices);
+      this.subscribeEvent('story_index_swap', this.storyIndexSwap);
       this.subscribeEvent('create_new_story', this.createNewStory);
       this.subscribeEvent('delete_story', this.deleteStory);
 
@@ -51,8 +51,9 @@ define([
       this.collection.params = {
         newsletter_id : params.id
       };
-      this.collection.listen();
-      this.model.set('stories', this.collection);
+      this.collection.listen(function(){
+        self.publishEvent('collection_registered');
+      });
 
       // Listen for publication channel updates
       this.listenTo(publication, 'change:channels', function(model){
@@ -86,6 +87,20 @@ define([
     // Used to display only the preview mode with no frills attached. Commonly called 
     // by the iFrame within the previewContainer
     preview : function(params){
+      var self = this;
+
+      // Wait for both the collection and channels to finish registering
+      // then index the channel stoires
+      var eventCount = 0;
+      this.subscribeEvent('collection_registered', function(){
+        eventCount += 1;
+        if(eventCount == 2) self.updateStoryChannelIndices();
+      });
+      this.subscribeEvent('channels_registered', function(){
+        eventCount += 1;
+        if(eventCount == 2) self.updateStoryChannelIndices();
+      });
+
       var storiesView = new StoriesPreView({
         model         : this.model,
         collection    : this.collection,
@@ -95,7 +110,6 @@ define([
 
       // Kill all of the application stylesheets and render
       $('link[rel="stylesheet"]').attr('disabled', 'disabled');
-      $('body').html(storiesView.render().el)
     },
 
 
@@ -110,7 +124,6 @@ define([
       var iframeURL = href.replace('/newsletter/', '/preview/').replace(search, '') + '?' + query;
 
       this.view = new NewsletterPreView({
-        model       : this.model,
         autoRender  : true,
         region      : 'main',
         iframeURL   : iframeURL
@@ -158,8 +171,7 @@ define([
 
 
     createNewStory : function(newsletter){
-      var stories       = newsletter.get('stories');
-      var lastStory     = stories.min(function(model){
+      var lastStory     = this.collection.min(function(model){
         return model.get('sort_index')
       });
       var story         = new Story({
@@ -200,9 +212,53 @@ define([
     },
 
 
-    updateStoryChannelIndices : function(a, b){
-      console.log('a', a)
-      console.log('b', b)
+    updateStoryChannelIndices : function(){
+      var collection    = this.collection;
+      var activeChannel = _.findWhere(collection.channels, { 'active' : true });
+      var namespace     = 'sort_channel_' + activeChannel.title + '_index';
+
+      // Create some util arrays to help me count which models are indexed
+      // and which still need to be indexed
+      var indexedModels = [];
+      var nonIndexedModels = [];
+      collection.each(function(model){
+        if(model.get(namespace) == undefined) nonIndexedModels.push(model);
+        else indexedModels.push(model);
+      });
+
+      // Get the highest value for the specified channel index
+      var max = -1
+      if(indexedModels.length) {
+        var maxModel = _.max(indexedModels, function(model){
+          return model.get(namespace);
+        });
+        max = maxModel.get(namespace);
+      }
+
+      // Index all the one's that need to be indexed
+      for(var i=0; i<nonIndexedModels.length; i++){
+        var attr = {}
+        attr[namespace] = max+=1
+        nonIndexedModels[i].set(attr);
+        nonIndexedModels[i].save();
+      };
+    },
+
+
+    storyIndexSwap : function(idA, idB, channelTitle){
+      var namespace = 'story_index'
+      if(channelTitle) namespace = 'sort_channel_' + channelTitle + '_index';
+
+      var storyA = this.collection.findWhere({id : idA});
+      var storyB = this.collection.findWhere({id : idB});
+      var indexA = storyA.get(namespace);
+      var indexB = storyB.get(namespace);
+
+      storyA.attributes[namespace] = indexB;
+      storyB.attributes[namespace] = indexA;
+
+      storyA.save();
+      storyB.save();
     }
   });
 
