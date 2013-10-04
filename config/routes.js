@@ -36,7 +36,7 @@ module.exports.routes = {
   '/ui/*'         : { view: 'index' },
   '/ui'           : { view: 'index' },
   '/uploadImage'  : 'Image.upload',
-  '/upload/*'     : 'Image.serve'
+  '/uploads/*'    : 'Image.serve'
 
   /*
   // But what if you want your home page to display
