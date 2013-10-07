@@ -5,10 +5,102 @@
  * @description	:: Contains logic for handling requests.
  */
 
-var path = require('path');
-var fs = require('fs');
+var path  = require('path');
+var fs    = require('fs');
 
 module.exports = {
+
+  // This method is copied almost exactly from the original sails blueprint method.
+  // The only difference is that I slightly modify the json output to support more
+  // detailed information
+  find : function(req, res, next){
+
+    if(req.params.id){
+      Image.findOne(req.params.id).done(function(err, model) {
+        if(err) next(err);
+
+        // Respond
+        if(model){
+          Image.subscribe(req.socket, model);
+          res.json(model.toJSON());
+        } else next();
+      });
+    } else{
+      var where = req.param('where');
+      var util  = sails.util;
+      var params;
+
+      if (!where) {
+        params = util.extend(req.query || {}, req.params || {}, req.body || {});
+        params = sails.util.objReject(params, function (param, key) {
+          return util.isUndefined(param) ||
+            key === 'limit' || key === 'skip' || key === 'sort';
+        });
+
+        var options = {
+          limit: req.param('limit') || undefined,
+          skip: req.param('skip') || req.param('offset') || undefined,
+          sort: req.param('sort') || req.param('order') || undefined,
+          where: where || undefined
+        };
+      }
+
+      Image.find(options).done(function(err, models){
+
+        if(err) return next(err);
+        if(!models) return next();
+
+        if (sails.config.hooks.pubsub && !Image.silent) {
+          Image.subscribe(req.socket);
+          Image.subscribe(req.socket, models);
+        }
+
+        var response = {
+          results   : [],
+          channels  : []
+        }
+
+        // If a story id is passed in, we know that each image shares a single publication
+        // Below attaches the crop options to the json response
+        if(params.story_id){
+          models.forEach(function(model, index){
+            response.results.push(model.toJSON());
+
+            // Gah....
+            if(index == 0){
+              Story.findOne(model.story_id).done(function(err, story) {
+                Newsletter.findOne(story.newsletter_id).done(function(err, newsletter){
+                  Publication.findOne(newsletter.publication_id).done(function(err, publication){
+                    publication.channels.forEach(function(channel){
+                      response.channels.push({
+                        title : channel.title,
+                        crop  : channel.crop
+                      });
+                    });
+
+                    return res.json(response);
+                  });
+                });
+              });
+            }
+          });
+        } else{
+          // Respond normally
+          models.forEach(function(model, index){
+            response.results.push(model.toJSON());
+          });
+          return res.json(response);
+        }
+      });
+    }
+  },
+
+
+  getCropConfig : function(id, next){
+    var settings = {};
+    next();
+  },
+
 
   upload : function(req, res){
 
