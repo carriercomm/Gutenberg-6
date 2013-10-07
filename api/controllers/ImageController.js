@@ -78,7 +78,10 @@ module.exports = {
                       });
                     });
 
-                    return res.json(response);
+                    // Ensure that the foreach method has finished before responding
+                    setTimeout(function(){
+                      return res.json(response);
+                    });
                   });
                 });
               });
