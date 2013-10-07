@@ -10,15 +10,20 @@ if(process.env.S3_KEY){
     secret  : process.env.S3_SECRET,
     bucket  : process.env.S3_BUCKET
   });
-}
+};
 
 module.exports = {
 
   write : function(filePath, next){
     if(typeof(knoxClient) != 'undefined'){
-      knox.putFile(filePath, path.basename(filePath), function(err, res){
-        next();
+
+      knoxClient.putFile(filePath, path.basename(filePath), function(err, as3Res){
+        if(err) console.error(err)
+
+        var finalPath = 'https://s3.amazonaws.com/' + path.join(process.env.S3_BUCKET, path.basename(filePath));
+        next(finalPath);
       });
+
     } else{
       // Use the local file system if a remote image store is note defined
       // this is useful local development
@@ -55,9 +60,6 @@ module.exports = {
     }
   },
 
-  get : function(absolutePath){
-
-  },
 
   destroy : function(url){
 
