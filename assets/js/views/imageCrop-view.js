@@ -20,17 +20,18 @@ define([
     // Cache some dommy stuff
     var imgWidth    = $('#crop-target').width();
     var imgHeight   = $('#crop-target').height();
-    var $cropPrev   = $('#' + croppableItem.domId);
+    var $cropPrev   = $('#' + croppableItem.title);
 
     // Setup crop options
-    var cropOpts      = croppableItem.cropOptions || {};
+    var settings      = _.findWhere(context.model.collection.channels, {title : croppableItem.title}).crop;
+    var cropOpts      = settings.cropOptions || {};
     cropOpts.onChange = function(coords){
-      showPreview(croppableItem, coords, imgWidth, imgHeight, $cropPrev, context);
+      showPreview(settings, croppableItem, coords, imgWidth, imgHeight, $cropPrev, context);
     };
 
     // Show preview when initting
     if(croppableItem.coords){
-      showPreview(croppableItem, croppableItem.coords, imgWidth, imgHeight, $cropPrev, context);
+      showPreview(settings, croppableItem, croppableItem.coords, imgWidth, imgHeight, $cropPrev, context);
     }
 
     // Clean up old cropper and make a new one
@@ -39,9 +40,9 @@ define([
   };
 
 
-  var showPreview = function(croppableItem, coords, imgWidth, imgHeight, $cropPrev, context){
+  var showPreview = function(settings, croppableItem, coords, imgWidth, imgHeight, $cropPrev, context){
 
-    if(typeof croppableItem.width == 'undefined' || typeof croppableItem.height == 'undefined'){
+    if(typeof settings.width == 'undefined' || typeof settings.height == 'undefined'){
       // If no height or width is defined, use a free style preview
       $cropPrev.parent().css({
         width       : coords.w + 'px',
@@ -53,8 +54,8 @@ define([
       });
     } else{
       // Crop method which has defined x,y bounds
-      var rx = croppableItem.width / coords.w;
-      var ry = croppableItem.height / coords.h;
+      var rx = settings.width / coords.w;
+      var ry = settings.height / coords.h;
 
       $cropPrev.css({
         width       : Math.round(rx * imgWidth) + 'px',
@@ -79,8 +80,9 @@ define([
     $target.parent().addClass('selected');
 
     // Find the correct element, init
-    var cropppableItems = this.model.collection.croppableItems;
-    var croppableItem   = _.findWhere(cropppableItems, {'domId' : id}) || {};
+    var cropppableItems = this.model.get('crops');
+    var croppableItem   = _.findWhere(cropppableItems, {'title' : id}) || {};
+
     initCrop(croppableItem, this);
   };
 
@@ -93,19 +95,32 @@ define([
 
 
   view.prototype.render = function(){
-    this.model.set('croppableItems', this.model.collection.croppableItems);
+    var self     = this;
+    var channels = this.model.collection.channels;
+    this.model.set('channels', this.model.collection.channels)
     Chaplin.View.prototype.render.apply(this, arguments);
 
-    // Loop over croppable items to set their initial state
-    // to match the servers cropped properties
-    var items = this.model.get('croppableItems');
-    var self  = this;
+    if(!this.model.get('crops')) this.model.set('crops', []);
+    var crops = this.model.get('crops');
 
-    setTimeout(function(){
-      for(var i=0; i<items.length; i++){
-        initCrop(items[i], self);
+    // Ensure all crop settings are in order by merging the 
+    // channels object with each crop setting
+    for(var i=0; i<channels.length; i++){
+      if(!(_.findWhere(crops, { title : channels[i].title }))){
+        crops.push({
+          title   : channels[i].title,
+          coords  : {}
+        })
       }
-    }, 150);
+    }
+
+    // Init so the preview looks right
+    setTimeout(function(){
+      for(var i=0; i<crops.length; i++){
+        initCrop(crops[i], self);
+      }
+    }, 200);
+
   };
 
   return view;

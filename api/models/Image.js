@@ -6,7 +6,6 @@
  *
  */
 
-var magik = require('gm');
 var fs    = require('fs');
 var path  = require('path');
 
@@ -27,57 +26,41 @@ module.exports = {
     }
   },
 
+
   beforeDestroy : function(props, next){
     // Delete the image reference when deleting the model
     Image.findOne({ id: props.where.id }).exec(function(err, model){
-      var imagePath = model.path;
-
-      fs.unlink(imagePath, function (err) {
-        if (err) console.log(err);
-      });
-
+      ImageService.destroy(model.url);
       next();
     });
   },
 
+
   beforeUpdate : function(props, next){
 
-    var cropImage = function(originalFile, storyId, imageId, opts){
-
-      magik(originalFile).identify(function(err, properties){
-
-        var croppedDir    = path.join('uploads', storyId, 'crops');
-        var fileExtension = properties.format.toLowerCase();
-        var newFilePath   = path.join(croppedDir, imageId + '-' + opts.domId + '.' + fileExtension);
-
-        // Create a directory for the cropped images to live
-        fs.mkdir(croppedDir, function(error){
-          if(error) console.log(error);
-
-          var width  = opts.width || opts.coords.w;
-          var height = opts.height || opts.coords.h;
-          var coords = opts.coords
-
-          // Crop and resize the image
-          magik(originalFile).crop(coords.w, coords.h, coords.x, coords.y)
-          .resize(width, height)
-          .write(newFilePath, function(err){
-            if(err) console.log(err);
-          });
+    var getCropWrite = function(remoteURL, cropOptions, next){
+      ImageService.get(remoteURL, function(localFilePath){
+        ImageService.crop(localFilePath, cropOptions.coords, function(filePath){
+          ImageService.write(filePath, function(remoteFilePath){
+            cropOptions.url = remoteFilePath;
+            next(cropOptions);
+          })
         });
       });
     };
 
     // Loop over croppable items and crop if necessary
-    if(props.cropoableItems){
-      var croppableItems = props.croppableItems;
-      for(var i=0; i<croppableItems.length; i++){
-        if(croppableItems[i].coords){
-          cropImage(props.path, props.story_id, props.id, croppableItems[i]);
+    var successes = 0;
+    if(props.crops){
+      var crops = props.crops;
+      for(var i=0; i<crops.length; i++){
+        if(crops[i].coords){
+          getCropWrite(props.url, crops[i], function(newOptions){
+            successes++
+            if(successes >= crops.length) next();
+          });
         }
       }
     }
-
-    next();
   }
 };

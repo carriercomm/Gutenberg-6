@@ -15,11 +15,11 @@
       <hr />
 
       <div class='croppable-items'>
-        {{#each croppableItems}}
+        {{#each channels}}
           <div class='croppable-item'>
             <h5>{{title}}</h5>
-            <div class='image-preview-wrapper' style='width:{{width}}px; height:{{height}}px'>
-              <img class='image-preview' id='{{domId}}' src='{{../url}}' />
+            <div class='image-preview-wrapper' style='width:{{crop.width}}px; height:{{crop.height}}px'>
+              <img class='image-preview' id='{{title}}' src='{{../url}}' />
             </div>
           </div>
         {{/each}}
