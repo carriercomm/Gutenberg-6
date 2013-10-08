@@ -71,12 +71,29 @@ define([
       this.collection.each(function(model){
         var clone = _.clone(model);
 
+        // Deal with the images better for templating
+        var images    = model.get('images');
+        var imageURLS = [];
+
+        if(images instanceof Backbone.Collection){
+          if(images){
+            images.each(function(model){
+              imageURLS.push(model.get('url'));
+            });
+          }
+        } else{
+          imageURLS = images;
+        }
+
         // Make a standard index property available for the templates
         var sort_index = clone.get(namespace)
         clone.set('sort_index', sort_index);
+        clone.set('images', imageURLS);
 
         stories.push(clone.attributes);
       });
+
+      console.log(stories)
 
       stories = _.sortBy(stories, function(item){
         return item[namespace]
