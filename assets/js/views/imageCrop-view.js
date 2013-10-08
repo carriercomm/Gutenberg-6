@@ -119,7 +119,7 @@ define([
       for(var i=0; i<crops.length; i++){
         initCrop(crops[i], self);
       }
-    });
+    }, 200);
 
   };
 
