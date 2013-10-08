@@ -42,6 +42,30 @@ module.exports = {
   },
 
 
+  get : function(filePath, next){
+    if(knoxClient){
+
+      var remotePath = path.basename(filePath);
+      var localPath  = path.join('uploads', crypto.randomBytes(20).toString('hex'));
+      var buffer     = '';
+
+      knoxClient.get(remotePath).on('response', function(res){
+        res.setEncoding('binary');
+
+        res.on('data', function(chunk){ buffer += chunk; });
+        res.on('end', function(){
+          fs.writeFile(localPath, buffer, 'binary', function(err){
+            if(err) console.error(err)
+
+            next(localPath);
+          })
+        })
+      }).end();
+
+    } else return filePath
+  },
+
+
   crop : function(filePath, coords, next){
     // if no x coords, assume it's just a resize
     if(!coords.x){
@@ -71,6 +95,8 @@ module.exports = {
         if (err) console.log(err);
       });
     }
+
+    // TODO - delete as3 image
   }
 
 };
