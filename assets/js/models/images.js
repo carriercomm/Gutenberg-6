@@ -1,13 +1,17 @@
 define([
   'chaplin',
-  'models/base/collection'
-], function(Chaplin, Collection){
+  'models/base/collection',
+  'models/image'
+], function(Chaplin, Collection, Image){
   'use strict';
 
   var collection = Collection.extend({
 
+    model : Image,
+
     parse : function(data){
       Collection.prototype.parse.apply(this, arguments);
+      if(data.channels) this.channels = data.channels
       return data.results
     },
 
