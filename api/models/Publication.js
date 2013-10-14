@@ -18,12 +18,15 @@ module.exports = {
   beforeDestroy : function(props, next){
     // Delete the story reference when deleting the model
     Newsletter.find({ publication_id: props.where.id }).exec(function(err, newsletters){
-      console.log(newsletters);
+
       for(var i=0; i<newsletters.length; i++){
         newsletters[i].destroy(function(error){
           if(error) console.log(error);
         });
       }
+
     });
+
+    next()
   }
 };
