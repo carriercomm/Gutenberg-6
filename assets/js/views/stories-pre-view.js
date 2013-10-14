@@ -93,8 +93,6 @@ define([
         stories.push(clone.attributes);
       });
 
-      console.log(stories)
-
       stories = _.sortBy(stories, function(item){
         return item[namespace]
       });
