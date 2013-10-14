@@ -1,8 +1,11 @@
 define([
   'chaplin',
+  'ejs',
+  'models/base/model',
   'views/base/view',
-  'text!templates/newsletterPreview.hbs'
-], function(Chaplin, View, newsletterTemplate){
+  'text!templates/newsletterPreview.hbs',
+  'text!templates/newsletterPublish.hbs'
+], function(Chaplin, ejs, Model, View, newsletterTemplate, newsletterPublish){
   'use strict';
 
   var view = View.extend({
@@ -13,13 +16,70 @@ define([
     regions       : {
       'stories'   : '#stories',
       'nav'       : '#nav-container'
+    },
+    events        : {
+      'click #publish' : 'publish'
     }
   });
+
+
+  view.prototype.initialize = function(){
+    Chaplin.View.prototype.initialize.apply(this, arguments);
+    this.subscribeEvent('channels_registered', this.registerTemplates);
+  };
 
 
   view.prototype.render = function(){
     Chaplin.View.prototype.render.apply(this, arguments);
     $(this.el).find('iframe').attr('src', this.options.iframeURL);
+  };
+
+
+  view.prototype.registerTemplates = function(channels){
+    var index     = this.options.params.templateIndex;
+    var template  = channels[index].templates.publish || channels[index].templates.preview;
+    this.template = ejs.compile(template);
+    this.channels = channels;
+  };
+
+
+  view.prototype.publish = function(){
+    // Find the correct channel and then get all stories
+    var activeChannel = _.findWhere(this.channels, { active : true });
+    var namespace     = 'sort_channel_' + activeChannel.title + '_index';
+    var stories       = this.collection.getSortedStoriesWithImages(namespace);
+
+    // Generate the html for the publish view
+    var html          = this.template({
+      stories         : stories,
+      newsletter      : this.model.attributes
+    });
+
+    // Create a temporary model for template usage
+    var publishedModel = new Model(this.model.attributes);
+    publishedModel.set('renderedHTML', html);
+
+    // Create a pop up for the copy/paste textarea
+    var modal   = View.extend({
+      className : 'modal',
+      template  : newsletterPublish
+    });
+
+    // Render the pop up
+    var modal    = new modal({
+      autoRender : true,
+      region     : 'main',
+      model      : publishedModel,
+      attributes : {
+        'id'     : 'newsletter-publish'
+      }
+    });
+
+    // Open the pop up
+    $('#newsletter-publish').modal();
+    $('#newsletter-publish').on('hidden.bs.modal', function(){
+      $('#newsletter-publish').remove();
+    });
   };
 
 

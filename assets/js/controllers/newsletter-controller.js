@@ -126,7 +126,10 @@ define([
       this.view = new NewsletterPreView({
         autoRender  : true,
         region      : 'main',
-        iframeURL   : iframeURL
+        iframeURL   : iframeURL,
+        params      : params,
+        model       : this.model,
+        collection  : this.collection
       });
 
       this.nav = new NewsletterNav({
