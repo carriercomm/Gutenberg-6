@@ -70,7 +70,7 @@ define([
       var stories       = this.collection.getSortedStoriesWithImages(activeChannel.title);
       var html          = this.template({
         stories         : stories,
-        newsletter      : this.model.attributes
+        newsletter      : this.model.prepForTemplateUsage()
       });
 
       $(this.el).html(html);
