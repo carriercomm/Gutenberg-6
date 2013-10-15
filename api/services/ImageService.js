@@ -25,7 +25,7 @@ module.exports = {
       });
 
     } else{
-      // Use the local file system if a remote image store is note defined
+      // Use the local file system if a remote image store is not defined
       // this is useful local development
       var fileName = path.join(process.cwd(), 'uploads', path.basename(filePath));
 
@@ -58,11 +58,25 @@ module.exports = {
             if(err) console.error(err)
 
             next(localPath);
-          })
+          });
         })
       }).end();
 
-    } else return filePath
+    } else {
+
+      // Simulate a remote fetch and write when doing local dev
+      var newLocalPath = path.join('uploads', crypto.randomBytes(20).toString('hex'));
+
+      fs.readFile(path.join(process.cwd(), filePath), 'binary', function(err, data){
+        if(err) console.error(err)
+
+        fs.writeFile(newLocalPath, data, 'binary', function(err){
+          if(err) console.error(err)
+          next(newLocalPath);
+        });
+
+      });
+    }
   },
 
 
