@@ -5,16 +5,18 @@ define([
 ], function(Chaplin, ejs, View){
   'use strict';
 
-  var view = View.extend({});
+  var view = View.extend({
+    listen : {
+      'channels_registered mediator' : 'registerTemplates',
+      'change model'        : 'scheduleRender',
+      'change collection'   : 'scheduleRender'
+    }
+  });
 
 
   view.prototype.initialize = function(){
     Chaplin.View.prototype.initialize.apply(this, arguments);
-
     this.renderTimeout = null;
-    this.subscribeEvent('channels_registered', this.registerTemplates);
-    this.listenTo(this.model, 'change', this.scheduleRender);
-    this.listenTo(this.collection, 'change', this.scheduleRender);
   };
 
 

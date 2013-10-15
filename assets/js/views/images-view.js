@@ -9,17 +9,13 @@ define([
     noWrap        : true,
     template      : '<ul class="image-list"></ul>',
     listSelector  : '.image-list',
-    itemView      : ImageView
+    itemView      : ImageView,
+    listen        : {
+      'add collection'                : 'reRender',
+      'remove collection'             : 'reRender',
+      'change:sort_index collection'  : 'reRender'
+    }
   });
-
-
-  view.prototype.initialize = function(){
-    Chaplin.View.prototype.initialize.apply(this, arguments);
-
-    this.listenTo(this.collection, 'add', this.reRender);
-    this.listenTo(this.collection, 'remove', this.reRender);
-    this.listenTo(this.collection, 'change:sort_index', this.reRender);
-  };
 
 
   view.prototype.reRender = function(){

@@ -19,14 +19,11 @@ define([
       'focus .newsletter-attrs input' : 'inputFocused',
       'blur .newsletter-attrs input'  : 'inputBlurred',
       'keyup .newsletter-attrs input' : 'scheduleSave'
+    },
+    listen        : {
+      'change model' : 'updateDomWithModel'
     }
   });
-
-
-  view.prototype.initialize = function(){
-    Chaplin.View.prototype.initialize.apply(this, arguments);
-    this.listenTo(this.model, 'change', this.updateDomWithModel);
-  };
 
 
   view.prototype.updateDomWithModel = function(model){

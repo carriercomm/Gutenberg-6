@@ -19,14 +19,11 @@ define([
     },
     events        : {
       'click #publish' : 'publish'
+    },
+    listen        : {
+      'channels_registered mediator' : 'registerTemplates'
     }
   });
-
-
-  view.prototype.initialize = function(){
-    Chaplin.View.prototype.initialize.apply(this, arguments);
-    this.subscribeEvent('channels_registered', this.registerTemplates);
-  };
 
 
   view.prototype.render = function(){
