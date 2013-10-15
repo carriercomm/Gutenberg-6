@@ -42,7 +42,22 @@ define([
       // Fetch the newsletter and then the publication
       this.model.listen(function(results){
         publication.url = '/publication/' + results.publication_id
-        publication.listen();
+        publication.listen(function(){
+          self.publishEvent('crumbUpdate', [
+            {
+              route : '/',
+              title : 'Publications'
+            },
+            {
+              route : '/publication/' + publication.get('publication_id'),
+              title : publication.get('title')
+            },
+            {
+              route : '/newsletter/' + self.model.get('id'),
+              title : self.model.get('title')
+            }
+          ]);
+        });
       });
 
       // Set up the stories collection
