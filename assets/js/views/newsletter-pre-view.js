@@ -43,8 +43,7 @@ define([
   view.prototype.publish = function(){
     // Find the correct channel and then get all stories
     var activeChannel = _.findWhere(this.channels, { active : true });
-    var namespace     = 'sort_channel_' + activeChannel.title + '_index';
-    var stories       = this.collection.getSortedStoriesWithImages(namespace);
+    var stories       = this.collection.getSortedStoriesWithImages(activeChannel.title);
 
     // Generate the html for the publish view
     var html          = this.template({

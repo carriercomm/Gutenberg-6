@@ -17,8 +17,9 @@ define([
   // Returns an array (not collection) of stories with an
   // array (not collection) of images. Intended use is for
   // templating
-  collection.prototype.getSortedStoriesWithImages = function(sortBy){
+  collection.prototype.getSortedStoriesWithImages = function(channelTitle){
 
+    var sortBy  = 'sort_channel_' + channelTitle + '_index';
     var stories = [];
 
     this.each(function(model){
@@ -32,7 +33,13 @@ define([
       if(images instanceof Backbone.Collection){
         if(images){
           images.each(function(model){
-            imageURLS.push(model.get('url'));
+            var url   = model.get('url');
+            var crops = model.get('crops');
+            var image = _.findWhere(crops, { title : channelTitle });
+
+            if(image) url = image.url
+
+            imageURLS.push(url);
           });
         }
       } else{
