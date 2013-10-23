@@ -6,11 +6,11 @@ define([
   'views/base/view',
   'views/images-view',
   'text!templates/story-editor.hbs',
-  'text!templates/text-editor.hbs',
+  'text!templates/wysiwyg.hbs',
   'text!templates/uploader.hbs',
   'text!templates/uploader-dumb.hbs'
 ], function(Chaplin, Handlebars, Wysiwyg, Uploader, View, ImagesView, 
-  storyTemplate, textEditorTemplate, uploaderTemplate, dumbUploaderTemplate){
+  storyTemplate, wysiwygTemplate, uploaderTemplate, dumbUploaderTemplate){
   'use strict';
 
   var view = View.extend({
@@ -168,7 +168,7 @@ define([
   // Create the wysiwyg editor and everything that goes with it
   view.prototype.attachEditor = function(){
     var self = this;
-    var editor = Handlebars.compile(textEditorTemplate);
+    var editor = Handlebars.compile(wysiwygTemplate);
     $(this.el).find('.editor-wrapper').append(editor(this.model.attributes));
 
     // Umm... wait till next tick i guess? Who knows
@@ -178,15 +178,22 @@ define([
       });
     });
 
+    // Open the link input field when clicking the little link icon
     // Meh, whatever. This is a little hacky but works
     var $toolbar = $(this.el).find('#editor-toolbar-' + this.model.get('id'));
-    $toolbar.find('.link-input').click(function(){
+    $toolbar.find('.link-button').click(function(){
+      var $selfie = $(this);
+      setTimeout(function(){
+        $selfie.next().find('input').focus();
+      }, 100);
+    });
+    /*$toolbar.find('.link-input').click(function(){
       var selfie = $(this);
       setTimeout(function(){
-        $(selfie).parent().parent().addClass('open');
-        $(selfie).focus();
+        selfie.parent().parent().addClass('open');
       }, 1);
-    });
+    });*/
+
 
     // Attach an on paste method to the editor
     var $editor = $(this.el).find('.editor');

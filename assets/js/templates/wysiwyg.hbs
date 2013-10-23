@@ -1,15 +1,6 @@
 <div class="btn-toolbar editor-toolbar" data-role="editor-toolbar" id="editor-toolbar-{{id}}" data-target="#editor-{{id}}">
 
   <div class="btn-group">
-    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="Font Size"><span class='glyphicon glyphicon-text-height'></span><b class="caret"></b></a>
-    <ul class="dropdown-menu">
-      <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
-      <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
-      <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
-    </ul>
-  </div>
-
-  <div class="btn-group">
     <a class="btn btn-default btn-sm bold" data-edit="bold" title="Bold (Ctrl/Cmd+B)">B</a>
     <a class="btn btn-default btn-sm italic" data-edit="italic" title="Italic (Ctrl/Cmd+I)">I</a>
     <a class="btn btn-default btn-sm strike" data-edit="strikethrough" title="Strikethrough">S</a>
@@ -35,11 +26,7 @@
       <button class="btn btn-default btn-sm pull-right add-btn" type="button">Add</button>
     </div>
   </div>
-  
-  <div class="btn-group">
-    <a class="btn btn-default btn-sm" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><span class='glyphicon glyphicon-fast-backward'></span></a>
-    <a class="btn btn-default btn-sm" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><span class='glyphicon glyphicon-fast-forward'></span></a>
-  </div>
+
 </div>
 
 <div class='editor body' id='editor-{{id}}' contenteditable=true>{{{body}}}</div>

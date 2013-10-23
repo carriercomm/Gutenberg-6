@@ -21,6 +21,7 @@ define([
 
 
   view.prototype.scheduleRender = function(){
+    console.log('hi');
     var self = this;
     clearTimeout(this.renderTimeout);
     this.renderTimeout = setTimeout(function(){
