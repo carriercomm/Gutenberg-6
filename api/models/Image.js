@@ -8,6 +8,7 @@
 
 var fs    = require('fs');
 var path  = require('path');
+var _     = require('underscore');
 
 module.exports = {
 
@@ -38,29 +39,38 @@ module.exports = {
 
   beforeUpdate : function(props, next){
 
-    var getCropWrite = function(remoteURL, cropOptions, next){
+    var getCropWrite = function(remoteURL, cropOptions){
       ImageService.get(remoteURL, function(localFilePath){
         ImageService.crop(localFilePath, cropOptions.coords, function(filePath){
           ImageService.write(filePath, function(remoteFilePath){
             cropOptions.url = remoteFilePath;
-            next(cropOptions);
           })
         });
       });
     };
 
-    // Loop over croppable items and crop if necessary
-    var successes = 0;
+    // Loop over croppable items and crop only if necessary
     if(props.crops){
-      var crops = props.crops;
-      for(var i=0; i<crops.length; i++){
-        if(crops[i].coords){
-          getCropWrite(props.url, crops[i], function(newOptions){
-            successes++
-            if(successes >= crops.length) next();
-          });
+      var newCrops = props.crops;
+
+      Image.findOne({ id: props.id }).exec(function(err, model){
+
+        for(var i=0; i<newCrops.length; i++){
+          var currentCrop = _.findWhere(model.crops, { title : newCrops[i].title });
+
+          // Compare crops to current model
+          if(JSON.stringify(currentCrop) != JSON.stringify(newCrops[i])){
+
+            // Ensure crop properties are specified in interface
+            if(Object.keys(newCrops[i].coords).length){
+              getCropWrite(props.url, newCrops[i]);
+            }
+          }
         }
-      }
-    } else next()
+      });
+
+    }
+
+    next();
   }
 };
