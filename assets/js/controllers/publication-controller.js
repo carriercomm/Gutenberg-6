@@ -62,13 +62,14 @@ define([
       });
 
       // Set up published collections listener
-      var published     = new Collection();
+      /*var published     = new Collection();
       published.url     = '/newsletter';
       published.params  = {
         publication_id  : params.id,
         published       : true
       };
       published.listen();
+      */
 
       // Set up unpublished collection listener
       var unpublished     = new Collection();
@@ -87,15 +88,15 @@ define([
       });
 
       // Create the subviews
-      var publishedView = new NewslettersView({
+      /*var publishedView = new NewslettersView({
         region      : 'published',
         collection  : published,
         title       : 'Published Newsletters'
-      });
+      });*/
       var unpublishedView = new NewslettersView({
         region      : 'unpublished',
         collection  : unpublished,
-        title       : 'Unpublished Newsletters'
+        title       : 'Newsletters'
       });
     },
 
