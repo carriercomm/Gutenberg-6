@@ -189,14 +189,30 @@ define([
 
 
     createNewStory : function(newsletter){
-      var lastStory     = this.collection.min(function(model){
+
+      // Create a new story model
+      var story = new Story({
+        newsletter_id : newsletter.get('id'),
+      });
+      story.url = '/story/create';
+
+      // Set the sort_index of the new story
+      var lastStory = this.collection.max(function(model){
         return model.get('sort_index')
       });
-      var story         = new Story({
-        newsletter_id   : newsletter.get('id'),
-        sort_index      : this.collection.models.length
-      });
-      story.url         = '/story/create';
+      story.set('sort_index', lastStory.get('sort_index') + 1)
+
+      // Grab the channel config and use to create channel
+      // specific sort indeces
+      var channels = this.model.get('channels');
+      for(var i=0; i<channels.length; i++){
+        var attrTitle = 'sort_channel_' + channels[i].title + '_index';
+        var lastChannelStory = this.collection.max(function(model){
+          return model.get(attrTitle);
+        })
+        story.attributes[attrTitle] = lastChannelStory.get(attrTitle) + 1;
+      }
+
       story.save();
     },
 
