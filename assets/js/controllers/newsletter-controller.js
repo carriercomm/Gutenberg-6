@@ -200,7 +200,9 @@ define([
       var lastStory = this.collection.max(function(model){
         return model.get('sort_index')
       });
-      story.set('sort_index', lastStory.get('sort_index') + 1)
+      var lastStoryIndex = 0;
+      if(lastStory != -Infinity) lastStoryIndex = lastStory.get('sort_index') + 1;
+      story.set('sort_index', lastStoryIndex);
 
       // Grab the channel config and use to create channel
       // specific sort indeces
@@ -209,8 +211,10 @@ define([
         var attrTitle = 'sort_channel_' + channels[i].title + '_index';
         var lastChannelStory = this.collection.max(function(model){
           return model.get(attrTitle);
-        })
-        story.attributes[attrTitle] = lastChannelStory.get(attrTitle) + 1;
+        });
+        var lastChannelStoryIndex = 0;
+        if(lastChannelStory != -Infinity) lastChannelStoryIndex = lastChannelStory.get(attrTitle) + 1;
+        story.attributes[attrTitle] = lastChannelStoryIndex;
       }
 
       story.save();
@@ -219,10 +223,6 @@ define([
 
     deleteStory : function(story){
       story.destroy();
-      for(var i=0; i<this.collection.models.length; i++){
-        this.collection.models[i].save({ sort_index : i });
-      }
-      this.collection.sort();
     },
 
 
