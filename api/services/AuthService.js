@@ -19,7 +19,21 @@ module.exports = {
 
     if(process.env.CAS_AUTH){
       cas.bouncer(req, res, function(){
-        next();
+
+        // Create a new user if one doesn't already exist with
+        // a matching username
+        User.findOneByUsername(req.session.username).exec(function(err, model){
+          if(err) console.log(err)
+
+          if(typeof(model) == 'undefined') {
+            User.create({
+              username : req.session.username
+            }).done(function(err, newUser){
+              if(err) console.log(err)
+              next();
+            });
+          } else { next(); }
+        });
       });
     } else if(process.env.SIMPLE_AUTH){
 
