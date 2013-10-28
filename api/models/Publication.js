@@ -12,6 +12,18 @@ module.exports = {
       type      : 'STRING',
       required  : true,
       maxLength : 256
+    },
+    channels : {
+      type      : 'ARRAY',
+      defaultsTo: []
+    },
+    owners : {
+      type      : 'ARRAY',
+      defaultsTo: []
+    },
+    editors : {
+      type      : 'ARRAY',
+      defaultsTo: []
     }
   },
 
