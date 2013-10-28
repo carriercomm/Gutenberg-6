@@ -1,4 +1,9 @@
 /* Global Styles */
+.logout{
+  font-size       : 90%;
+  float           : right;
+  margin-top      : 5px;
+}
 #site-navigation h3{
   margin-bottom   : 30px;
 }
