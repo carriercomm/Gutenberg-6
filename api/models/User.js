@@ -14,7 +14,7 @@ module.exports = {
     },
     isMaster : {
       type        : 'BOOLEAN',
-      defaultsTo  : true
+      defaultsTo  : false
     }
   },
 
