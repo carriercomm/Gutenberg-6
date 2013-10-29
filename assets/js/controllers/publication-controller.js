@@ -21,6 +21,9 @@ define([
 
 
     list : function(params){
+
+      this.publishEvent('crumbUpdate', []);
+
       var publications = new Collection();
       publications.url = '/publication';
       publications.listen();
