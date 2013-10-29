@@ -17,6 +17,11 @@ define([
 
 
   view.prototype.render = function(){
+    var owners = this.model.get('owners');
+    if(window.me.get('isMaster') == true){
+      this.model.set('editable', true);
+    }
+
     Chaplin.View.prototype.render.apply(this, arguments);
     var earl = '/ui/publication/' + this.model.get('id');
     $(this.el).attr('href', earl);
