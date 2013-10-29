@@ -15,6 +15,13 @@
 }
 /* ----------------------- */
 
+/* Publications View */
+.list-group-item.unauthorized{
+  opacity         : .5 !important;
+  font-style      : italic;
+}
+/* ----------------------- */
+
 /* Newsletter View */
 #newsletter-editor-view .nav, #newsletter-pre-view .nav{
   margin-bottom   : 15px;
