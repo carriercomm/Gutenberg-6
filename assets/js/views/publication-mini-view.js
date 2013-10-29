@@ -33,6 +33,9 @@ define([
     } else {
       $(this.el).addClass('unauthorized');
     }
+
+    // Set a data attribute
+    $(this.el).attr('data-id', this.model.get('id'))
   };
 
 
