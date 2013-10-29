@@ -1,4 +1,0 @@
-name: Gutenberg
-framework:
-  type: node
-ignores: ["node_modules", ".git", "uploads", ".tmp"]
