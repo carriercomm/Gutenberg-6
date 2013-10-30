@@ -24,7 +24,7 @@ module.exports.views = {
   // atpl, eco, ect, jazz, jqtpl, JUST, liquor, QEJS, 
   // swig, templayed, toffee, walrus, & whiskers
 
-  engine: 'jade',
+  engine: 'ejs',
 
 
 
@@ -50,7 +50,7 @@ module.exports.views = {
   // (the file extension, e.g. ".ejs", should be omitted)
   //
 
-  layout: 'layout'
+  layout: false
 
 
 
