@@ -1,10 +1,14 @@
 module.exports.policies = {
 
   '*' : 'authenticated',
-  PublicationController : { 
+  PublicationController : {
     'destroy' : ['authenticated', 'userIsMaster'],
     'create'  : ['authenticated', 'userIsMaster'],
     'update'  : ['authenticated', 'userIsOwnerOfPublication'],
     'find'    : ['authenticated', 'userIsEditorOfPublication']
+  },
+  UserController : {
+    '*'       : 'userIsMaster',
+    'find'    : 'authenticated'
   }
 };
