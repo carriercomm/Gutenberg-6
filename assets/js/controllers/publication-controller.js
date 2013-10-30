@@ -2,12 +2,13 @@ define([
   'chaplin',
   'controllers/base/controller',
   'models/base/collection',
+  'models/publications',
   'models/publication',
   'models/newsletter',
   'views/publications-view',
   'views/publication-view',
   'views/newsletters-view'
-], function(Chaplin, Controller, Collection, Publication, Newsletter, PublicationsView, PublicationView, NewslettersView){
+], function(Chaplin, Controller, Collection, Publications, Publication, Newsletter, PublicationsView, PublicationView, NewslettersView){
   'use strict';
 
   var months  = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
@@ -24,7 +25,7 @@ define([
 
       this.publishEvent('crumbUpdate', []);
 
-      var publications = new Collection();
+      var publications = new Publications();
       publications.url = '/publication';
       publications.listen();
 
