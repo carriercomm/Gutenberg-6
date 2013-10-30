@@ -21,7 +21,10 @@ define([
     // Set editable and viewable props on the model
     var owners = this.model.get('owners');
     if(owners.indexOf(window.me.get('id')) != -1) this.model.set('viewable', true);
-    if(window.me.get('isMaster') == true) this.model.set('editable', true);
+    if(window.me.get('isMaster') == true) {
+      this.model.set('viewable', true);
+      this.model.set('editable', true);
+    }
 
     Chaplin.View.prototype.render.apply(this, arguments);
 
