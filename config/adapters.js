@@ -12,7 +12,7 @@
  * http://sailsjs.org/#documentation
  */
 
-if(process.env.NODE_ENV == 'production' || process.env.NODE_ENV == 'stage'){
+if(process.env.MONGO_HOST){
 
   // Production Configuration options configured via env vars
   module.exports.adapters = {
