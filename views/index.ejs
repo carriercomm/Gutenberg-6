@@ -11,15 +11,16 @@
         <link rel="stylesheet" href="/linker/styles/style.css">
         <!--STYLES END-->
 
-        <!-- Populate the me object-->
+        <!-- Populate the me object for easy user reference -->
         <script type="text/javascript">
             window.meAsPlainObject = <%- JSON.stringify(me) %>;
         </script>
 
         <!--SCRIPTS-->
         <script data-main="/linker/js/start.js" src="/linker/js/vendor/require.js"></script>
-        <script data-main="/linker/js/start.js" src="/linker/js/require-config.js"></script>
         <!--SCRIPTS END-->
+
+        <script src="linker/js/require-config.js"></script>
     </head>
 
     <body></body>
