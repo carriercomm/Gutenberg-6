@@ -16,6 +16,14 @@
 /* ----------------------- */
 
 /* Publications View */
+.modal h6{
+  font-size       : 12px;
+  line-height     : 18px;
+  opacity         : .8;
+}
+/* ----------------------- */
+
+/* Publications View */
 .list-group-item.unauthorized{
   opacity         : .5 !important;
   font-style      : italic;
