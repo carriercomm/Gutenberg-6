@@ -11,8 +11,8 @@
 
         <! -- build assets dependent on environment -->
         <% if(env == 'production'){ %>
-            <link rel='stylesheet' href='/styles/minified.css' />
-            
+            <link rel='stylesheet' href='/styles/production.css' />
+            <script data-main='/js/start' src='/styles/production.js'></script>
         <% } else { %>
             <link rel='stylesheet' href='/styles/bootstrap.css' />
             <link rel='stylesheet' href='/styles/fineuploader-3.8.2.css' />
