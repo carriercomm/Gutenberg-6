@@ -34,6 +34,7 @@
 /* Publication View */
 #publication #newsletters{
   overflow        : hidden;
+  margin-bottom   : 50px;
 }
 
 /* ----------------------- */

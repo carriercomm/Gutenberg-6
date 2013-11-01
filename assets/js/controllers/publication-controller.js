@@ -7,8 +7,9 @@ define([
   'models/newsletter',
   'views/publications-view',
   'views/publication-view',
-  'views/newsletters-view'
-], function(Chaplin, Controller, Collection, Publications, Publication, Newsletter, PublicationsView, PublicationView, NewslettersView){
+  'views/newsletters-view',
+  'views/users-view'
+], function(Chaplin, Controller, Collection, Publications, Publication, Newsletter, PublicationsView, PublicationView, NewslettersView, UsersView){
   'use strict';
 
   var months  = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
@@ -84,10 +85,20 @@ define([
       };
       newsletters.listen();
 
+      // Set up the users collection
+      var users           = new Collection();
+      users.url           = '/user';
+      users.listen();
+
       // Create the subviews
       var newslettersView = new NewslettersView({
         region      : 'newsletters',
         collection  : newsletters,
+        publication : this.model
+      });
+      var usersView = new UsersView({
+        region      : 'users',
+        collection  : users,
         publication : this.model
       });
     },
