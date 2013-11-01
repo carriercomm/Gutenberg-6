@@ -32,9 +32,11 @@
 /* ----------------------- */
 
 /* Publication View */
-#publication #newsletters{
-  overflow        : hidden;
-  margin-bottom   : 50px;
+#publication #users input{
+  margin-bottom   : 20px;
+}
+#publication #users .list-group-item .btn{
+  margin-left     : 5px;
 }
 
 /* ----------------------- */
