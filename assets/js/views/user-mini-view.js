@@ -31,8 +31,8 @@ define([
     Chaplin.View.prototype.render.apply(this, arguments);
 
     // Set the URL to the User
-    var earl = '/ui/user/' + this.model.get('id');
-    $(this.el).attr('href', earl);
+    //var earl = '/ui/user/' + this.model.get('id');
+    //$(this.el).attr('href', earl);
   };
 
 
