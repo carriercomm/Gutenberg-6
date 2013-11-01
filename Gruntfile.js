@@ -22,7 +22,8 @@ module.exports = function (grunt) {
           out             : '.tmp/public/js/production.js',
           urlArgs         : '',
           include         : ['controllers/newsletter-controller', 'controllers/publication-controller'],
-          inlineText      : true
+          inlineText      : true,
+          preserveLicenseComments: false
         }
       }
     },
