@@ -7,20 +7,14 @@ define([
 
   var view = View.extend({
     template  : template,
+    attributes: {
+      'id'    : 'publication'
+    },
     regions   : {
       'newsletters' : '#newsletters',
       'users'       : '#users'
-    },
-    events    : {
-      'click #add-newsletter' : 'createNewsletter'
     }
   });
-
-
-  view.prototype.createNewsletter = function(e){
-    e.preventDefault();
-    this.publishEvent('create_newsletter', this.model);
-  }
 
   return view;
 });

@@ -6,16 +6,19 @@ define([
 ], function(Chaplin, CollectionView, NewsletterMiniView, template){
   'use strict';
 
-  var View = CollectionView.extend({
-    className     : 'panel panel-default',
+  var view = CollectionView.extend({
     template      : template,
     itemView      : NewsletterMiniView,
-    listSelector  : '.list-group'
+    listSelector  : '.list-group',
+    events    : {
+      'click #add-newsletter' : 'createNewsletter'
+    }
   });
 
-  View.prototype.render = function(){
-    Chaplin.CollectionView.prototype.render.apply(this, arguments);
-  };
+  view.prototype.createNewsletter = function(e){
+    e.preventDefault();
+    this.publishEvent('create_newsletter', this.options.publication);
+  }
 
-  return View;
+  return view;
 });
