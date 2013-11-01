@@ -9,6 +9,9 @@ define([
     tagName       : 'a',
     className     : 'list-group-item',
     template      : template,
+    attributes    : {
+      'target'    : 'blank'
+    },
     events        : {
       'click .revoke-editor'  : 'revokeEditor',
       'click .revoke-owner'   : 'revokeOwner',
@@ -23,7 +26,7 @@ define([
     var publication = this.options.publication;
     var owners      = publication.get('owners');
     var editors     = publication.get('editors');
-    var myId        = this.model.get('id');
+    var myId        = this.model.get('id').toString();
 
     if(owners.indexOf(myId) != -1) this.model.set('isOwner', true);
     if(editors.indexOf(myId) != -1) this.model.set('isEditor', true);
@@ -31,8 +34,11 @@ define([
     Chaplin.View.prototype.render.apply(this, arguments);
 
     // Set the URL to the User
-    //var earl = '/ui/user/' + this.model.get('id');
-    //$(this.el).attr('href', earl);
+    var earl = 'http://passport.vml.com/ui/user/' + this.model.get('username');
+    $(this.el).attr('href', earl);
+    if(this.model.get('isOwner')) $(this.el).attr('data-isowner', true)
+    if(this.model.get('isEditor')) $(this.el).attr('data-iseditor', true)
+    if(!this.model.get('isEditor') && !this.model.get('isOwner')) $(this.el).attr('data-unauthorized', true)
   };
 
 

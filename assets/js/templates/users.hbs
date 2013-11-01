@@ -1,10 +1,19 @@
 <div class='panel panel-default'>
   <div class='panel-heading'>
-    <h4>Users</h4>
+    <h4>Manage Users</h4>
   </div>
 
   <div class='panel-body'>
-    <input class='form-control' placeholder='Filter Users' />
+    <div class='filters row'>
+      <div class='col-lg-8 col-md-8 col-ms-8'>
+        <input class='form-control username' placeholder='Username' />
+      </div>
+      <div class='col-lg-4 col-md-4 col-ms-4'>
+        <label><input type='checkbox' checked name='isowner' /> Owners</label>
+        <label><input type='checkbox' checked name='iseditor' /> Editors</label>
+        <label><input type='checkbox' checked name='unauthorized' /> Unauthorized</label>
+      </div>
+    </div>
     <div class='list-group'></div>
   </div>
 </div>
