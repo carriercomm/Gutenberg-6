@@ -6,7 +6,6 @@ module.exports = function (grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-copy/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-concat/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-watch/tasks');
-  grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
 
@@ -21,7 +20,9 @@ module.exports = function (grunt) {
           name            : 'start',
           mainConfigFile  : '.tmp/working/js/config/require.js',
           out             : '.tmp/public/js/production.js',
-          urlArgs         : ''
+          urlArgs         : '',
+          include         : ['controllers/newsletter-controller', 'controllers/publication-controller'],
+          optimize        : 'none'
         }
       }
     },
@@ -42,7 +43,7 @@ module.exports = function (grunt) {
           {
             expand  : true,
             cwd     : './assets',
-            src     : ['fonts/*', 'images/*', 'favicon.ico'],
+            src     : ['**/*'],
             dest    : '.tmp/public'
           },
           {
@@ -64,13 +65,6 @@ module.exports = function (grunt) {
       css: {
         src  : ['.tmp/working/styles/**/*'],
         dest : '.tmp/working/concat/production.css'
-      }
-    },
-
-    uglify : {
-      dist : {
-        src  : ['.tmp/public/concat/production.js'],
-        dest : '.tmp/public/min/production.js'
       }
     },
 

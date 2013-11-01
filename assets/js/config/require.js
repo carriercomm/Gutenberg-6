@@ -38,7 +38,7 @@ require.config({
     },
     handlebars    : {
       exports         : 'Handlebars'
-    }
+    },
     ejs           : {
       deps            : ['text'],
       exports         : 'ejs'
