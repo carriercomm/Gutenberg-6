@@ -38,7 +38,9 @@
                   <% if(stories[i].images[0]){ %>
                     <img  style='float:left; width:150px; height:150px; margin:10px;' draggable='false' src='<%= stories[i].images[0] %>'>
                   <% } %>
-                  <p style='font-size:13px; padding:0 15px; margin-top:10px; line-height:150%'><%= stories[i].body %></p>
+                  <div style='font-size:13px; padding:0 15px; margin-top:10px; line-height:150%; list-style-position:inside;'>
+                    <%-= stories[i].body %>
+                  </div>
                 </td>
               </tr>
             <% } %>
