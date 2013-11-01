@@ -48,10 +48,10 @@ module.exports = function (grunt) {
     requirejs : {
       compile : {
         options : {
-          baseUrl         : 'assets/linker/js',
+          baseUrl         : '.tmp/working/js',
           name            : 'start',
-          mainConfigFile  : 'assets/linker/js/require-config.js',
-          out             : 'assets/js/optimized.js'
+          mainConfigFile  : '.tmp/working/js/require-config.js',
+          out             : '.tmp/public/js/require-optimized.js'
         }
       }
     },
@@ -66,11 +66,28 @@ module.exports = function (grunt) {
             dest    : '.tmp/public'
           }
         ]
+      },
+      prod : {
+        files : [
+          {
+            expand  : true,
+            cwd     : './assets',
+            src     : ['fonts/*', 'images/*', 'favicon.ico'],
+            dest    : '.tmp/public'
+          },
+          {
+            expand  : true,
+            cwd     : './assets',
+            src     : ['js/**/*', 'styles/**/*'],
+            dest    : '.tmp/working'
+          }
+        ]
       }
     },
 
     clean : {
-      dev   : ['.tmp/public/**']
+      dev   : ['.tmp/public/**', '.tmp/working/**'],
+      prod  : ['.tmp/public/**', '.tmp/working/**']
     },
 
     jst: {
@@ -107,7 +124,7 @@ module.exports = function (grunt) {
     cssmin : {
       dist : {
         src  : ['.tmp/public/concat/production.css'],
-        dest  : '.tmp/public/min/production.css'
+        dest : '.tmp/public/min/production.css'
       }
     },
 
@@ -121,11 +138,10 @@ module.exports = function (grunt) {
           appRoot   : '.tmp/public'
         },
         files : {
-          'views/**/*.ejs'        : jsFilesToInject
+          'views/**/*.ejs' : jsFilesToInject
         }
       },
 
-      // TODO - fix files path here?
       prodJs : {
         options : {
           startTag  : '<!--SCRIPTS-->',
@@ -134,7 +150,7 @@ module.exports = function (grunt) {
           appRoot   : '.tmp/public'
         },
         files : {
-          'views/**/*.ejs': ['assets/js/optimized.js', 'assets/js/require-config.js', 'assets/js/vendor/require.js']
+          'views/**/*.ejs': ['.tmp/public/js/optimized.js']
         }
       },
 
@@ -177,7 +193,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // TODO - is this even used?
     watch : {
       api : {
         files : ['api/**/*']
@@ -203,21 +218,17 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('linkAssets', [
-    // Update link/script/template references in `assets` index.html
     'sails-linker:devJs',
     'sails-linker:devStyles',
     'sails-linker:devTpl'
   ]);
 
-  // When sails is lifted in production
   grunt.registerTask('prod', [
     'clean:dev',
     'jst:dev',
-    'copy:dev',
-    'concat',
-    'uglify',
-    'cssmin',
+    'copy:prod',
     'requirejs',
+    'cssmin',
     'sails-linker:prodJs',
     'sails-linker:prodStyles',
     'sails-linker:devTpl'
