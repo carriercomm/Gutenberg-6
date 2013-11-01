@@ -53,6 +53,11 @@ define([
         id              : params.id
       }
       this.model.listen(function(){
+        var allUserIds = _.union(self.model.get('editors'), self.model.get('owners'))
+        console.log(allUserIds);
+        var users = new Collection(self.model.get);
+
+        // update the crumb
         self.publishEvent('crumbUpdate', [
           {
             route : '/',
@@ -80,6 +85,8 @@ define([
         published       : false
       };
       newsletters.listen();
+
+      console.log(this.model)
 
       // Create the subviews
       var newslettersView = new NewslettersView({
