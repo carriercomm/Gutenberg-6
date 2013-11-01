@@ -65,42 +65,26 @@ define([
         ]);
       });
 
-      // Set up published collections listener
-      /*var published     = new Collection();
-      published.url     = '/newsletter';
-      published.params  = {
-        publication_id  : params.id,
-        published       : true
-      };
-      published.listen();
-      */
-
-      // Set up unpublished collection listener
-      var unpublished     = new Collection();
-      unpublished.url     = '/newsletter';
-      unpublished.params  = {
-        publication_id  : params.id,
-        published       : false
-      };
-      unpublished.listen();
-
-      // Create The wrapper View
+      // Create the wrapper view
       this.view = new PublicationView({
         autoRender  : true,
         region      : 'main',
         model       : this.model
       });
 
+      // Set up newsletter collection listener
+      var newsletters     = new Collection();
+      newsletters.url     = '/newsletter';
+      newsletters.params  = {
+        publication_id  : params.id,
+        published       : false
+      };
+      newsletters.listen();
+
       // Create the subviews
-      /*var publishedView = new NewslettersView({
-        region      : 'published',
-        collection  : published,
-        title       : 'Published Newsletters'
-      });*/
-      var unpublishedView = new NewslettersView({
-        region      : 'unpublished',
-        collection  : unpublished,
-        title       : 'Newsletters'
+      var newslettersView = new NewslettersView({
+        region      : 'newsletters',
+        collection  : newsletters
       });
     },
 
