@@ -1,23 +1,24 @@
 {
   "name": "Gutenberg",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "a Sails application",
   "dependencies": {
     "grunt": "0.4.1",
-    "sails-disk": "~0.9.0",
     "optimist": "0.3.4",
-    "jade": "~0.35.0",
     "gm": "~1.13.0",
-    "sails": "~0.9.4",
+    "ejs": "0.8.4",
+    "sails": "0.9.7",
     "sails-mongo": "~0.9.5",
     "nodetime": "~0.8.13",
     "knox": "~0.8.6",
-    "wrench": "~1.5.1"
+    "underscore": "~1.5.2",
+    "grunt-contrib-requirejs": "~0.4.1",
+    "grand_master_cas": "git://github.com/joelongstreet/grand_master_cas.git#master"
   },
   "devDependencies": {
     "forever": "0.10.0",
-    "grunt-contrib-requirejs": "~0.4.1"
+    "sails-disk": "~0.9.0"
   },
   "scripts": {
     "start": "node app.js",

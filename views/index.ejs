@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Gutenberg</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
+
+        <!-- Populate the me object for easy user reference -->
+        <script type='text/javascript'>
+            window.meAsPlainObject = <%- JSON.stringify(me) %>;
+        </script>
+
+        <! -- build assets dependent on environment -->
+        <% if(env == 'production'){ %>
+            <link rel='stylesheet' href='/styles/production.css' />
+            <script data-main='/js/production' src='/js/vendor/require.js'></script>
+        <% } else { %>
+            <link rel='stylesheet' href='/styles/bootstrap.css' />
+            <link rel='stylesheet' href='/styles/fineuploader-3.8.2.css' />
+            <link rel='stylesheet' href='/styles/Jcrop.css' />
+            <link rel='stylesheet' href='/styles/style.css' />
+
+            <script data-main='/js/start' src='/js/vendor/require.js'></script>
+            <script src='/js/config/require.js'></script>
+        <% } %>
+    </head>
+
+    <body></body>
+</html>

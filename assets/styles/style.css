@@ -1,4 +1,9 @@
 /* Global Styles */
+.logout{
+  font-size       : 90%;
+  float           : right;
+  margin-top      : 5px;
+}
 #site-navigation h3{
   margin-bottom   : 30px;
 }
@@ -8,6 +13,55 @@
 #site-navigation .breadcrumb:empty{
   display         : none;
 }
+/* ----------------------- */
+
+/* Publications View */
+.modal h6{
+  font-size       : 12px;
+  line-height     : 18px;
+  opacity         : .8;
+}
+/* ----------------------- */
+
+/* Publications View */
+.list-group-item.unauthorized{
+  opacity         : .5 !important;
+  font-style      : italic;
+}
+
+/* ----------------------- */
+
+/* Publication View */
+#publication #users input{
+  margin-bottom   : 15px;
+}
+#publication #users .notice{
+  opacity         : .8;
+  float           : right;
+  width           : 70%;
+  text-align      : right;
+  font-size       : 80%;
+}
+#publication #users .filters{
+  border-bottom   : 1px solid #dddddd;
+  margin-bottom   : 20px;
+}
+#publication #users .filters label{
+  margin-right    : 20px;
+  margin-top      : 7px;
+  font-weight     : normal;
+  font-size       : 90%;
+}
+#publication #users .list-group{
+  max-height      : 350px;
+  overflow-y      : scroll;
+  border-bottom   : 1px solid #dddddd;
+  border-radius   : 0 0 5px 5px;
+}
+#publication #users .list-group-item .btn{
+  margin-left     : 5px;
+}
+
 /* ----------------------- */
 
 /* Newsletter View */

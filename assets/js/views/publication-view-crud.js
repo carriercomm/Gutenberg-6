@@ -32,7 +32,11 @@ define([
 
   view.prototype.destroyPublication = function(){
     var confirm = window.confirm('Are you sure you want to delete this publication? All corresponding newsletters, stories and images will also be deleted. This data is not recoverable! Srsly... you better be sure');
-    if(confirm) this.model.destroy();
+    if(confirm) this.model.destroy({
+      error : function(err){
+        alert('unauthroized');
+      }
+    });
   };
 
 

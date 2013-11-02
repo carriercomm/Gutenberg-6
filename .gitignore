@@ -45,10 +45,3 @@ nbproject
 config/local.js
 uploads/*
 !uploads/.gitkeep
-
-
-########################
-# private libraries
-########################
-assets/linker/styles/vendor/fineuploader-3.8.2.css
-assets/vendor/jquery.fineuploader-3.8.2.js

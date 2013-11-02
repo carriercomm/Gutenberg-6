@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <custom name='opencounter' type='tracking'>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+    <title><%= newsletter.title %></title>
+  </head>
+
+  <body>
+
+    <table width='600px' style='font-family:Helvetica, Arial, sans-serif; font-size:1em; background-color:#282828;' >
+
+      <!-- Header -->
+      <tr>
+        <td>
+          <table width='500px' style='margin-left:50px; margin-top:20px;'>
+            <tr>
+              <td>
+                <img src='http://f.cl.ly/items/0o0i250s2w2g2o2D1q30/vml_logo.png' />
+              </td>
+              <td>
+                <img src='http://f.cl.ly/items/0n1k263Z1I2W3i39303o/techNewsletter.png' />
+                <% var modifiedTitle = newsletter.title.replace('Monthly Technology Newsletter - ', '') %>
+                <p style='color:white; font-size:13px; margin:0; padding:0 0 0 2px;'><%= modifiedTitle %></p>
+              </td>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Body Content -->
+      <tr>
+        <td>
+          <table width='500px;' style='border-spacing:0; border-top:3px solid #009fda; margin:25px 50px 50px 50px; background-color:white; color:#282828;'>
+            <% for(var i=0; i<stories.length; i++) {%>
+              <tr draggable='true' class='draggable' data-storyId='<%= stories[i].id %>'>
+                <td style='padding:0px; margin:0 0 30px 0; display:block;'>
+                  <h2 style='background-color:#ebebeb; margin:0; padding:5px 15px; font-size:18px; font-weight:bold; border-top:1px solid #cccccc; border-bottom:1px solid #cccccc;'><%= stories[i].title %></h2>
+                  <% if(stories[i].images[0]){ %>
+                    <img  style='float:left; width:150px; height:150px; margin:10px;' draggable='false' src='<%= stories[i].images[0] %>'>
+                  <% } %>
+                  <div style='font-size:13px; padding:0 15px; margin-top:10px; line-height:150%; list-style-position:inside;'>
+                    <%-= stories[i].body %>
+                  </div>
+                </td>
+              </tr>
+            <% } %>
+          </table>
+        </td>
+      </tr>
+
+    </table>
+  </body>
+</html>

@@ -33,10 +33,11 @@ module.exports.routes = {
   // 
   // (This would also work if you had a file at: `/views/home.ejs`)
   '/'             : 'Publication.redirect',
-  '/ui/*'         : { view: 'index' },
-  '/ui'           : { view: 'index' },
+  '/ui/*'         : 'Utility.renderHome',
+  '/ui'           : 'Utility.renderHome',
   '/uploadImage'  : 'Image.upload',
-  '/uploads/*'    : 'Image.serve'
+  '/uploads/*'    : 'Image.serve',
+  '/logout'       : 'Auth.logout'
 
   /*
   // But what if you want your home page to display
