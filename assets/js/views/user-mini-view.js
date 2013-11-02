@@ -40,19 +40,24 @@ define([
     if(editors.indexOf(myId) != -1) this.model.set('isEditor', true);
     else this.model.set('isEditor', false)
 
-    Chaplin.View.prototype.render.apply(this, arguments);
-
     // Set the data-id to the dom for easy user reference
-    $(this.el).attr('data-id', myId);
+    $(this.el).data('id', myId);
 
     // Set the URL to the Passport User
     var earl = 'http://passport.vml.com/ui/user/' + this.model.get('username');
     $(this.el).attr('href', earl);
 
     // Set data attributes for easy live filtering
-    if(this.model.get('isOwner')) $(this.el).attr('data-isowner', true)
-    if(this.model.get('isEditor')) $(this.el).attr('data-iseditor', true)
-    if(!this.model.get('isEditor') && !this.model.get('isOwner')) $(this.el).attr('data-unauthorized', true)
+    if(this.model.get('isOwner')) $(this.el).data('isowner', 'yes')
+    else $(this.el).data('isowner', 'no')
+
+    if(this.model.get('isEditor')) $(this.el).data('iseditor', 'yes')
+    else $(this.el).data('iseditor', 'no')
+
+    if(!this.model.get('isEditor') && !this.model.get('isOwner')) $(this.el).data('unauthorized', 'yes')
+    else $(this.el).data('unauthorized', 'no')
+
+    Chaplin.View.prototype.render.apply(this, arguments);
   };
 
   

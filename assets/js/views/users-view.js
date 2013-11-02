@@ -40,7 +40,7 @@ define([
       $filters.each(function(key, filterItem){
         if(!$(filterItem).is(':checked')){
           var name = $(filterItem).attr('name');
-          if($el.data(name)) hide = true
+          if($el.data(name) == 'yes') hide = true
         };
       });
 
