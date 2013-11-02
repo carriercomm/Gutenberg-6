@@ -3,12 +3,14 @@ define([
   'controllers/base/controller',
   'models/base/collection',
   'models/publications',
+  'models/users',
   'models/publication',
   'models/newsletter',
   'views/publications-view',
   'views/publication-view',
-  'views/newsletters-view'
-], function(Chaplin, Controller, Collection, Publications, Publication, Newsletter, PublicationsView, PublicationView, NewslettersView){
+  'views/newsletters-view',
+  'views/users-view'
+], function(Chaplin, Controller, Collection, Publications, Users, Publication, Newsletter, PublicationsView, PublicationView, NewslettersView, UsersView){
   'use strict';
 
   var months  = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
@@ -51,8 +53,9 @@ define([
       this.model.params = {
         model           : 'publication',
         id              : params.id
-      }
+      };
       this.model.listen(function(){
+        // update the crumb
         self.publishEvent('crumbUpdate', [
           {
             route : '/',
@@ -65,42 +68,41 @@ define([
         ]);
       });
 
-      // Set up published collections listener
-      /*var published     = new Collection();
-      published.url     = '/newsletter';
-      published.params  = {
-        publication_id  : params.id,
-        published       : true
-      };
-      published.listen();
-      */
+      // Listen for owner editor updates to use in interface
+      this.listenTo(this.model, 'change', function(model){
+        self.publishEvent('owner_editor_update', this.model);
+      });
 
-      // Set up unpublished collection listener
-      var unpublished     = new Collection();
-      unpublished.url     = '/newsletter';
-      unpublished.params  = {
-        publication_id  : params.id,
-        published       : false
-      };
-      unpublished.listen();
-
-      // Create The wrapper View
+      // Create the wrapper view
       this.view = new PublicationView({
         autoRender  : true,
         region      : 'main',
         model       : this.model
       });
 
+      // Set up newsletter collection listener
+      var newsletters     = new Collection();
+      newsletters.url     = '/newsletter';
+      newsletters.params  = {
+        publication_id : params.id
+      };
+      newsletters.listen();
+
+      // Set up the users collection
+      var users           = new Users();
+      users.url           = '/user';
+      users.listen();
+
       // Create the subviews
-      /*var publishedView = new NewslettersView({
-        region      : 'published',
-        collection  : published,
-        title       : 'Published Newsletters'
-      });*/
-      var unpublishedView = new NewslettersView({
-        region      : 'unpublished',
-        collection  : unpublished,
-        title       : 'Newsletters'
+      var newslettersView = new NewslettersView({
+        region      : 'newsletters',
+        collection  : newsletters,
+        publication : this.model
+      });
+      var usersView = new UsersView({
+        region      : 'users',
+        collection  : users,
+        publication : this.model
       });
     },
 
