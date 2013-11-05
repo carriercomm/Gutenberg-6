@@ -3,7 +3,7 @@
   <% if(stories[i].body == ''){ %>
     <h6><%= stories[i].title %></h6>
   <% } else{ %>
-    <div class='wysiwyg-two-col row-fluid'>
+    <div class='wysiwyg-two-col row-fluid' id='<%= stories[i].id %>'>
       <div class='wysiwyg-left-col span4'>
         <% if(stories[i].images[0]){ %>
           <% if(stories[i].images.length > 1){ %>

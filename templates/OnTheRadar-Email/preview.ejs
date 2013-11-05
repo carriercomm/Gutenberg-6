@@ -14,7 +14,7 @@
         <td colspan='5'><img src='http://f.cl.ly/items/440H2i061W2D143r190t/header.jpg' /></td>
       </tr>
       <tr>
-        <td colspan='1' style='font-size:.8em; padding-bottom:15px;'><a href='#'>Read it Now on Passport</a></td>
+        <td colspan='1' style='font-size:.8em; padding-bottom:15px;'><a href='<%= newsletter.url_prefix %>'>Read it Now on Passport</a></td>
         <% var modifiedTitle = newsletter.title.replace('On the Radar - ', '') %>
         <td colspan='4' style='vertical-align:top; font-size:.8em; text-align:right; color:#636363;'><%= modifiedTitle %></td>
       </tr>
@@ -29,9 +29,9 @@
             </td>
             <td width='15px'></td>
             <td colspan='3' style='vertical-align:top;'>
-              <h2><a draggable='false' style='color:#428bca; text-decoration:none; font-size:.8em;' href='#'><%= stories[i].title %></a></h2>
+              <h2><a draggable='false' style='color:#428bca; text-decoration:none; font-size:.8em;' href='<%= newsletter.url_prefix %>#<%= stories[i].id %>'><%= stories[i].title %></a></h2>
               <p><%= stories[i].teaser %></p>
-              <p style='text-align:right; font-size:.8em'><strong><a draggable='false' style='color:#428bca; text-decoration:none;' href='#'>Read it Now</a></strong></p>
+              <p style='text-align:right; font-size:.8em'><strong><a draggable='false' style='color:#428bca; text-decoration:none;' href='<%= newsletter.url_prefix %>#<%= stories[i].id %>'>Read it Now</a></strong></p>
             </td>
           </tr>
         <% } %>
@@ -41,7 +41,7 @@
         <% for(var i=0; i<stories.length; i++) {%>
           <% if(stories[i].sort_index > 0 && stories[i].sort_index < 4) { %>
             <td width='190px' class='draggable' draggable='true' data-storyId='<%= stories[i].id %>'>
-              <a draggable='false' href='#' style='text-decoration:none;'><h3 style='font-size:.8em; background-color:#EDEDED; padding:10px; color:#636363; margin-bottom:3px;'><%= stories[i].title %></h3></a>
+              <a draggable='false' href='<%= newsletter.url_prefix %>#<%= stories[i].id %>' style='text-decoration:none;'><h3 style='font-size:.8em; background-color:#EDEDED; padding:10px; color:#636363; margin-bottom:3px;'><%= stories[i].title %></h3></a>
               <img draggable='false' style='margin:auto; display:block; width:190px;' src='<%= stories[i].images[0] %>'>
             </td>
 
@@ -63,7 +63,7 @@
         <% } %>
 
         <td colspan='2' class='draggable' draggable='true' data-storyId='<%= storyList[i].id %>' data-storyIndex='<%= storyList[i].sort_index %>' >
-          <a draggable='false' style='color:#428bca; text-decoration:none; font-size:.8em; display:block; margin-bottom:12px;' href='#'><%= storyList[i].title %></a>
+          <a draggable='false' style='color:#428bca; text-decoration:none; font-size:.8em; display:block; margin-bottom:12px;' href='<%= newsletter.url_prefix %>#<%= stories[i].id %>'><%= storyList[i].title %></a>
         </td>
 
         <% if(storyList[i].sort_index%2 == 0) { %>
