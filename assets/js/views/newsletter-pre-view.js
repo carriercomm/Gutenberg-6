@@ -17,11 +17,11 @@ define([
       'stories'   : '#stories',
       'nav'       : '#nav-container'
     },
-    events        : {
-      'click #publish' : 'publish'
-    },
     listen        : {
       'channels_registered mediator' : 'registerTemplates'
+    },
+    events        : {
+      'click .controls' : 'toggleHelpers'
     }
   });
 
@@ -99,6 +99,12 @@ define([
 
     $(this.el).find('iframe').height(height);
   };
+
+
+  view.prototype.toggleHelpers = function(){
+    $(this.el).find('.options').slideToggle();
+    $(this.el).find('.template-helpers').toggleClass('hidden-content');
+  }
 
   return view;
 });
