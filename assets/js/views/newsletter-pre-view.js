@@ -19,23 +19,28 @@ define([
       'nav'       : '#nav-container'
     },
     listen        : {
-      'channels_registered mediator' : 'registerTemplates'
+      'channels_registered mediator'  : 'registerTemplates',
+      'change model'                  : 'updateTemplateHelperAttrs'
     },
     events        : {
-      'click .controls' : 'toggleHelpers'
+      'click .controls'               : 'toggleHelpers',
+      'focus input'                   : 'inputFocused',
+      'blur input'                    : 'inputBlurred',
+      'keyup .template-helpers'       : 'scheduleSave',
+      'change input[type="checkbox"]' : 'checkboxChanged'
     }
   });
 
 
   view.prototype.render = function(){
     Chaplin.View.prototype.render.apply(this, arguments);
-
     $(this.el).find('iframe').attr('src', this.options.iframeURL);
 
     // Just make sure the render is done
     var self = this;
     setTimeout(function(){
       self.setIFrameHeight();
+      self.publishEvent('newsletter_rendered');
     });
   };
 
@@ -46,6 +51,7 @@ define([
     this.userTemplate = ejs.compile(template);
     this.channels     = channels;
     this.render();
+    this.updateTemplateHelperAttrs(this.model);
   };
 
 
@@ -106,7 +112,84 @@ define([
   view.prototype.toggleHelpers = function(){
     $(this.el).find('.options').slideToggle();
     $(this.el).find('.template-helpers').toggleClass('hidden-content');
-  }
+  };
+
+
+  view.prototype.inputFocused = function(e){
+    $(e.target).addClass('preventUpdate');
+  };
+
+
+  view.prototype.inputBlurred = function(e){
+    $(e.target).removeClass('preventUpdate');
+  };
+
+
+  view.prototype.checkboxChanged = function(e){
+    this.model.set(e.target.name, false);
+    this.scheduleSave();
+  };
+
+
+  view.prototype.scheduleSave = function(e){
+    var self = this;
+
+    clearTimeout(this.schedule);
+    this.schedule = setTimeout(function(){
+      self.saveTemplateHelperAttrs();
+    }, 100);
+  };
+
+
+  view.prototype.saveTemplateHelperAttrs = function(){
+    var self  = this;
+    var attrs = {};
+
+    var helperInputs = $(this.el).find('.template-helper');
+    $.each(helperInputs, function(){
+      var $el = $(this);
+      var key = $el.data('helper-id');
+
+      if($el[0].nodeName == 'INPUT' || $el[0].nodeName == 'TEXTAREA'){
+          if($el.attr('type') == 'checkbox'){
+            attrs[key] = $el.prop('checked');
+          } else {
+            attrs[key] = $el.val();
+          }
+      } else {
+        // If a regular element, get the html
+        attrs[key] = $el.html();
+      }
+    });
+
+    this.model.save(attrs);
+  };
+
+
+  // Whenever the model updates, update the corresponding input fields
+  view.prototype.updateTemplateHelperAttrs = function(model){
+    var self  = this;
+    var attrs = model.attributes
+
+    for(var key in attrs){
+      var selector  = '[data-helper-id=' + key + ']';
+      var $el       = $(self.el).find(selector);
+
+      if($el.length && !$el.hasClass('preventUpdate')){
+        // If some kind of form element, set the val
+        if($el[0].nodeName == 'INPUT' || $el[0].nodeName == 'TEXTAREA'){
+          if($el.attr('type') == 'checkbox'){
+            attrs[key] ? $el.prop('checked', true) : $el.prop('checked', false)
+          } else $el.val(attrs[key]);
+        } else {
+          // If a regular element, set the html
+          $el.html(attrs[key]);
+        }
+      }
+    }
+  };
+
+
 
   return view;
 });

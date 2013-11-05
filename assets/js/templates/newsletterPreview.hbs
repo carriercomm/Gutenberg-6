@@ -11,7 +11,7 @@
   <div class='options'>
     {{#getChannelHelpers channels}}
       <div class='option-item'>
-        <input type='text' class='form-control' placeholder='{{title}}' />
+        <input type='text' class='form-control template-helper' data-helper-id='{{id}}' placeholder='{{title}}' />
         <p class='help-block'>{{{help-text}}}</p>
       </div>
     {{/getChannelHelpers}}
