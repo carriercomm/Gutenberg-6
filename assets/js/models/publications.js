@@ -6,7 +6,10 @@ define([
   'use strict';
 
   var collection = Collection.extend({
-    model : Publication
+    model : Publication,
+    comparator : function(model){
+      return model.get('title');
+    }
   });
 
   return collection;
