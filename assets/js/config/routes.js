@@ -4,6 +4,7 @@ define(function(){
   return function(match){
     // Publications
     match('', 'publication#list');
+    match('/', 'publication#list');
     match('publications', 'publication#list');
     match('publication/:id', 'publication#show');
     match('/publication/:id', 'publication#show');
