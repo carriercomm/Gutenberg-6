@@ -17,6 +17,9 @@ module.exports = {
   write : function(filePath, next){
     if(typeof(knoxClient) != 'undefined'){
 
+      // Set caching to one week
+      var fileHeaders = { 'Cache-Control' : 'max-age=604800000' }
+
       knoxClient.putFile(filePath, path.basename(filePath), function(err, as3Res){
         if(err) console.error(err)
 
