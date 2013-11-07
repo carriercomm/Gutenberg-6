@@ -9,6 +9,7 @@ define([
       var model = this;
 
       socket.request(this.url, this.params, function(results){
+        model.set(results);
         if(next) next(results)
       });
 
