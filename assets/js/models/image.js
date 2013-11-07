@@ -1,7 +1,6 @@
 define([
   'chaplin',
-  'models/base/model',
-  'models/images'
+  'models/base/model'
 ], function(Chaplin, Model){
   'use strict';
 
