@@ -22,7 +22,7 @@ define([
       'click .sort-button'    : 'handleSort',
       'focus input, textarea, div[contenteditable=true]' : 'inputFocused',
       'blur input, textarea, div[contenteditable=true]'  : 'inputBlurred',
-      'keyup .story-editor'   : 'scheduleSave',
+      'keyup .model-input'    : 'scheduleSave',
       'change input[type="checkbox"]' : 'checkboxChanged'
     },
     listen        : {
@@ -172,20 +172,26 @@ define([
     $(this.el).find('.editor-wrapper').append(editor(this.model.attributes));
 
     // Umm... wait till next tick i guess? Who knows
+    // Attaches the actual wysiwyg
     setTimeout(function(){
       $(self.el).find('#editor-' + self.model.get('id')).wysiwyg({
         toolbarSelector : '#editor-toolbar-' + self.model.get('id')
       });
     });
 
-    // Meh, whatever. This is a little hacky but works
+    // When clicking the link button, auto select the input field
     var $toolbar = $(this.el).find('#editor-toolbar-' + this.model.get('id'));
-    $toolbar.find('.link-input').click(function(){
+    $toolbar.find('.link-button').click(function(){
       var selfie = $(this);
       setTimeout(function(){
         $(selfie).parent().parent().addClass('open');
-        $(selfie).focus();
-      }, 1);
+        $(selfie).parent().find('input').focus();
+      }, 10);
+    });
+
+    // Close the dropdown menu if hitting the enter key
+    $toolbar.find('input').bind('keydown', function(e){
+      if(e.keyCode == 13) $(e.target).parent().parent().removeClass('open');
     });
 
     // Attach an on paste method to the editor
