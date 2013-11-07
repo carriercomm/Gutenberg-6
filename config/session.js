@@ -11,19 +11,10 @@
  */
 
 if(process.env.NODE_ENV == 'production' || process.env.NODE_ENV == 'stage'){
-
   module.exports.session = {
-    secret      : process.env.SESSION_SECRET,
-    adapter     : 'mongo',
-    host        : process.env.MONGO_HOST,
-    port        : process.env.MONGO_PORT,
-    user        : process.env.MONGO_USER,
-    password    : process.env.MONGO_PASS,
-    db          : process.env.MONGO_DB_NAME,
-    collection  : 'sessions'
+    secret: process.env.SESSION_SECRET
   }
 } else{
-
   module.exports.session = {
     secret: '3e3c3bcaa98b1df5f77cc01128d6fbc9'
   }
