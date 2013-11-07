@@ -25,5 +25,18 @@ module.exports = {
       type        : 'BOOLEAN',
       defaultsTo  : false
     }
+  },
+
+  beforeDestroy : function(props, next){
+    // Delete the story reference when deleting the model
+    Story.find({ newsletter_id: props.where.id }).exec(function(err, stories){
+      for(var i=0; i<stories.length; i++){
+        stories[i].destroy(function(error){
+          if(error) console.log(error);
+        });
+      }
+    });
+
+    next();
   }
 };
