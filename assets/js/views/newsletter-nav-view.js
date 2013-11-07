@@ -9,10 +9,7 @@ define([
   var view = View.extend({
     template      : template,
     tagName       : 'ul',
-    className     : 'nav nav-tabs',
-    events        : {
-      'click a'   : 'handleRoute',
-    }
+    className     : 'nav nav-tabs'
   });
 
 
@@ -27,9 +24,11 @@ define([
   };
 
 
-  view.prototype.handleRoute = function(e){
-    e.preventDefault();
-    var index = $(e.target).data('index');
+  view.prototype.select = function(id){
+    $(this.el).find('a').each(function(index, $el){
+      if(id == $(this).attr('data-index')) $(this).parent().addClass('active')
+      else $(this).parent().removeClass('active')
+    });
   };
 
   return view;
