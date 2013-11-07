@@ -5,7 +5,9 @@ body{
 #site-navigation h3{
   margin-bottom   : 30px;
 }
-
+#site-navigation h3 a{
+  color           : #333;
+}
 /* ----------------------- */
 
 /* Newsletter View */
