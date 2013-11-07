@@ -25,8 +25,11 @@
       <div class='col-lg-12'>
         <a class='btn btn-danger btn-sm destroy' href='#'>Delete Story<a/>
         <div class='checkbox pull-right'>
-          <label>
-            <input type='checkbox'>Include Story in Email?</label>
+          {{#if in_email}}
+            <label><input type='checkbox' class='in_email' name='in_email' checked>Include Story in Email?</label>
+          {{else}}
+            <label><input type='checkbox' class='in_email' name='in_email'>Include Story in Email?</label>
+          {{/if}}
         </div>
       </div>
     </div>
