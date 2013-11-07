@@ -133,13 +133,13 @@ define([
 
       // This method seems to fire before window.location properties
       // are fully updates, hence the complicated solution below
+      var self      = this;
       var query     = $.param(params);
       var href      = window.location.href;
       var search    = window.location.search;
       var iframeURL = href.replace('/newsletter/', '/preview/').replace(search, '') + '?' + query;
 
       this.view = new NewsletterPreView({
-        autoRender  : true,
         region      : 'main',
         iframeURL   : iframeURL,
         params      : params,
@@ -147,10 +147,13 @@ define([
         collection  : this.collection
       });
 
-      this.nav = new NewsletterNav({
-        autoRender  : true,
-        model       : this.model,
-        region      : 'nav'
+      this.subscribeEvent('newsletter_rendered', function(){
+        self.nav = new NewsletterNav({
+          autoRender  : true,
+          model       : self.model,
+          region      : 'nav'
+        });
+        self.nav.reRender();
       });
     },
 
