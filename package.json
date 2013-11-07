@@ -13,7 +13,6 @@
     "sails-mongo": "~0.9.5",
     "nodetime": "~0.8.13",
     "knox": "~0.8.6",
-    "wrench": "~1.5.1",
     "underscore": "~1.5.2"
   },
   "devDependencies": {
