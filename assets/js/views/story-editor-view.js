@@ -135,12 +135,14 @@ define([
 
     // Append the editor view
     var editor    = Handlebars.compile(textEditorTemplate);
-    var selector  = '#editor-' + this.model.get('id');
+    var selector  = 
     $(this.el).find('.editor-wrapper').append(editor(this.model.attributes));
 
     // Umm... wait till next tick i guess? Who knows
     setTimeout(function(){
-      $(self.el).find(selector).wysiwyg();
+      $(self.el).find('#editor-' + self.model.get('id')).wysiwyg({
+        toolbarSelector : '#editor-toolbar-' + self.model.get('id')
+      });
     });
 
     // Create the images view
