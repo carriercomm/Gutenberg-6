@@ -24,7 +24,6 @@ logs
 results
 
 node_modules
-assets/vendor/bower-components
 
 npm-debug.log
 
