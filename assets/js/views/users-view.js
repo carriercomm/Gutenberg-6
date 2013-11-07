@@ -50,7 +50,7 @@ define([
         };
       });
 
-      if($el.html().trim().indexOf(inputVal) == -1) hide = true
+      if($el.text().trim().indexOf(inputVal) == -1) hide = true
 
       if(hide == true) $(item).addClass('hide')
       else $(item).removeClass('hide')

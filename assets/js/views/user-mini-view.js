@@ -13,10 +13,7 @@ define([
       'target'    : 'blank'
     },
     events        : {
-      'click .revoke-editor'  : 'revokeEditor',
-      'click .revoke-owner'   : 'revokeOwner',
-      'click .make-editor'    : 'makeEditor',
-      'click .make-owner'     : 'makeOwner'
+      'click .btn'    : 'handleButton',
     }
   });
 
@@ -41,36 +38,36 @@ define([
     if(!this.model.get('isEditor') && !this.model.get('isOwner')) $(this.el).attr('data-unauthorized', true)
   };
 
-
-  view.prototype.makeEditor = function(e){
+  
+  view.prototype.handleButton = function(e){
     e.preventDefault();
     e.stopPropagation();
 
-    console.log('auth');
+    var username  = $(e.currentTarget).parent().find('.name').html().trim();
+    var action    = $(e.currentTarget).data('action');
+
+    this[action](username);
   };
 
 
-  view.prototype.revokeEditor = function(e){
-    e.preventDefault();
-    e.stopPropagation();
-
-    var confirm = window.confirm('Are you sure you want to deauth this user');
+  view.prototype.makeEditor = function(username){
+    
   };
 
 
-  view.prototype.makeOwner = function(e){
-    e.preventDefault();
-    e.stopPropagation();
-
-    console.log('make');
+  view.prototype.revokeEditor = function(username){
+    var message = 'Are you sure you want to revoke editorial privileges for ' + username + '? ' + username + ' will no longer be able to contribute to publications.';
+    var confirm = window.confirm(message);
   };
 
 
-  view.prototype.revokeOwner = function(e){
-    e.preventDefault();
-    e.stopPropagation();
+  view.prototype.makeOwner = function(username){
+  };
 
-    console.log('revoke');
+
+  view.prototype.revokeOwner = function(username){
+    var message = 'Are you sure you want to revoke ownership privileges for ' + username + '? ' + username + ' will no longer be able to modify users for this publication and will be downgraded to an editorial role.';
+    var confirm = window.confirm(message);
   };
 
   return view;
