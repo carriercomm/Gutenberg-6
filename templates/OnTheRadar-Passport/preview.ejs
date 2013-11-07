@@ -30,7 +30,13 @@
                     <span class='divider'> | </span>
                     <span class='comment_count'>0 Comments</span>
                     <div class='tags'>
-                      <%= newsletter.tags %>
+                      <% for(var i=0; i<newsletter.tags.length; i++){ %>
+                        <% if(i == newsletter.tags.length - 1) { %>
+                          <a href='#'><%= newsletter.tags[i] %></a>
+                        <% } else{ %>
+                          <a href='#'><%= newsletter.tags[i] %></a>, 
+                        <% } %>
+                      <% } %>
                     </div>
                     <div class='groups'>
                       <a draggable='false' href='http://passport.vml.com/group/587' target='_blank'>On the Radar</a>
@@ -49,11 +55,15 @@
                 <% } else{ %>
                   <div class='wysiwyg-two-col row-fluid draggable' draggable='true' data-storyId='<%= stories[i].id %>'>
                     <div class='wysiwyg-left-col span4'>
-                      <div class='gallery'>
-                        <% if(stories[i].images[0]){ %>
+                      <% if(stories[i].images[0]){ %>
+                        <% if(stories[i].images.length > 1){ %>
+                          <div class='gallery'>
+                            <img style='width:100%;' src='<%= stories[i].images[0] %>'>
+                          </div>
+                        <% } else { %>
                           <img style='width:100%;' src='<%= stories[i].images[0] %>'>
                         <% } %>
-                      </div>
+                      <% } %>
                     </div>
                     <div class='wysiwyg-right-col span7'>
                       <h2><%= stories[i].title %></h2>

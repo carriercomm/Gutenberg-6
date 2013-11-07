@@ -14,7 +14,9 @@
         <td colspan='5'><img src='http://f.cl.ly/items/440H2i061W2D143r190t/header.jpg' /></td>
       </tr>
       <tr>
-        <td colspan='5' style='font-size:.8em; text-align:right; color:#636363;'><%= newsletter.title %></td>
+        <td colspan='1' style='font-size:.8em; padding-bottom:15px;'><a href='#'>Read it Now on Passport</a></td>
+        <% var modifiedTitle = newsletter.title.replace('On the Radar - ', '') %>
+        <td colspan='4' style='vertical-align:top; font-size:.8em; text-align:right; color:#636363;'><%= modifiedTitle %></td>
       </tr>
 
       <% for(var i=0; i<stories.length; i++) {%>

@@ -5,11 +5,15 @@
   <% } else{ %>
     <div class='wysiwyg-two-col row-fluid'>
       <div class='wysiwyg-left-col span4'>
-        <div class='gallery'>
-          <% if(stories[i].images[0]){ %>
-            <img style='width:100%;' src='<%= stories[i].images[0].url %>'>
+        <% if(stories[i].images[0]){ %>
+          <% if(stories[i].images.length > 1){ %>
+            <div class='gallery'>
+              <img style='width:100%;' src='<%= stories[i].images[0] %>'>
+            </div>
+          <% } else { %>
+            <img style='width:100%;' src='<%= stories[i].images[0] %>'>
           <% } %>
-        </div>
+        <% } %>
       </div>
       <div class='wysiwyg-right-col span7'>
         <h2><%= stories[i].title %></h2>
