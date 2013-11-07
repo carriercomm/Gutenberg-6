@@ -33,7 +33,7 @@ module.exports = {
   beforeDestroy : function(props, next){
     // Delete the image reference when deleting the model
     Image.findOne({ id: props.where.id }).exec(function(err, model){
-      var imagePath = process.cwd() + model.url;
+      var imagePath = process.cwd() + '/assets' + model.url;
 
       fs.unlink(imagePath, function (err) {
         if (err) console.log(err);
