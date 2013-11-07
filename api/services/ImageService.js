@@ -20,7 +20,7 @@ module.exports = {
       // Set caching to one week
       var fileHeaders = { 'Cache-Control' : 'max-age=604800000' }
 
-      knoxClient.putFile(filePath, path.basename(filePath), function(err, as3Res){
+      knoxClient.putFile(filePath, path.basename(filePath), fileHeaders, function(err, as3Res){
         if(err) console.error(err)
 
         var finalPath = 'https://s3.amazonaws.com/' + path.join(process.env.S3_BUCKET, path.basename(filePath));
