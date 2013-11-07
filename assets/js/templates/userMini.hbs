@@ -1,4 +1,10 @@
-{{username}}
+<span class='name'>
+  {{#if name}}
+    {{name}}
+  {{else}}
+    {{username}}
+  {{/if}}
+</span>
 
 {{#if isOwner}}
   <a class='revoke-editor btn btn-danger btn-xs pull-right' href='#'>Revoke Editor</a>

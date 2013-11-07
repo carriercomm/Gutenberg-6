@@ -9,7 +9,10 @@ define([
   var view = CollectionView.extend({
     template      : template,
     itemView      : UserMiniView,
-    listSelector  : '.list-group'
+    listSelector  : '.list-group',
+    events        : {
+      'keyup input' : 'filterUsers'
+    }
   });
 
 
@@ -26,6 +29,22 @@ define([
       publication     : this.options.publication
     });
   };
+
+
+  view.prototype.filterUsers = function(e){
+    var $listings = $(this.el).find('.list-group-item');
+    var val       = $(e.target).val();
+
+    if(val == ''){
+      $listings.removeClass('hide');
+    } else {
+      $listings.each(function(key, item){
+        var name = $(item).find('.name').html().trim();
+        if(name.indexOf(val) != -1) $(item).removeClass('hide')
+        else $(item).addClass('hide');
+      })
+    }
+  }
 
   return view;
 });
