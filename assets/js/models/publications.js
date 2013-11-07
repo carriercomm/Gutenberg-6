@@ -1,7 +1,7 @@
 define([
   'chaplin',
   'models/base/collection',
-  'models/Publication'
+  'models/publication'
 ], function(Chaplin, Collection, Publication){
   'use strict';
 
