@@ -36,15 +36,5 @@ If no publish property is specified, the preview template will be used.
 I've made minor modifications to `vendor/fineuploader-3.8.2.css` as this was the easiest way to avoid duplicating bootstrap code in the primary style file. This also keeps modifications to [FineUploader](http://fineuploader.com/) as minimal as possible. Beware of upgrades to FineUploader as you'll lose these slight changes to it's CSS file...
 
 
-## Todo
-
-### Client
-* Drop the socket when the collection is no longer being used
-* The listenTo method in the newsletter-controller is acting like an ASSHOLE and updating everything very strangely...
-
-### Server
-* When a publication is deleted, delete all of it's corresponding newsletters, stories, and images
-* When a newsletter is deleted, delete all of it's corresponding stories and images
-
 ## Scripts
 * Run script - `USERNAME=username PASSWORD=password forever -w app.js`

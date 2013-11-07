@@ -134,10 +134,10 @@ define([
     this.attachUploader();
 
     // Append the editor view
-    var editor    = Handlebars.compile(textEditorTemplate);
-    var selector  = 
+    var editor = Handlebars.compile(textEditorTemplate);
     $(this.el).find('.editor-wrapper').append(editor(this.model.attributes));
 
+    // Initialize the wysiwyg editor
     // Umm... wait till next tick i guess? Who knows
     setTimeout(function(){
       $(self.el).find('#editor-' + self.model.get('id')).wysiwyg({
@@ -145,11 +145,56 @@ define([
       });
     });
 
+    // Attach an on paste method to the editor
+    var $editor = $(self.el).find('.editor');
+    $editor[0].onpaste = function(e){
+      var pasteContent = e.clipboardData.getData('text/html');
+      if(pasteContent == '') pasteContent = e.clipboardData.getData('text/plain');
+      var cleanContent = self.cleanHTML(pasteContent);
+
+      $editor.html(cleanContent);
+      return false
+    };
+
     // Create the images view
     var imagesView = new ImagesView({
       collection  : this.model.get('images'),
       container   : $(this.el).find('.image-list-container')
     });
+  };
+
+
+  // Pasting from Microsoft word is an ABSOLUTE DISASTER
+  // this method removes the endless gobs of garbage produced
+  // by the world's worst, yet most popular, text editor
+  var allowedTags = ['A', 'DIV', 'SPAN', 'B', 'I', 'EM', 'STRONG', 'P'];
+  view.prototype.cleanHTML = function(htmlString){
+
+    // If it doesn't look like a tag, return the string
+    if(htmlString.charAt(0) != '<') return htmlString
+    try{ $(htmlString) }
+    catch(e){ return htmlString }
+
+    var self  = this;
+    var $html = $(htmlString);
+    var clean = '';
+
+    $html.each(function(){
+      if(allowedTags.indexOf(this.nodeName) != -1){
+        var innards = self.cleanHTML($(this).html());
+        // Create a special template for A tags
+        if(this.nodeName == 'A'){
+          var href = $(this).attr('href');
+          var template = '<' + this.nodeName + ' href="' + href + '">' + innards + '</' + this.nodeName + '>';
+        } else {
+          var template = '<' + this.nodeName + '>' + innards + '</' + this.nodeName + '>';
+        }
+        
+        clean += template
+      }
+    });
+
+    return clean;
   };
 
 
