@@ -1,11 +1,12 @@
 define([
-  'chaplin'
-], function(Chaplin){
+  'chaplin',
+  'views/site-view'
+], function(Chaplin, SiteView){
   'use strict';
 
   var Controller = Chaplin.Controller.extend({
     beforeAction : function(){
-      console.log('before route');
+      this.compose('site', SiteView)
     }
   });
 

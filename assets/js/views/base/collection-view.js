@@ -1,6 +1,6 @@
 define([
-  'handlebars',
-  'chaplin/base/view',
+  'chaplin',
+  'views/base/view',
 ], function(Chaplin, View){
   'use strict';
 
