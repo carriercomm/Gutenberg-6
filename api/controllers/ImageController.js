@@ -34,12 +34,18 @@ module.exports = {
 
 var saveImage = function(file, story_id, next){
 
+  // Set a base directory, use stackato's special instance if in production
+  var baseDir = 'uploads';
+  if(process.env.NODE_ENV == 'production' || process.env.NODE_ENV == 'stage'){
+    baseDir = process.env.STACKATO_FILESYSTEM
+  }
+
   var tempPath  = file.path || file.qqfile.path;
-  var basePath  = 'assets/uploads/' + story_id;
-  var newPath   = basePath + '/' + file.name;
+  var uploadDir = baseDir + '/' + story_id;
+  var newPath   = uploadDir + '/' + file.name;
 
   // Create a directory for the image to live
-  fs.mkdir(basePath, function(error){
+  fs.mkdir(uploadDir, function(error){
     if(error) console.log(error);
 
     // Use graphicsmagik to write the file
@@ -57,8 +63,9 @@ var saveImage = function(file, story_id, next){
 
           // Create the new image model
           var image = Image.create({
-            url : newPath.replace('assets', ''),
-            story_id : story_id
+            path      : newPath,
+            url       : 'image' + newPath.replace(baseDir, ''),
+            story_id  : story_id
           }).done(function(err, img){
 
             // This is lame, but it doesn't look like graphicmagick's
@@ -68,7 +75,7 @@ var saveImage = function(file, story_id, next){
               next(img || {});
 
               Image.publishCreate({
-                url       : newPath.replace('assets', ''),
+                url       : 'image' + newPath.replace(baseDir, ''),
                 story_id  : story_id,
                 id        : img.id
               });
