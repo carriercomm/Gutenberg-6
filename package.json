@@ -1,7 +1,7 @@
 {
   "name": "Gutenberg",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "a Sails application",
   "dependencies": {
     "grunt": "0.4.1",
