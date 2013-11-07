@@ -7,6 +7,7 @@
 
 var magik = require('gm');
 var fs    = require('fs');
+var path  = require('path');
 
 module.exports = {
 
@@ -28,6 +29,18 @@ module.exports = {
         }
       });
     }
+  },
+
+
+  serve : function(req, res){
+    var baseDir = 'uploads';
+    if(process.env.STACKATO_FILESYSTEM) baseDir == process.env.STACKATO_FILESYSTEM
+
+    var filePath = path.join(process.cwd(), baseDir, req.params[0]);
+
+    fs.readFile(filePath, function(err, img){
+      res.end(img, 'binary');
+    });
   }
 };
 
@@ -36,13 +49,11 @@ var saveImage = function(file, story_id, next){
 
   // Set a base directory, use stackato's special instance if in production
   var baseDir = 'uploads';
-  if(process.env.NODE_ENV == 'production' || process.env.NODE_ENV == 'stage'){
-    baseDir = process.env.STACKATO_FILESYSTEM
-  }
+  if(process.env.STACKATO_FILESYSTEM) baseDir == process.env.STACKATO_FILESYSTEM
 
   var tempPath  = file.path || file.qqfile.path;
-  var uploadDir = baseDir + '/' + story_id;
-  var newPath   = uploadDir + '/' + file.name;
+  var uploadDir = path.join(baseDir, story_id);
+  var newPath   = path.join(uploadDir, file.name);
 
   // Create a directory for the image to live
   fs.mkdir(uploadDir, function(error){
@@ -64,7 +75,7 @@ var saveImage = function(file, story_id, next){
           // Create the new image model
           var image = Image.create({
             path      : newPath,
-            url       : 'image' + newPath.replace(baseDir, ''),
+            url       : path.join('/upload', newPath.replace(baseDir, '')),
             story_id  : story_id
           }).done(function(err, img){
 
@@ -75,7 +86,7 @@ var saveImage = function(file, story_id, next){
               next(img || {});
 
               Image.publishCreate({
-                url       : 'image' + newPath.replace(baseDir, ''),
+                url       : path.join('/upload', newPath.replace(baseDir, '')),
                 story_id  : story_id,
                 id        : img.id
               });
