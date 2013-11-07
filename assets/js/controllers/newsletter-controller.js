@@ -18,11 +18,6 @@ define([
 
   var NewsletterController = Controller.extend({
 
-    beforeAction : function(){
-      Controller.prototype.beforeAction.apply(this, arguments);
-    },
-
-
     initialize : function(params){
       Chaplin.Controller.prototype.initialize.apply(this, arguments);
       var self = this;
@@ -91,37 +86,39 @@ define([
     // by the iFrame within the previewContainer
     preview : function(params){
       var storiesView = new StoriesPreView({
+        model         : this.model,
         collection    : this.collection,
         autoRender    : false,
-        region        : 'main',
-        template      : '<div id="stories-wrapper"></div>',
-        listSelector  : '#stories-wrapper',
         params        : params
       });
+
+      // Kill all of the application stylesheets and render
+      $('link[rel="stylesheet"]').attr('disabled', 'disabled');
+      $('body').html(storiesView.render().el)
     },
 
 
     // Makes a view, builds an iFrame, and the iFrame then calls the preview method above
     previewContainer : function(params){
+
+      // This method seems to fire before window.location properties
+      // are fully updates, hence the complicated solution below
+      var query     = $.param(params);
+      var href      = window.location.href;
+      var search    = window.location.search;
+      var iframeURL = href.replace('/newsletter/', '/preview/').replace(search, '') + '?' + query;
+
       this.view = new NewsletterPreView({
         model       : this.model,
         autoRender  : true,
-        region      : 'main'
+        region      : 'main',
+        iframeURL   : iframeURL
       });
 
       this.nav = new NewsletterNav({
         autoRender  : true,
         model       : this.model,
         region      : 'nav'
-      });
-
-      var storiesView = new StoriesPreView({
-        collection    : this.collection,
-        autoRender    : false,
-        region        : 'main',
-        template      : '<div id="stories-wrapper"></div>',
-        listSelector  : '#stories-wrapper',
-        params        : params
       });
     },
 
