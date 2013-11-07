@@ -8,9 +8,13 @@ module.exports = function (req, res, next){
   else{
 
     var promptAuth = function(){
-      res.header('WWW-Authenticate', 'Basic');
-      res.send(401); 
-    }
+      if(process.env.NODE_ENV == 'production' || process.env.NODE_ENV == 'stage'){
+        res.header('WWW-Authenticate', 'Basic');
+        res.send(401); 
+      } else {
+        next();
+      }
+    };
 
     if(req.headers.authorization){
       var encodedAuthString = req.headers.authorization.replace('Basic ', '')
