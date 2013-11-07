@@ -88,7 +88,7 @@ define([
     if(confirm){
       var editors = this.options.publication.get('editors');
       var index   = editors.indexOf(userId);
-      editors.splice(index, 1);
+      if(index != -1) editors.splice(index, 1);
       this.options.publication.set('editors', editors);
       this.options.publication.save();
     }
@@ -104,7 +104,7 @@ define([
     // If an editor, remove from editor array
     var editors = this.options.publication.get('editors');
     var index   = editors.indexOf(userId);
-    editors.splice(index, 1);
+    if(index != -1) editors.splice(index, 1);
     this.options.publication.set('editors', editors);
 
     this.options.publication.save();
@@ -120,7 +120,7 @@ define([
       // Remove from owners array
       var owners  = this.options.publication.get('owners');
       var index   = owners.indexOf(userId);
-      owners.splice(index, 1);
+      if(index != -1) owners.splice(index, 1);
       this.options.publication.set('owners', owners);
 
       // Reassign to editors array
