@@ -1,7 +1,7 @@
 {
   "name": "Gutenberg",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.0-20",
   "description": "a Sails application",
   "dependencies": {
     "grunt": "0.4.1",
@@ -23,5 +23,9 @@
   "main": "app.js",
   "repository": "",
   "author": "",
-  "license": ""
+  "license": "",
+  "subdomain": "gutenberg",
+  "engines": {
+    "node": "0.8.x"
+  }
 }
