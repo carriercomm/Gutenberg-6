@@ -7,9 +7,10 @@
       <div class='wysiwyg-left-col span4'>
         <% if(stories[i].images[0]){ %>
           <% if(stories[i].images.length > 1){ %>
-            <div class='gallery'>
-              <img style='width:100%;' src='<%= stories[i].images[0] %>'>
-            </div>
+            <img style='width:100%;' alt='inline-gallery' data-id='<%= stories[i].id %>' src='<%= stories[i].images[0] %>'>
+            <% for(var j=0; j<stories[i].images.length; j++) {%>
+              <div class='gallery-image' style='display:none;' data-src='<%= stories[i].images[j] %>'></div>
+            <% } %>
           <% } else { %>
             <img style='width:100%;' src='<%= stories[i].images[0] %>'>
           <% } %>
