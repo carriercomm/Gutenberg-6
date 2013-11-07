@@ -1,13 +1,15 @@
 define([
   'chaplin',
   'handlebars',
+  'wysiwyg',
   'uploader',
   'views/base/view',
   'views/images-view',
   'text!templates/story.hbs',
+  'text!templates/text-editor.hbs',
   'text!templates/uploader.hbs',
   'text!templates/uploader-dumb.hbs'
-], function(Chaplin, Handlebars, Uploader, View, ImagesView, storyTemplate, uploaderTemplate, dumbUploaderTemplate){
+], function(Chaplin, Handlebars, Wysiwyg, Uploader, View, ImagesView, storyTemplate, textEditorTemplate, uploaderTemplate, dumbUploaderTemplate){
   'use strict';
 
   var view = View.extend({
@@ -17,9 +19,9 @@ define([
     events        : {
       'click .destroy'        : 'destroy',
       'click .sort-button'    : 'handleSort',
-      'focus input, textarea' : 'inputFocused',
-      'blur input, textarea'  : 'inputBlurred',
-      'keyup .story-editor'   : 'scheduleSave',
+      //'focus input, textarea' : 'inputFocused',
+      //'blur input, textarea'  : 'inputBlurred',
+      //'keyup .story-editor'   : 'scheduleSave',
       'change input[type="checkbox"]' : 'checkboxChanged'
     }
   });
@@ -130,6 +132,12 @@ define([
 
     var self = this;
     this.attachUploader();
+
+    // Append the editor view
+    var editor    = Handlebars.compile(textEditorTemplate);
+    var selector  = '#editor-' + this.model.get('id');
+    $(this.el).find('.editor-wrapper').append(editor(this.model.attributes));
+    $(this.el).find(selector).wysiwyg();
 
     // Create the images view
     var imagesView = new ImagesView({

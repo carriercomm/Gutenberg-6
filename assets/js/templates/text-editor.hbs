@@ -1,0 +1,45 @@
+<div class="btn-toolbar editor-toolbar" data-role="editor-toolbar" data-target="#editor-{{id}}">
+
+  <div class="btn-group">
+    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="Font Size"><span class='glyphicon glyphicon-text-height'></span><b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
+      <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
+      <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
+    </ul>
+  </div>
+
+  <div class="btn-group">
+    <a class="btn btn-default btn-sm bold" data-edit="bold" title="Bold (Ctrl/Cmd+B)">B</a>
+    <a class="btn btn-default btn-sm italic" data-edit="italic" title="Italic (Ctrl/Cmd+I)">I</a>
+    <a class="btn btn-default btn-sm strike" data-edit="strikethrough" title="Strikethrough">S</a>
+    <a class="btn btn-default btn-sm underline" data-edit="underline" title="Underline (Ctrl/Cmd+U)">U</a>
+  </div>
+
+  <div class="btn-group">
+    <a class="btn btn-default btn-sm" data-edit="insertunorderedlist" title="Bullet list"><span class='glyphicon glyphicon-list'></span></a>
+    <a class="btn btn-default btn-sm" data-edit="insertorderedlist" title="Number list"><span class='glyphicon glyphicon-list-alt'></span></a>
+  </div>
+
+  <div class="btn-group">
+    <a class="btn btn-default btn-sm" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><span class='glyphicon glyphicon-align-left'></span></a>
+    <a class="btn btn-default btn-sm" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><span class='glyphicon glyphicon-align-center'></span></a>
+    <a class="btn btn-default btn-sm" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><span class='glyphicon glyphicon-align-right'></span></a>
+    <a class="btn btn-default btn-sm" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><span class='glyphicon glyphicon-align-justify'></span></a>
+  </div>
+
+  <div class="btn-group">
+    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><span class='glyphicon glyphicon-link'></span></a>
+    <div class="dropdown-menu input-append">
+      <input class="span2" placeholder="URL" type="text" data-edit="createLink"/>
+      <button class="btn" type="button">Add</button>
+    </div>
+  </div>
+  
+  <div class="btn-group">
+    <a class="btn btn-default btn-sm" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><span class='glyphicon glyphicon-fast-backward'></span></a>
+    <a class="btn btn-default btn-sm" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><span class='glyphicon glyphicon-fast-forward'></span></a>
+  </div>
+</div>
+
+<div class='editor' id='editor-{{id}}' contenteditable=true>{{body}}</div>

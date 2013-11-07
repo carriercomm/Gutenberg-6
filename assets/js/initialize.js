@@ -13,9 +13,14 @@ require.config({
     'jcrop'       : '/vendor/jquery.Jcrop',
     'bootstrap'   : '/vendor/bootstrap',
     'uploader'    : '/vendor/jquery.fineuploader-3.8.2',
-    'sortable'    : '/vendor/jquery.sortable'
+    'sortable'    : '/vendor/jquery.sortable',
+    'wysiwyg'     : '/vendor/bootstrap-wysiwyg'
   },
   shim        : {
+    wysiwyg       : {
+      exports         : 'wysiwyg',
+      deps            : ['bootstrap']
+    },
     sortable      : {
       exports         : 'sortable',
       deps            : ['jquery']
