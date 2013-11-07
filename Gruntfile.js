@@ -132,10 +132,22 @@ module.exports = function (grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
 
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
+    requirejs: {
+      compile: {
+        options: {
+          baseUrl         : 'assets/linker/js',
+          name            : 'start',
+          mainConfigFile  : 'assets/linker/js/require-config.js',
+          out             : 'assets/linker/js/optimized.js'
+        }
+      }
+    },
 
     copy: {
       dev: {
