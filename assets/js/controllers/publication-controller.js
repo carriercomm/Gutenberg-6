@@ -10,7 +10,6 @@ define([
 ], function(Chaplin, Controller, Collection, Model, Newsletter, PublicationsView, PublicationView, NewslettersView){
   'use strict';
 
-  var days    = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   var months  = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
 
   var publicationController = Controller.extend({
@@ -92,7 +91,7 @@ define([
 
     createNewsletter : function(publication){
       var date          = new Date();
-      var defaultTitle  = publication.get('title') + ' - ' + months[date.getMonth()] + ' ' + days[date.getDay()] + ' ' + date.getFullYear();
+      var defaultTitle  = publication.get('title') + ' - ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
       var newsletter    = new Newsletter();
       newsletter.url    = '/newsletter/create';
 
