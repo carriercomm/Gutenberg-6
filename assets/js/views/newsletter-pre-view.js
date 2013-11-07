@@ -5,8 +5,9 @@ define([
   'views/base/view',
   'text!templates/newsletterPreview.hbs',
   'text!templates/newsletterPublish.hbs',
+  'templates/helpers/channelHelpersExist',
   'templates/helpers/getChannelHelpers'
-], function(Chaplin, ejs, Model, View, newsletterTemplate, newsletterPublish, getChannelHelpers){
+], function(Chaplin, ejs, Model, View, newsletterTemplate, newsletterPublish, channelHelpersExist, getChannelHelpers){
   'use strict';
 
   var view = View.extend({

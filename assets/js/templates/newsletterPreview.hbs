@@ -1,22 +1,24 @@
 <div id='nav-container'></div>
 
 
-<div class='template-helpers'>
-  <div class='controls'>
-    <span class='hide-helpers glyphicon glyphicon-chevron-up'></span>
-    <span class='show-helpers glyphicon glyphicon-chevron-down'></span>
-    <h4>Template Helpers</h4>
-  </div>
+{{#channelHelpersExist channels}}
+  <div class='template-helpers'>
+    <div class='controls'>
+      <span class='hide-helpers glyphicon glyphicon-chevron-up'></span>
+      <span class='show-helpers glyphicon glyphicon-chevron-down'></span>
+      <h4>Template Helpers</h4>
+    </div>
 
-  <div class='options'>
-    {{#getChannelHelpers channels}}
-      <div class='option-item'>
-        <input type='text' class='form-control template-helper' data-helper-id='{{id}}' placeholder='{{title}}' />
-        <p class='help-block'>{{{help-text}}}</p>
-      </div>
-    {{/getChannelHelpers}}
+    <div class='options'>
+      {{#getChannelHelpers channels}}
+        <div class='option-item'>
+          <input type='text' class='form-control template-helper' data-helper-id='{{id}}' placeholder='{{title}}' />
+          <p class='help-block'>{{{help-text}}}</p>
+        </div>
+      {{/getChannelHelpers}}
+    </div>
   </div>
-</div>
+{{/channelHelpersExist}}
 
 <iframe id='iframe-newsletter' src='' />
 
