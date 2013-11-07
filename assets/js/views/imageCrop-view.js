@@ -114,12 +114,12 @@ define([
       }
     }
 
-    // Init so the preview looks right
-    setTimeout(function(){
+    // Wait for primary image to load, then initialize cropper
+    $(this.el).find('#crop-target').load(function(){
       for(var i=0; i<crops.length; i++){
         initCrop(crops[i], self);
       }
-    }, 200);
+    });
 
   };
 
