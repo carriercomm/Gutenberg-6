@@ -81,7 +81,8 @@ define([
         "Include Story in " + channels[i].title + "?" +
         "<input type='checkbox' " + checked + " class='" + namespace + "' name='" + namespace + "'>"
       "</label>";
-      $channels.append(template)
+
+      //$channels.append(template)
     }
 
   };
