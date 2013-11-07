@@ -14,8 +14,18 @@ body{
 #newsletter-view .nav{
   margin-bottom   : 30px;
 }
-#newsletter-view .publication-title-wrapper{
+#newsletter-view .newsletter-attrs .form-group{
   margin-bottom   : 0px;
+}
+#newsletter-view .newsletter-attrs input{
+  margin-bottom   : 15px;
+}
+#newsletter-view .newsletter-attrs input.tags{
+  margin          : 0;
+}
+#newsletter-view .newsletter-attrs span.help-block{
+  font-size       : 90%;
+  margin          : 0;
 }
 #newsletter-view .add-story-wrapper{
   overflow        : hidden;

@@ -9,7 +9,6 @@
 module.exports = {
   attributes: {
     title : {
-      required    : true,
       defaultsTo  : 'New Newsletter',
       type        : 'STRING',
       maxLength   : 256
@@ -17,6 +16,10 @@ module.exports = {
     publication_id : {
       type        : 'STRING',
       defaultsTo  : 0
+    },
+    tags : {
+      type        : 'STRING',
+      defaultsTo  : ''
     },
     published : {
       type        : 'BOOLEAN',
