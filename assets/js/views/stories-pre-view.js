@@ -1,9 +1,8 @@
 define([
   'chaplin',
   'ejs',
-  'views/base/view',
-  'views/story-view',
-], function(Chaplin, ejs, View, StoryView){
+  'views/base/view'
+], function(Chaplin, ejs, View){
   'use strict';
 
   var view = View.extend({});
