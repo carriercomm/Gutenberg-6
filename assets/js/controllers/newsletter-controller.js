@@ -4,7 +4,7 @@ define([
   'models/base/model',
   'models/newsletter',
   'models/stories',
-  'models/Story',
+  'models/story',
   'views/base/collection-view',
   'views/newsletter-view',
   'views/newsletter-nav-view',
