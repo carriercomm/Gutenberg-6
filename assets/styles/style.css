@@ -26,6 +26,9 @@ body{
   position        : relative;
   background-color: white;
 }
+#stories .story-controls .btn-disabled{
+  opacity         : .25;
+}
 #stories div.sortable-placeholder {
   width           : 100%;
   height          : 95px;

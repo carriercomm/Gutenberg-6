@@ -69,8 +69,34 @@ define([
   };
 
 
+  StoryView.prototype.initialize = function(){
+    Chaplin.View.prototype.initialize.apply(this, arguments);
+    this.listenTo(this.model, 'change:sort_index', this.adjustIndexerButtons);
+  };
+
+
+  // Enable/disable the up/down buttons dependent on model index
+  StoryView.prototype.adjustIndexerButtons = function(){
+    var $el = $(this.el);
+
+    $el.find('.sort-button.up').removeClass('btn-disabled');
+    $el.find('.sort-button.down').removeClass('btn-disabled');
+
+    if(this.model.get('sort_index') == 0){
+      $el.find('.sort-button.up').addClass('btn-disabled');
+    } else {
+      var storiesLength = this.model.collection.models.length
+      if(this.model.get('sort_index') == storiesLength - 1){
+        $el.find('.sort-button.down').addClass('btn-disabled');
+      }
+    }
+  };
+
+
   StoryView.prototype.render = function(){
     Chaplin.View.prototype.render.apply(this, arguments);
+
+    this.adjustIndexerButtons();
 
     var story_id = this.model.get('id');
     var self     = this;
