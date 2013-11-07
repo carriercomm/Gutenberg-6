@@ -33,10 +33,7 @@ module.exports = {
 
 
   serve : function(req, res){
-    var baseDir = 'uploads';
-    if(process.env.STACKATO_FILESYSTEM) baseDir = process.env.STACKATO_FILESYSTEM
-
-    var filePath = path.join(process.cwd(), baseDir, req.params[0]);
+    var filePath = path.join(process.cwd(), 'uploads', req.params[0]);
 
     fs.readFile(filePath, function(err, img){
       res.end(img, 'binary');
@@ -48,9 +45,7 @@ module.exports = {
 var saveImage = function(file, story_id, next){
 
   // Set a base directory, use stackato's special instance if in production
-  var baseDir = 'uploads';
-  if(process.env.STACKATO_FILESYSTEM) baseDir = process.env.STACKATO_FILESYSTEM
-
+  var baseDir   = 'uploads';
   var tempPath  = file.path || file.qqfile.path;
   var uploadDir = path.join(baseDir, story_id);
   var newPath   = path.join(uploadDir, file.name);
