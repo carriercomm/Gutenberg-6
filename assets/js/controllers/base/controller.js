@@ -6,6 +6,7 @@ define([
 
   var Controller = Chaplin.Controller.extend({
     beforeAction : function(){
+      Chaplin.Controller.prototype.beforeAction.apply(this, arguments);
       this.compose('site', SiteView)
     }
   });
