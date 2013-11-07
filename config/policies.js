@@ -8,7 +8,7 @@ module.exports.policies = {
     'find'    : ['authenticated', 'userIsEditorOfPublication']
   },
   UserController : {
-    '*'       : 'userIsMaster',
+    '*'       : ['authenticated', 'userIsMaster'],
     'find'    : 'authenticated'
   }
 };
