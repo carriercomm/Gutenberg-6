@@ -39,7 +39,10 @@ define([
         stories.push(story.attributes);
       }
 
-      var passedOptions = { stories : stories };
+      var passedOptions = {
+        stories     : stories,
+        newsletter  : this.model.attributes
+      };
       var html          = this.options.template(passedOptions);
 
       $(this.el).html(html);
