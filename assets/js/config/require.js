@@ -1,17 +1,15 @@
 require.config({
   baseUrl     : '/js/',
   paths       : {
-    'jquery'      : './vendor/jquery',
     'underscore'  : './vendor/underscore',
-    'handlebars'  : './vendor/handlebars',
-    'hbs'         : './vendor/hbs',
-    'ejs'         : './vendor/ejs',
+    'sailsio'     : './vendor/sails.io',
+    'socketio'    : './vendor/socket.io',
+    'jquery'      : './vendor/jquery',
     'backbone'    : './vendor/backbone',
     'chaplin'     : './vendor/chaplin',
     'text'        : './vendor/requirejs-text',
-    'sailsio'     : './vendor/sails.io',
-    'socketio'    : './vendor/socket.io',
-    'jcolor'      : './vendor/jquery.color',
+    'handlebars'  : './vendor/handlebars',
+    'ejs'         : './vendor/ejs',
     'jcrop'       : './vendor/jquery.Jcrop',
     'bootstrap'   : './vendor/bootstrap',
     'uploader'    : './vendor/jquery.fineuploader-3.8.2',
@@ -20,54 +18,55 @@ require.config({
     'hotkeys'     : './vendor/jquery.hotkeys'
   },
   shim        : {
-    ejs           : {
-      exports         : 'ejs',
-      deps            : ['text']
-    },
-    chaplin       : {
-      exports         : 'chaplin'
-    },
-    hotkeys       : {
-      exports         : 'hotkeys',
-      deps            : ['jquery']
-    },
-    wysiwyg       : {
-      exports         : 'wysiwyg',
-      deps            : ['bootstrap', 'hotkeys']
-    },
-    sortable      : {
-      exports         : 'sortable',
-      deps            : ['jquery']
-    },
-    uploader      : {
-      exports         : 'qq',
-      deps            : ['jquery']
-    },
-    bootstrap     : {
-      exports         : 'bootstrap'
-    },
-    jcrop         : {
-      exports         : 'jcrop'
-    },
-    jcolor        : {
-      exports         : 'jcolor'
+    underscore    : {
+      exports         : '_'
     },
     sailsio       : {
-      exports       : 'sailsio'
+      deps            : ['socketio'],
+      exports         : 'sailsio'
     },
     socketio      : {
-      exports       : 'io'
-    },
-    underscore    : {
-      exports       : '_'
+      exports         : 'io'
     },
     backbone      : {
-      deps          : ['underscore', 'jquery'],
-      exports       : 'Backbone'
+      deps            : ['underscore', 'jquery'],
+      exports         : 'Backbone'
+    },
+    chaplin       : {
+      deps            : ['backbone'],
+      exports         : 'chaplin'
     },
     handlebars    : {
-      exports       : 'Handlebars'
+      exports         : 'Handlebars'
+    }
+    ejs           : {
+      deps            : ['text'],
+      exports         : 'ejs'
+    },
+    jcrop         : {
+      deps            : ['jquery'],
+      exports         : 'jcrop'
+    },
+    bootstrap     : {
+      deps            : ['jquery'],
+      exports         : 'bootstrap'
+    },
+    uploader      : {
+      deps            : ['jquery'],
+      exports         : 'qq'
+    },
+    sortable      : {
+      deps            : ['jquery'],
+      exports         : 'sortable'
+    },
+    wysiwyg       : {
+      deps            : ['bootstrap', 'hotkeys'],
+      exports         : 'wysiwyg'
+    },
+    hotkeys       : {
+      deps            : ['jquery'],
+      exports         : 'hotkeys'
     }
   },
-  urlArgs         : 'bust=' +  (new Date()).getTime()
+  urlArgs             : 'bust=' + new Date().getTime()
 });
