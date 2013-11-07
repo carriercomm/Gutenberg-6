@@ -6,9 +6,10 @@
  *
  */
 
-var fs    = require('fs');
-var path  = require('path');
-var _     = require('underscore');
+var fs      = require('fs');
+var path    = require('path');
+var _       = require('underscore');
+var events  = require('events');
 
 module.exports = {
 
@@ -31,7 +32,19 @@ module.exports = {
   beforeDestroy : function(props, next){
     // Delete the image reference when deleting the model
     Image.findOne({ id: props.where.id }).exec(function(err, model){
+
+      // Destroy primary image
       ImageService.destroy(model.url);
+
+      // Loop over cropped items and destroy all of them
+      if(model.crops){
+        model.crops.forEach(function(item){
+          if(item.url){
+            ImageService.destroy(item.url);
+          }
+        });
+      }
+
       next();
     });
   },
@@ -39,38 +52,52 @@ module.exports = {
 
   beforeUpdate : function(props, next){
 
-    var getCropWrite = function(remoteURL, cropOptions){
+    var getCropWrite = function(remoteURL, cropOptions, cb){
       ImageService.get(remoteURL, function(localFilePath){
         ImageService.crop(localFilePath, cropOptions.coords, function(filePath){
           ImageService.write(filePath, function(remoteFilePath){
             cropOptions.url = remoteFilePath;
-          })
+            cb();
+          });
         });
       });
     };
 
-    // Loop over croppable items and crop only if necessary
-    if(props.crops){
-      var newCrops = props.crops;
+    // Define the new crop properties
+    var newCrops = [];
+    if(props.crops) newCrops = props.crops;
 
-      Image.findOne({ id: props.id }).exec(function(err, model){
+    // Set up event emitter to handle 
+    var isReady   = new events.EventEmitter();
+    var successes = 0;
+    isReady.on('testLength', function(){
+      successes++;
+      if(successes == newCrops.length) next();
+    });
 
-        for(var i=0; i<newCrops.length; i++){
-          var currentCrop = _.findWhere(model.crops, { title : newCrops[i].title });
+    Image.findOne({ id: props.id }).exec(function(err, model){
 
-          // Compare crops to current model
-          if(JSON.stringify(currentCrop) != JSON.stringify(newCrops[i])){
+      // Loop over croppable items and crop only if necessary
+      for(var i=0; i<newCrops.length; i++){
+        var currentCrop   = _.findWhere(model.crops, { title : newCrops[i].title });
+        var currentCoords = {};
+        var newCoords     = {};
 
-            // Ensure crop properties are specified in interface
-            if(Object.keys(newCrops[i].coords).length){
-              getCropWrite(props.url, newCrops[i]);
-            }
-          }
-        }
-      });
+        // Ensure crops exist in current model
+        // and crop properties are specified from interface
+        if(currentCrop && currentCrop.coords) currentCoords = currentCrop.coords
+        if(newCrops[i].coords) newCoords = newCrops[i].coords;
 
-    }
+        // Compare crops to current model
+        if(JSON.stringify(currentCoords) != JSON.stringify(newCrops[i].coords)){
+          getCropWrite(props.url, newCrops[i], function(){
+            isReady.emit('testLength');
+          });
+        } else{ isReady.emit('testLength'); }
+      }
 
-    next();
+      if(newCrops.length == 0) next();
+    });
+
   }
 };

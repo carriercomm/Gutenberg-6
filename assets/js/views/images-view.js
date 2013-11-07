@@ -27,9 +27,6 @@ define([
       this.renderAllItems();
     }
 
-    // Make sure to index the images when new items are uploaded
-    self.reindexImages();
-
     // Listen for updates to the image collection and
     // Reattach sorter when new images are added
     $el.find('.image-list').sortable('destroy');
