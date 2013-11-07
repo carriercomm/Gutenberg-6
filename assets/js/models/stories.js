@@ -22,7 +22,8 @@ define([
     var stories = [];
 
     this.each(function(model){
-      var clone = _.clone(model);
+      // The shroud of the dark side has fallen. Begun the Clone War has.
+      var clone     = _.clone(model.attributes);
 
       // Deal with the images better for templating
       var images    = model.get('images');
@@ -39,11 +40,11 @@ define([
       }
 
       // Make a standard index property available for the templates
-      var sortIndex = clone.get(sortBy);
-      clone.set('sort_index', sortIndex);
-      clone.set('images', imageURLS);
+      var sortIndex     = clone[sortBy];
+      clone.sort_index  = sortIndex;
+      clone.images      = imageURLS;
 
-      stories.push(clone.attributes);
+      stories.push(clone);
     });
 
     stories = _.sortBy(stories, function(item){
