@@ -25,18 +25,14 @@ define([
 
     var newsletter_id = this.model.get('id');
     var stories       = this.model.get('stories');
-    var story         = new Story({ newsletter_id : newsletter_id});
+    var story         = new Story({ newsletter_id : newsletter_id, sort_index : stories.length });
     story.url         = '/story/create'
     story.save({
       success : function(){
         stories.add(story);
       }
-    })
+    });
   };
-
-  view.prototype.render = function(){
-    CollectionView.prototype.render.apply(this, arguments);
-  }
 
   return view;
 });
