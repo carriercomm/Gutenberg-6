@@ -16,9 +16,19 @@ define([
       'id'        : 'newsletter-view'
     },
     events        : {
-      'click #add-story'    : 'addNewStory'
+      'click #add-story'        : 'addNewStory',
+      'keyup input#story-title' : 'scheduleSave'
     }
   });
+
+
+  view.prototype.scheduleSave = function(e){
+    var self = this;
+    this.schedule = setTimeout(function(){
+      self.model.save({ title : $(self.el).find('#story-title').val() });
+    }, 100);
+  };
+
 
   view.prototype.addNewStory = function(e){
     e.preventDefault();
@@ -31,6 +41,18 @@ define([
       success : function(){
         stories.add(story);
       }
+    });
+  };
+
+
+  view.prototype.initialize = function(e){
+    Chaplin.CollectionView.prototype.initialize.apply(this, arguments);
+
+    var $el   = $(this.el);
+    var self  = this;
+
+    this.listenTo(this.model, 'change:title', function(model){
+      $el.find('#story-title').val(self.model.get('title'));
     });
   };
 
