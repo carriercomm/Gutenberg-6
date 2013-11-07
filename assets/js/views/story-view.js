@@ -21,8 +21,8 @@ define([
       'click .sort-button'    : 'handleSort',
       'focus input, textarea' : 'inputFocused',
       'blur input, textarea'  : 'inputBlurred',
-      'change input[type="checkbox"]' : 'checkboxChanged',
-      'keyup'                 : 'scheduleSave'
+      'keyup .story-editor'   : 'scheduleSave',
+      'change input[type="checkbox"]' : 'checkboxChanged'
     }
   });
 
