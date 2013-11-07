@@ -1,5 +1,5 @@
 require.config({
-  baseUrl     : '/js/',
+  baseUrl     : '/linker/js/',
   paths       : {
     'jquery'      : './vendor/jquery',
     'underscore'  : './vendor/underscore',
@@ -23,6 +23,9 @@ require.config({
     ejs           : {
       exports         : 'ejs',
       deps            : ['text']
+    },
+    chaplin       : {
+      exports         : 'chaplin'
     },
     hotkeys       : {
       exports         : 'hotkeys',
