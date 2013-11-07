@@ -55,7 +55,7 @@ define([
     // Generate the html for the publish view
     var html          = this.template({
       stories         : stories,
-      newsletter      : this.model.attributes
+      newsletter      : this.model.prepForTemplateUsage()
     });
 
     // Create a temporary model for template usage
