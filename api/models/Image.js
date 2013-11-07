@@ -29,6 +29,14 @@ module.exports = {
   },
 
 
+  beforeCreate : function(props, next){
+    Image.find({ story_id : props.story_id}).exec(function(err, collection){
+      props.sort_index = collection.length;
+      next();
+    });
+  },
+
+
   beforeDestroy : function(props, next){
     // Delete the image reference when deleting the model
     Image.findOne({ id: props.where.id }).exec(function(err, model){
