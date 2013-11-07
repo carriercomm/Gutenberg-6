@@ -10,6 +10,7 @@ define([
 
   view.prototype.initialize = function(){
     Chaplin.View.prototype.initialize.apply(this, arguments);
+
     this.renderTimeout = null;
     this.subscribeEvent('channels_registered', this.registerTemplates);
     this.listenTo(this.model, 'change', this.scheduleRender);
@@ -48,15 +49,16 @@ define([
 
 
   view.prototype.registerTemplates = function(channels){
-    this.channels         = channels;
-    var index             = this.options.params.templateIndex;
-    this.options.template = ejs.compile(channels[index].templates.preview);
-    this.registered       = true;
+    this.channels     = channels;
+    var index         = this.options.params.templateIndex;
+    this.template     = ejs.compile(channels[index].templates.preview);
+    this.registered   = true;
     this.render();
   };
 
 
   view.prototype.render = function(){
+
     var self = this;
 
     if(this.registered){
@@ -64,44 +66,12 @@ define([
       // Find the active channel and create the namespace
       var activeChannel = _.findWhere(this.channels, { active : true });
       var namespace     = 'sort_channel_' + activeChannel.title + '_index';
+      var stories       = this.collection.getSortedStoriesWithImages(namespace);
 
-      // The regular toJSON method cannot be used here since i'm using
-      // it to blacklist attributes for socket saves. 
-      var stories = [];
-      this.collection.each(function(model){
-        var clone = _.clone(model);
-
-        // Deal with the images better for templating
-        var images    = model.get('images');
-        var imageURLS = [];
-
-        if(images instanceof Backbone.Collection){
-          if(images){
-            images.each(function(model){
-              imageURLS.push(model.get('url'));
-            });
-          }
-        } else{
-          imageURLS = images;
-        }
-
-        // Make a standard index property available for the templates
-        var sort_index = clone.get(namespace)
-        clone.set('sort_index', sort_index);
-        clone.set('images', imageURLS);
-
-        stories.push(clone.attributes);
+      var html          = this.template({
+        stories         : stories,
+        newsletter      : this.model.attributes
       });
-
-      stories = _.sortBy(stories, function(item){
-        return item[namespace]
-      });
-
-      var passedOptions = {
-        stories     : stories,
-        newsletter  : this.model.attributes
-      };
-      var html = this.options.template(passedOptions);
 
       $(this.el).html(html);
       $('body').html($(this.el));
