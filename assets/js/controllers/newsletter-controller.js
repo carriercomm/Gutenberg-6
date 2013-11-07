@@ -35,6 +35,14 @@ define([
         region      : 'main'
       });
 
+      // Listen for newsletter model changes and update the view
+      this.listenTo(newsletter, 'change:title', function(model){
+        var $el = $(newsletterView.el).find('#story-title');
+        if(!$el.hasClass('preventUpdate')){
+          $el.val(newsletter.get('title'));
+        }
+      });
+
       // Listen for story index updates
       Chaplin.mediator.subscribe('storyIndexUpdate', function(story, direction){
         var oldIndex = story.get('sort_index');
