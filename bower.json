@@ -1,0 +1,24 @@
+{
+  "name": "Gutenberg",
+  "version": "0.0.0",
+  "homepage": "https://github.com/joelongstreet/Gutenberg",
+  "authors": [
+    "joelongstreet <joelongstreet@gmail.com>"
+  ],
+  "description": "Helps content creators create publications which live as e-mail blasts, blog posts, and other content forms.",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.0.3",
+    "bootstrap": "~3.0.0",
+    "backbone": "~1.0.0",
+    "underscore": "~1.5.1"
+  }
+}
