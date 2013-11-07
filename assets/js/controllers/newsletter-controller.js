@@ -49,7 +49,7 @@ define([
               title : 'Publications'
             },
             {
-              route : '/publication/' + publication.get('publication_id'),
+              route : '/publication/' + publication.get('id'),
               title : publication.get('title')
             },
             {
