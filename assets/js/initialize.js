@@ -4,6 +4,7 @@ require.config({
     'jquery'      : '/vendor/jquery',
     'underscore'  : '/vendor/underscore',
     'handlebars'  : '/vendor/handlebars',
+    'hbs'         : '/vendor/hbs',
     'ejs'         : '/vendor/ejs',
     'backbone'    : '/vendor/backbone',
     'chaplin'     : '/vendor/chaplin',

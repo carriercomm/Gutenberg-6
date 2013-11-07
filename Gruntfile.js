@@ -133,8 +133,6 @@ module.exports = function (grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
 
-  grunt.loadNpmTasks('grunt-contrib-handlebars');
-
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -167,21 +165,13 @@ module.exports = function (grunt) {
       build: ['www']
     },
 
-    /*jst: {
+    jst: {
       dev: {
         options: {
           templateSettings: {
-            interpolate: /\{\{(.+?)\}\}/g
+            //interpolate: /\{\{(.+?)\}\}/g
           }
         },
-        files: {
-          '.tmp/public/jst.js': templateFilesToInject
-        }
-      }
-    },*/
-
-    handlebars: {
-      dev: {
         files: {
           '.tmp/public/jst.js': templateFilesToInject
         }
@@ -404,7 +394,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('compileAssets', [
     'clean:dev',
-    'handlebars:dev',
+    'jst:dev',
     'less:dev',
     'copy:dev'
   ]);
@@ -433,7 +423,7 @@ module.exports = function (grunt) {
   // When sails is lifted in production
   grunt.registerTask('prod', [
     'clean:dev',
-    'handlebars:dev',
+    'jst:dev',
     'less:dev',
     'copy:dev',
     'concat',

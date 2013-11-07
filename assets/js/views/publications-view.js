@@ -9,7 +9,6 @@ define([
 ], function(Chaplin, bootstrap, CollectionView, PublicationMini, PublicationCrudView, miniTemplate, collectionTemplate){
   'use strict';
 
-
   var collectionView = CollectionView.extend({
     itemView      : PublicationMini,
     template      : collectionTemplate,

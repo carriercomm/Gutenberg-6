@@ -15,8 +15,7 @@
   },
   "devDependencies": {
     "forever": "0.10.0",
-    "grunt-contrib-requirejs": "~0.4.1",
-    "grunt-contrib-handlebars": "~0.5.11"
+    "grunt-contrib-requirejs": "~0.4.1"
   },
   "scripts": {
     "start": "node app.js",
