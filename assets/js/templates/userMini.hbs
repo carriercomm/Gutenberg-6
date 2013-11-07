@@ -7,9 +7,16 @@
 </span>
 
 {{#if isOwner}}
-  <a class='revoke-editor btn btn-danger btn-xs pull-right' href='#'>Revoke Editor</a>
   <a class='revoke-owner btn btn-warning btn-xs pull-right' href='#'>Revoke Ownership</a>
-{{else}}
-  <a class='make-editor btn btn-success btn-xs pull-right' href='#'>Make Editor</a>
-  <a class='make-owner btn btn-info btn-xs pull-right' href='#'>Make Owner</a>
 {{/if}}
+
+{{#if isEditor}}
+  <a class='revoke-editor btn btn-danger btn-xs pull-right' href='#'>Revoke Editor</a>
+{{/if}}
+
+{{#unless isOwner}}
+  {{#unless isEditor}}
+    <a class='make-editor btn btn-success btn-xs pull-right' href='#'>Make Editor</a>
+    <a class='make-owner btn btn-info btn-xs pull-right' href='#'>Make Owner</a>
+  {{/unless}}
+{{/unless}}

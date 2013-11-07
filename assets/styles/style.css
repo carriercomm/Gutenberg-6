@@ -33,7 +33,23 @@
 
 /* Publication View */
 #publication #users input{
+  margin-bottom   : 15px;
+}
+#publication #users .filters{
+  border-bottom   : 1px solid #dddddd;
   margin-bottom   : 20px;
+}
+#publication #users .filters label{
+  margin-right    : 20px;
+  margin-top      : 7px;
+  font-weight     : normal;
+  font-size       : 90%;
+}
+#publication #users .list-group{
+  max-height      : 350px;
+  overflow-y      : scroll;
+  border-bottom   : 1px solid #dddddd;
+  border-radius   : 0 0 5px 5px;
 }
 #publication #users .list-group-item .btn{
   margin-left     : 5px;
