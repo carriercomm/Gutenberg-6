@@ -1,0 +1,15 @@
+<% for(var i=0; i<stories.length; i++) {%>
+  <div class='story row' style='margin-bottom:15px'>
+    <div class='col-lg-4 col-md-4'>
+      <div class='gallery'>
+        <% if(stories[i].images[0]){ %>
+          <img style='width:100%;' src='<%= stories[i].images[0].url %>'>
+        <% } %>
+      </div>
+    </div>
+    <div class='col-lg-8 col-md-8'>
+      <h2 class='title'><%= stories[i].title %></h2>
+      <p class='body'><%= stories[i].body %></p>
+    </div>
+  </div>
+<% } %>
