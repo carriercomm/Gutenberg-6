@@ -3,13 +3,14 @@ define([
   'controllers/base/controller',
   'models/base/collection',
   'models/publications',
+  'models/users',
   'models/publication',
   'models/newsletter',
   'views/publications-view',
   'views/publication-view',
   'views/newsletters-view',
   'views/users-view'
-], function(Chaplin, Controller, Collection, Publications, Publication, Newsletter, PublicationsView, PublicationView, NewslettersView, UsersView){
+], function(Chaplin, Controller, Collection, Publications, Users, Publication, Newsletter, PublicationsView, PublicationView, NewslettersView, UsersView){
   'use strict';
 
   var months  = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
@@ -52,11 +53,8 @@ define([
       this.model.params = {
         model           : 'publication',
         id              : params.id
-      }
+      };
       this.model.listen(function(){
-        var allUserIds = _.union(self.model.get('editors'), self.model.get('owners'))
-        var users = new Collection(self.model.get);
-
         // update the crumb
         self.publishEvent('crumbUpdate', [
           {
@@ -68,6 +66,11 @@ define([
             title : self.model.get('title')
           }
         ]);
+      });
+
+      // Listen for owner editor updates to use in interface
+      this.listenTo(this.model, 'change', function(model){
+        self.publishEvent('owner_editor_update', this.model);
       });
 
       // Create the wrapper view
@@ -86,7 +89,7 @@ define([
       newsletters.listen();
 
       // Set up the users collection
-      var users           = new Collection();
+      var users           = new Users();
       users.url           = '/user';
       users.listen();
 

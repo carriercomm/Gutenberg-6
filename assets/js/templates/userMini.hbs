@@ -6,17 +6,24 @@
   {{/if}}
 </span>
 
-{{#if isOwner}}
-  <a data-action='revokeOwner' class='btn btn-warning btn-xs pull-right' href='#'>Revoke Ownership</a>
-{{/if}}
+{{#if isMaster}}
+  <span class='notice'>This is a master user and has access to all publications across Gutenberg. You may not access their permissions.</span>
+{{else}}
 
-{{#if isEditor}}
-  <a data-action='revokeEditor' class='btn btn-danger btn-xs pull-right' href='#'>Revoke Editor</a>
-{{/if}}
+  {{#if isOwner}}
+    <a data-action='revokeOwner' class='btn btn-warning btn-xs pull-right' href='#'>Revoke Ownership</a>
+  {{/if}}
 
-{{#unless isOwner}}
-  {{#unless isEditor}}
-    <a data-action='makeEditor' class='btn btn-success btn-xs pull-right' href='#'>Make Editor</a>
+  {{#if isEditor}}
+    <a data-action='revokeEditor' class='btn btn-danger btn-xs pull-right' href='#'>Revoke Editor</a>
     <a data-action='makeOwner' class='btn btn-info btn-xs pull-right' href='#'>Make Owner</a>
+  {{/if}}
+
+  {{#unless isOwner}}
+    {{#unless isEditor}}
+      <a data-action='makeEditor' class='btn btn-success btn-xs pull-right' href='#'>Make Editor</a>
+      <a data-action='makeOwner' class='btn btn-info btn-xs pull-right' href='#'>Make Owner</a>
+    {{/unless}}
   {{/unless}}
-{{/unless}}
+
+{{/if}}

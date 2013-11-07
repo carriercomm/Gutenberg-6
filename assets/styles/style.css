@@ -35,6 +35,13 @@
 #publication #users input{
   margin-bottom   : 15px;
 }
+#publication #users .notice{
+  opacity         : .8;
+  float           : right;
+  width           : 70%;
+  text-align      : right;
+  font-size       : 80%;
+}
 #publication #users .filters{
   border-bottom   : 1px solid #dddddd;
   margin-bottom   : 20px;

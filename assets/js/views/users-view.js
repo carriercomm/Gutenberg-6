@@ -17,12 +17,6 @@ define([
   });
 
 
-  view.prototype.initialize = function(){
-    Chaplin.CollectionView.prototype.initialize.apply(this, arguments);
-    this.options.publication.listenTo(this.options.publication, 'change', this.doSumthin)
-  };
-
-
   view.prototype.initItemView = function(model){
     return new this.itemView({
       model           : model,
