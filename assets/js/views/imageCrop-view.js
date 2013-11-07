@@ -25,12 +25,12 @@ define([
     // Setup crop options
     var cropOpts      = croppableItem.cropOptions || {};
     cropOpts.onChange = function(coords){
-      showPreview(croppableItem, coords, imgWidth, imgHeight, $cropPrev);
+      showPreview(croppableItem, coords, imgWidth, imgHeight, $cropPrev, context);
     };
 
     // Show preview when initting
     if(croppableItem.coords){
-      showPreview(croppableItem, croppableItem.coords, imgWidth, imgHeight, $cropPrev);
+      showPreview(croppableItem, croppableItem.coords, imgWidth, imgHeight, $cropPrev, context);
     }
 
     // Clean up old cropper and make a new one
@@ -39,7 +39,7 @@ define([
   };
 
 
-  var showPreview = function(croppableItem, coords, imgWidth, imgHeight, $cropPrev){
+  var showPreview = function(croppableItem, coords, imgWidth, imgHeight, $cropPrev, context){
 
     if(typeof croppableItem.width == 'undefined' || typeof croppableItem.height == 'undefined'){
       // If no height or width is defined, use a free style preview
@@ -79,7 +79,7 @@ define([
     $target.parent().addClass('selected');
 
     // Find the correct element, init
-    var cropppableItems = this.model.get('croppableItems');
+    var cropppableItems = this.model.collection.croppableItems;
     var croppableItem   = _.findWhere(cropppableItems, {'domId' : id}) || {};
     initCrop(croppableItem, this);
   };
@@ -93,12 +93,14 @@ define([
 
 
   view.prototype.render = function(){
+    this.model.set('croppableItems', this.model.collection.croppableItems);
     Chaplin.View.prototype.render.apply(this, arguments);
 
     // Loop over croppable items to set their initial state
     // to match the servers cropped properties
     var items = this.model.get('croppableItems');
     var self  = this;
+
     setTimeout(function(){
       for(var i=0; i<items.length; i++){
         initCrop(items[i], self);

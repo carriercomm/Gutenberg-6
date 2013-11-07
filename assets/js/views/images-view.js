@@ -15,9 +15,32 @@ define([
 
   view.prototype.initialize = function(){
     Chaplin.View.prototype.initialize.apply(this, arguments);
+
+    this.collection.croppableItems = [];
+
     this.listenTo(this.collection, 'add', this.reRender);
     this.listenTo(this.collection, 'remove', this.reRender);
     this.listenTo(this.collection, 'change:sort_index', this.reRender);
+
+    this.subscribeEvent('channels_registered', this.updateCropOptions);
+  };
+
+
+  view.prototype.updateCropOptions = function(channels){
+    // loop over channels, reset crop options
+    this.collection.croppableItems = [];
+    for(var i=0; i<channels.length; i++){
+
+      var obj = {
+        domId       : channels[i].title.toLowerCase(),
+        title       : channels[i].title,
+        width       : channels[i].crop.width,
+        height      : channels[i].crop.height,
+        cropOptions : channels[i].crop.cropOptions
+      }
+
+      this.collection.croppableItems.push(obj);
+    }
   };
 
 
