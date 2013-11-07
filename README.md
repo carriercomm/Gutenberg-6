@@ -8,7 +8,6 @@ Gutenberg is a **real time, collaborative, multi channel, content creation syste
 * Multi Channel - A single piece of content can be streamed to an infinite number of channels. See what your content looks like in each channel before publishing.
 * Content Creation System - Light weight wysiwyg's, bulk image uploading/manipulation, and a user management system make Gutenberg robust but still very easy to use.
 
-<<<<<<< HEAD
     [
         {
             "title": "Email",
@@ -58,3 +57,7 @@ I've made minor modifications to `vendor/fineuploader-3.8.2.css` as this was the
 ## Where can I see this live?
 The application is currently reliant on a corporate authentication system and a public web demo isn't currently an option. I'm working to abstract this logic and hope to get a public demo up soon.
 >>>>>>> readme updates
+=======
+## Where can I see this live?
+The application is currently reliant on a corporate authentication system and a public web demo isn't currently an option. I'm working to abstract this logic and hope to get a public demo up soon.
+>>>>>>> f774b860a3d15f5879e8f89a76405d45edc879f7
