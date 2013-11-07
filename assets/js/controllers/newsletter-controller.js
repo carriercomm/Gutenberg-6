@@ -44,21 +44,17 @@ define([
         var newIndex    = (direction == 'up') ? oldIndex - 1 : oldIndex + 1;
         var otherStory  = stories.findWhere({ 'sort_index' : newIndex});
 
-        story.set('sort_index', newIndex);
-        otherStory.set('sort_index', oldIndex);
-
-        story.save();
-        otherStory.save();
+        story.save({ sort_index : newIndex });
+        otherStory.save({ sort_index : oldIndex });
         stories.sort();
       });
 
       // Listen for story deletes, and then reindex
       Chaplin.mediator.subscribe('storyDelete', function(){
-        stories.sort();
         for(var i=0; i<stories.models.length; i++){
-          stories.models[i].set('sort_index', i);
-          stories.models[i].save();
+          stories.models[i].save({ sort_index : i });
         }
+        stories.sort();
       });
     }
   });

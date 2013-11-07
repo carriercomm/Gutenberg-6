@@ -21,6 +21,10 @@ define([
       }
 
       this.set('images', images);
+      var self = this;
+      this.on('all', function(){
+        self.set('images', images);
+      });
     }
   });
 
