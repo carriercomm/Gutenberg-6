@@ -4,8 +4,9 @@ define([
   'models/base/model',
   'views/base/view',
   'text!templates/newsletterPreview.hbs',
-  'text!templates/newsletterPublish.hbs'
-], function(Chaplin, ejs, Model, View, newsletterTemplate, newsletterPublish){
+  'text!templates/newsletterPublish.hbs',
+  'templates/helpers/getChannelHelpers'
+], function(Chaplin, ejs, Model, View, newsletterTemplate, newsletterPublish, getChannelHelpers){
   'use strict';
 
   var view = View.extend({
@@ -40,10 +41,11 @@ define([
 
 
   view.prototype.registerTemplates = function(channels){
-    var index     = this.options.params.templateIndex;
-    var template  = channels[index].templates.publish || channels[index].templates.preview;
-    this.template = ejs.compile(template);
-    this.channels = channels;
+    var index         = this.options.params.templateIndex;
+    var template      = channels[index].templates.publish || channels[index].templates.preview;
+    this.userTemplate = ejs.compile(template);
+    this.channels     = channels;
+    this.render();
   };
 
 
@@ -53,7 +55,7 @@ define([
     var stories       = this.collection.getSortedStoriesWithImages(activeChannel.title);
 
     // Generate the html for the publish view
-    var html          = this.template({
+    var html          = this.userTemplate({
       stories         : stories,
       newsletter      : this.model.prepForTemplateUsage()
     });
