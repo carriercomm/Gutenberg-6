@@ -9,10 +9,10 @@ define([
   'use strict';
 
   var publicationController = Controller.extend({
-    showAll : function(params){
+    list : function(params){
       this.collection     = new Collection();
       this.collection.url = '/publication';
-      this.collection.listen({});
+      this.collection.listen();
 
       this.view = new PublicationsView({
         collection  : this.collection,
@@ -26,7 +26,7 @@ define([
       });
     },
 
-    showOne : function(params){
+    show : function(params){
       this.model      = new Model();
       this.model.url  = '/publication/' + params.id;
       this.model.fetch();
@@ -38,7 +38,7 @@ define([
         publication_id  : params.id,
         published       : true
       };
-      published.listen({ parentIdentifier : 'publication_id' });
+      published.listen();
 
       // Set up unpublished collection listener
       var unpublished     = new Collection();
@@ -47,8 +47,7 @@ define([
         publication_id  : params.id,
         published       : false
       };
-      unpublished.listen({ parentIdentifier : 'publication_id' });
-
+      unpublished.listen();
 
       // Create Views
       var wrapperView = new PublicationView({
