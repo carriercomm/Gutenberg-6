@@ -6,5 +6,7 @@ define(function(){
     match('publications', 'publication#showAll');
     match('publication/:id', 'publication#showOne');
     match('/publication/:id', 'publication#showOne');
+    match('newsletter/:id', 'newsletter#showOne');
+    match('/newsletter/:id', 'newsletter#showOne');
   }
 });
