@@ -65,27 +65,22 @@ module.exports = {
         if(params.story_id){
           models.forEach(function(model, index){
             response.results.push(model.toJSON());
+          });
 
-            // Gah....
-            if(index == 0){
-              Story.findOne(model.story_id).done(function(err, story) {
-                Newsletter.findOne(story.newsletter_id).done(function(err, newsletter){
-                  Publication.findOne(newsletter.publication_id).done(function(err, publication){
-                    publication.channels.forEach(function(channel){
-                      response.channels.push({
-                        title : channel.title,
-                        crop  : channel.crop
-                      });
-                    });
-
-                    // Ensure that the foreach method has finished before responding
-                    setTimeout(function(){
-                      return res.json(response);
-                    });
+          // Do this thing
+          Story.findOne(params.story_id).done(function(err, story) {
+            Newsletter.findOne(story.newsletter_id).done(function(err, newsletter){
+              Publication.findOne(newsletter.publication_id).done(function(err, publication){
+                publication.channels.forEach(function(channel){
+                  response.channels.push({
+                    title : channel.title,
+                    crop  : channel.crop
                   });
                 });
+
+                return res.json(response);
               });
-            }
+            });
           });
         } else{
           // Respond normally
