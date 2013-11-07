@@ -12,7 +12,7 @@ define([
     showAll : function(params){
       this.collection     = new Collection();
       this.collection.url = '/publication';
-      this.collection.listen();
+      this.collection.listen({});
 
       this.view = new PublicationsView({
         collection  : this.collection,
