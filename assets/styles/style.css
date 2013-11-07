@@ -22,16 +22,43 @@ body{
 /* ----------------------- */
 
 /* Story View */
+#stories .story{
+  position        : relative;
+  background-color: white;
+}
+#stories div.sortable-placeholder {
+  width           : 100%;
+  height          : 95px;
+  border          : 1px dashed #ccc;
+  background-color: #F2F2F2;
+  margin-bottom   : 30px;
+}
+#stories .story .handle{
+  position        : absolute;
+  top             : 10%;
+  left            : -16px;
+  background      : url('/images/handle.png') no-repeat;
+  width           : 13px;
+  height          : 99px;
+  cursor          : move;
+}
 #stories .image-list{
+  list-style-type : none;
+  margin          : 0;
+  padding         : 0;
   overflow        : hidden;
 }
-#stories .image-container{
+#stories .image-list li{
   float           : left;
   margin-right    : 15px;
   margin-bottom   : 15px;
   width           : 95px;
   height          : 95px;
-  position        : relative;    
+  position        : relative;
+  cursor          : move;
+}
+#stories .image-list li.sortable-placeholder {
+  border          : 1px dashed #CCC;
 }
 #stories .image-container .image{
   width           : 100%;
@@ -53,9 +80,21 @@ body{
 #stories .image-container .delete{
   left            : 5px;
 }
+@media (max-width: 1200px){
+  #stories .image-list li{
+    width         : 86px;
+    height        : 86px;
+  }
+}
 @media (max-width: 992px){
   #stories .content-editor{
     margin-bottom : 50px;
+  }
+  #stories .image-list li{
+    margin-right  : 7px;
+    margin-bottom : 7px;
+    width         : 69px;
+    height        : 69px;
   }
 }
 
@@ -64,6 +103,10 @@ body{
 /* Image Uploader */
 .qq-uploader .btn{
   width           : 100%;
+}
+.qq-uploader input[type=file]{
+  position        : static !important;
+  height          : 0;
 }
 .qq-upload-list li{
   border-radius   : 0;
@@ -76,7 +119,6 @@ body{
   border-radius   : 0 0 4px 4px;
   border-bottom   : none;
 }
-
 
 /* ----------------------- */
 
@@ -109,3 +151,5 @@ body{
 #image-cropper .image-preview-wrapper.selected img{
   opacity         : 1;
 }
+
+/* ----------------------- */

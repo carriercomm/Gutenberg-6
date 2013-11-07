@@ -2,13 +2,14 @@ define([
   'chaplin',
   'handlebars',
   'uploader',
+  'sortable',
   'views/base/view',
   'views/base/collection-view',
   'views/image-view',
   'text!templates/story.hbs',
   'text!templates/uploader.hbs',
   'text!templates/uploader-dumb.hbs'
-], function(Chaplin, Handlebars, Uploader, View, CollectionView, ImageView, storyTemplate, uploaderTemplate, dumbUploaderTemplate){
+], function(Chaplin, Handlebars, Uploader, Sortable, View, CollectionView, ImageView, storyTemplate, uploaderTemplate, dumbUploaderTemplate){
   'use strict';
 
   var StoryView = View.extend({
@@ -86,11 +87,25 @@ define([
     var imagesView = new CollectionView({
       autoRender    : true,
       collection    : this.model.get('images'),
+      tagName       : 'ul',
       className     : 'image-list',
       listSelector  : '.image-list',
       itemView      : ImageView,
       container     : $(this.el).find('.image-list-container')
     });
+
+    // Listen for updates to the image collection and
+    // reattach sorter when new images are added
+    var self = this;
+    var attachSorter = function(){
+      $(self.el).find('.image-list').sortable('destroy');
+      $(self.el).find('.image-list').sortable();
+    };
+    this.model.get('images').on({
+      'add'     : attachSorter,
+      'remove'  : attachSorter
+    });
+
   };
 
 

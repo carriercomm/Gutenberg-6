@@ -10,6 +10,7 @@ define([
 
   var view = View.extend({
     template      : template,
+    tagName       : 'li',
     className     : 'image-container',
     events        : {
       'click .delete' : 'deleteImage',
