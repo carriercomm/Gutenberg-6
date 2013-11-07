@@ -15,6 +15,7 @@ define([
     }
   });
 
+
   var initCrop = function(croppableItem, context){
 
     // Cache some dommy stuff

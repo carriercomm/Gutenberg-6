@@ -24,14 +24,12 @@ define([
       'blur input, textarea, div[contenteditable=true]'  : 'inputBlurred',
       'keyup .story-editor'   : 'scheduleSave',
       'change input[type="checkbox"]' : 'checkboxChanged'
+    },
+    listen        : {
+      'change model' : 'updateDomWithModel',
+      'channels_registered mediator' : 'redrawChannels'
     }
   });
-
-  view.prototype.initialize = function(){
-    Chaplin.View.prototype.initialize.apply(this, arguments);
-    this.listenTo(this.model, 'change', this.updateDomWithModel);
-    this.subscribeEvent('channels_registered', this.redrawChannels);
-  };
 
 
   view.prototype.inputFocused = function(e){

@@ -9,14 +9,11 @@ define([
   var view = View.extend({
     template      : template,
     tagName       : 'ul',
-    className     : 'nav nav-tabs'
+    className     : 'nav nav-tabs',
+    listen        : {
+      'change:channels model' : 'reRender'
+    }
   });
-
-
-  view.prototype.initialize = function(){
-    Chaplin.View.prototype.initialize.apply(this, arguments);
-    this.listenTo(this.model, 'change:channels', this.reRender);
-  };
 
 
   view.prototype.reRender = function(){
