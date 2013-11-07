@@ -60,11 +60,13 @@ define([
         region      : 'published',
         collection  : published
       });
+      publishedView.setTitle('Published Newsletters');
 
       var unpublishedView = new NewslettersView({
         region      : 'unpublished',
         collection  : unpublished
       });
+      unpublishedView.setTitle('Unpublished Newsletters');
 
     }
   });
