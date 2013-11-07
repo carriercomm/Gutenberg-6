@@ -1,0 +1,35 @@
+<div class='modal-dialog'>
+  <div class='modal-content'>
+
+
+    <div class='modal-header'>
+      <button type='button' class='close' data-dismiss='modal'>×</button>
+      <h4 class='modal-title'>Image Cropper</h4>
+    </div>
+
+
+    <div class='modal-body'>
+      <h5>Original Image</h5>
+      <img src='{{url}}' id='crop-target' />
+
+      <hr />
+
+      <div class='croppable-items'>
+        {{#each croppableItems}}
+          <div class='croppable-item'>
+            <h5>{{title}}</h5>
+            <div class='image-preview-wrapper' style='width:{{width}}px; height:{{height}}px'>
+              <img class='image-preview' id='{{domId}}' src='{{../url}}' />
+            </div>
+          </div>
+        {{/each}}
+      </div>
+
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-danger' data-dismiss='modal'>Cancel, don't Save Changes</button>
+        <button type='button' class='btn btn-success' data-dismiss='modal'>Save Changes</button>
+      </div>
+
+    </div>
+  </div>
+</div>
