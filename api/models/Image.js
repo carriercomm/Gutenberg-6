@@ -49,7 +49,7 @@ module.exports = {
 
         // Setup some filepaths
         var baseDir = 'uploads';
-        if(process.env.STACKATO_FILESYSTEM) baseDir == process.env.STACKATO_FILESYSTEM
+        if(process.env.STACKATO_FILESYSTEM) baseDir = process.env.STACKATO_FILESYSTEM
 
         var croppedDir    = path.join(baseDir, storyId, 'crops');
         var fileExtension = properties.format.toLowerCase();
