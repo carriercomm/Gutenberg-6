@@ -9,5 +9,10 @@ define([
     model : User
   });
 
+
+  collection.prototype.comparator = function(model){
+    return model.get('username');
+  };
+
   return collection;
 });
