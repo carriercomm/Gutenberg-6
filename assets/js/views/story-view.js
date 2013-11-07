@@ -17,10 +17,22 @@ define([
     template      : storyTemplate,
     schedule      : {},
     events        : {
-      'click .destroy'  : 'destroy',
-      'keyup'           : 'scheduleSave'
+      'click .destroy'        : 'destroy',
+      'focus input, textarea' : 'inputFocused',
+      'blur input, textarea'  : 'inputBlurred',
+      'keyup'                 : 'scheduleSave'
     }
   });
+
+
+  StoryView.prototype.inputFocused = function(e){
+    $(e.target).addClass('preventUpdate');
+  };
+
+
+  StoryView.prototype.inputBlurred = function(e){
+    $(e.target).removeClass('preventUpdate');
+  };
 
 
   StoryView.prototype.destroy = function(e){
@@ -34,7 +46,7 @@ define([
     clearTimeout(this.schedule);
     this.schedule = setTimeout(function(){
       self.save();
-    }, 1500);
+    }, 100);
   };
 
 
@@ -58,8 +70,10 @@ define([
     this.model.on('change', function(){
       var attrs = this.attributes
       for(var key in attrs){
-        var selector = $('.' + key);
-        $(self.el).find(selector).val(attrs[key])
+        var selector  = $('.' + key);
+        var $el       = $(self.el).find(selector);
+
+        if(!$el.hasClass('preventUpdate')) $(self.el).find(selector).val(attrs[key]);
       }
     });
 
