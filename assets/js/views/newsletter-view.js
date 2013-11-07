@@ -36,20 +36,6 @@ define([
 
   view.prototype.render = function(){
     CollectionView.prototype.render.apply(this, arguments);
-
-    // Listen for updates to the image collection and
-    // reattach sorter when new images are added
-    var self = this;
-    var attachSorter = function(){
-      $(self.el).find('#stories').sortable('destroy');
-      $(self.el).find('#stories').sortable({
-        handle : '.handle'
-      });
-    };
-    this.model.get('stories').on({
-      'add'     : attachSorter,
-      'remove'  : attachSorter
-    });
   }
 
   return view;
