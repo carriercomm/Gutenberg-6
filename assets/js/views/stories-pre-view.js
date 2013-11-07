@@ -67,9 +67,7 @@ define([
 
       // Find the active channel and create the namespace
       var activeChannel = _.findWhere(this.channels, { active : true });
-      var namespace     = 'sort_channel_' + activeChannel.title + '_index';
-      var stories       = this.collection.getSortedStoriesWithImages(namespace);
-
+      var stories       = this.collection.getSortedStoriesWithImages(activeChannel.title);
       var html          = this.template({
         stories         : stories,
         newsletter      : this.model.attributes
