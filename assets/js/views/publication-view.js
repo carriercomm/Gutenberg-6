@@ -8,7 +8,8 @@ define([
   var view = View.extend({
     template  : template,
     regions   : {
-      'newsletters' : '#newsletters'
+      'newsletters' : '#newsletters',
+      'users'       : '#users'
     },
     events    : {
       'click #add-newsletter' : 'createNewsletter'
