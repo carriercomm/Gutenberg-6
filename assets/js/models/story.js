@@ -1,8 +1,8 @@
 define([
   'chaplin',
   'models/base/model',
-  'models/base/collection'
-], function(Chaplin, Model, Collection){
+  'models/images'
+], function(Chaplin, Model, Images){
   'use strict';
 
   var model = Model.extend({
@@ -15,15 +15,12 @@ define([
     initialize : function(data){
       Model.prototype.initialize.apply(this, arguments);
 
-      var images    = new Collection();
+      var images    = new Images();
       images.url    = '/image';
       images.params = {
         story_id : data.id
       };
       images.listen();
-      images.comparator = function(image){
-        return image.get('sort_index');
-      }
 
       var self = this;
       this.set('images', images);

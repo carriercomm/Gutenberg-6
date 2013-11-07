@@ -11,7 +11,8 @@ define([
       var collection = this;
 
       socket.request(this.url, this.params, function(results){
-        collection.add(results);
+        var parsed = collection.parse(results);
+        collection.add(parsed);
         if(next) next(results);
       });
 
