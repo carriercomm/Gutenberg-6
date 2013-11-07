@@ -12,7 +12,7 @@
       <tr draggable='true' class='draggable' data-storyId='<%= stories[i].id %>'>
         <td style='vertical-align:top;'>
           <% if(stories[i].images[0]){ %>
-            <img style='width:190px;' src='<%= stories[i].images[0] %>'>
+            <img draggable='false' style='width:190px;' src='<%= stories[i].images[0] %>'>
           <% } %>
         </td>
         <td width='15px'></td>
@@ -29,12 +29,13 @@
     <% for(var i=0; i<stories.length; i++) {%>
       <% if(stories[i].sort_index > 0 && stories[i].sort_index < 4) { %>
         <td width='190px' class='draggable' draggable='true' data-storyId='<%= stories[i].id %>'>
-          <a draggable='false' href='#' style='text-decoration:none;'><h3 style='font-size:.8em; background-color:#EDEDED; padding:10px; color:#636363;'><%= stories[i].title %></h3></a>
-          <img style='margin:auto; display:block; width:100%;' src='<%= stories[i].images[0] %>'>
+          <a draggable='false' href='#' style='text-decoration:none;'><h3 style='font-size:.8em; background-color:#EDEDED; padding:10px; color:#636363; margin-bottom:3px;'><%= stories[i].title %></h3></a>
+          <img draggable='false' style='margin:auto; display:block; width:190px;' src='<%= stories[i].images[0] %>'>
         </td>
 
-        <% if(stories[i].sort_index != 3) %>
-        <td width='15px'></td>
+        <% if(stories[i].sort_index != 3) { %>
+          <td width='15px'></td>
+        <% } %>
       <% } %>
     <% } %>
   </tr>
