@@ -15,7 +15,6 @@ define([
 
   View.prototype.render = function(){
     Chaplin.CollectionView.prototype.render.apply(this, arguments);
-    $(this.el).find('.panel-heading').find('h4').text(this.options.title);
   };
 
   return View;
