@@ -1,7 +1,6 @@
-require(['chaplin', 'config/routes', 'socketio'], function(Chaplin, routes, io){
+require(['chaplin', 'config/routes', 'socketio', 'sailsio'], function(Chaplin, routes, io, sailsio){
   window.io = io;
 
-  require(['sailsio'], function(sailsio){
     window.socket = io.connect()
     socket.on('connect', function(){
         var app = Chaplin.Application.extend({
@@ -15,5 +14,4 @@ require(['chaplin', 'config/routes', 'socketio'], function(Chaplin, routes, io){
     socket.on('disconnect', function(){
       location.reload();
     });
-  });
 });
