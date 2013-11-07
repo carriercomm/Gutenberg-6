@@ -9,26 +9,18 @@
 module.exports = {
   attributes: {
     title : {
-      type      : 'STRING',
-      required  : true,
-      maxLength : 256
+      required    : true,
+      defaultsTo  : 'New Newsletter',
+      type        : 'STRING',
+      maxLength   : 256
     },
     publication_id : {
-      type      : 'STRING',
-      defaultsTo: 0
+      type        : 'STRING',
+      defaultsTo  : 0
     },
     published : {
-      type      : 'STRING',
-      defaultsTo: 'false'
-    },
-    storyOrders : {
-      type        : 'JSON',
-      defaultsTo  : [
-        {
-          "Passport"  : [],
-          "Email"     : []
-        }
-      ]
+      type        : 'BOOLEAN',
+      defaultsTo  : false
     }
   }
 };

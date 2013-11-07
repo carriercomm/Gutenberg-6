@@ -1,27 +1,15 @@
 define([
   'chaplin',
   'views/base/collection-view',
-  'views/base/view',
+  'views/newsletter-mini-view',
   'text!templates/newsletters.hbs',
-  'text!templates/newsletterMini.hbs'
-], function(Chaplin, CollectionView, View, collectionTemplate, miniTemplate){
+], function(Chaplin, CollectionView, NewsletterMiniView, template){
   'use strict';
-
-  var MiniView = View.extend({
-    tagName       : 'a',
-    className     : 'list-group-item',
-    template      : miniTemplate,
-    render : function(){
-      Chaplin.View.prototype.render.apply(this, arguments);
-      var earl = '/ui/newsletter/' + this.model.get('id');
-      $(this.el).attr('href', earl);
-    }
-  });
 
   var View = CollectionView.extend({
     className     : 'panel panel-default',
-    template      : collectionTemplate,
-    itemView      : MiniView,
+    template      : template,
+    itemView      : NewsletterMiniView,
     listSelector  : '.list-group'
   });
 
