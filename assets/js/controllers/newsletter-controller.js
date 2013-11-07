@@ -15,7 +15,7 @@ define([
       stories.params  = {
         newsletter_id : params.id
       };
-      stories.listen();
+      stories.listen({ parentIdentifier : 'newsletter_id' });
 
       var model = new Model();
       model.url = '/newsletter/' + params.id;

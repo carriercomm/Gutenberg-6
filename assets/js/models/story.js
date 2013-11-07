@@ -15,7 +15,7 @@ define([
       images.params = {
         story_id : data.id
       };
-      images.listen();
+      images.listen({ parentIdentifier : 'story_id' });
 
       this.set('images', images);
     }
