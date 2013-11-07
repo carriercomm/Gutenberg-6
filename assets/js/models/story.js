@@ -16,11 +16,11 @@ define([
       Model.prototype.initialize.apply(this, arguments);
 
       var images    = new Collection();
-      /*images.url    = '/image';
+      images.url    = '/image';
       images.params = {
         story_id : data.id
       };
-      images.listen();*/
+      images.listen();
       images.comparator = function(image){
         return image.get('sort_index');
       }

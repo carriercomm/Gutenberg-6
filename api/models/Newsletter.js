@@ -15,7 +15,7 @@ module.exports = {
       maxLength   : 256
     },
     publication_id : {
-      type        : 'STRING',
+      type        : 'INTEGER',
       defaultsTo  : 0
     },
     published : {

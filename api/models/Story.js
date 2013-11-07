@@ -11,7 +11,7 @@ var wrench = require('wrench');
 module.exports = {
   attributes: {
     newsletter_id : {
-      type        : 'STRING',
+      type        : 'INTEGER',
       defaultsTo  : 0,
       required    : true
     },
