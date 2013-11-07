@@ -5,10 +5,12 @@ define([
   'models/newsletter',
   'models/stories',
   'models/Story',
+  'views/base/collection-view',
   'views/newsletter-view',
   'views/newsletter-nav-view',
-  'views/stories-view'
-], function(Chaplin, Controller, Model, Newsletter, Stories, Story, NewsletterView, NewsletterNav, StoriesView){
+  'views/stories-view',
+  'views/story-editor-view'
+], function(Chaplin, Controller, Model, Newsletter, Stories, Story, CollectionView, NewsletterView, NewsletterNav, StoriesView, StoryEditorView){
   'use strict';
 
   var NewsletterController = Controller.extend({
@@ -71,6 +73,7 @@ define([
       // Listen for channel updates, update the newsletter
       this.listenTo(publication, 'change:channels', function(model){
         self.model.set('channels', model.get('channels'));
+        self.publishEvent('channels_registered', model.get('channels'));
       });
 
       // Listen for newsletter model title changes and update the view
@@ -81,23 +84,35 @@ define([
 
 
     queryHandler : function(params){
+      if(typeof(params.templateIndex) == 'undefined') params.templateIndex = 'create'
       params.templateIndex == 'create' ? this.editor() : this.preview(params)
     },
 
 
     preview : function(params){
-      //console.log(params)
+      // Make a stories view
+      var storiesView = new StoriesView({
+        collection    : this.collection,
+        autoRender    : false,
+        region        : 'stories',
+        template      : '<div id="stories-wrapper"></div>',
+        listSelector  : '#stories-wrapper',
+        params        : params
+      });
     },
 
 
     editor : function(){
       var self = this;
 
-      // Make a stories view
-      var storiesView = new StoriesView({
-        collection  : this.collection,
-        autoRender  : true,
-        region      : 'stories'
+      // Make the editor stories view
+      var storiesView = new CollectionView({
+        collection    : this.collection,
+        autoRender    : true,
+        region        : 'stories',
+        itemView      : StoryEditorView,
+        template      : '<div id="stories-wrapper"></div>',
+        listSelector  : '#stories-wrapper'
       });
 
       // Listen for changes and rerender
