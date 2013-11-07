@@ -28,7 +28,14 @@ define([
 
   view.prototype.render = function(){
     Chaplin.View.prototype.render.apply(this, arguments);
+
     $(this.el).find('iframe').attr('src', this.options.iframeURL);
+
+    // Just make sure the render is done
+    var self = this;
+    setTimeout(function(){
+      self.setIFrameHeight();
+    });
   };
 
 
@@ -78,6 +85,20 @@ define([
     });
   };
 
+
+  // This is just an approximation, but because this design is simple
+  // it seems to work pretty well
+  view.prototype.setIFrameHeight = function(){
+    var els = ['#nav-container', '#site-navigation', '#publish-buttons'];
+    var height = $(window).height();
+
+    for(var i=0; i<els.length; i++){
+      height -= $(els[i]).height();
+    }
+    height -= 50;
+
+    $(this.el).find('iframe').height(height);
+  };
 
   return view;
 });

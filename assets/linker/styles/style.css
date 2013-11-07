@@ -1,7 +1,4 @@
 /* Global Styles */
-body{
-  margin-bottom   : 50px;
-}
 #site-navigation h3{
   margin-bottom   : 30px;
 }
@@ -45,13 +42,16 @@ body{
 #newsletter-editor-view .add-story-wrapper{
   overflow        : hidden;
 }
+#newsletter-pre-view #publish-buttons{
+  overflow        : hidden;
+}
 /* ----------------------- */
 
 /* Newsletter View */
 #iframe-newsletter{
   width           : 100%;
   border          : none;
-  min-height      : 500px;
+  min-height      : 300px;
   box-shadow:     : 0 0 10px rgba(0,0,0,.25);
 }
 
