@@ -8,6 +8,8 @@ define([
   var model = Model.extend({
 
     initialize : function(data){
+      Model.prototype.initialize.apply(this, arguments);
+
       var images    = new Collection();
       images.url    = '/image';
       images.params = {
