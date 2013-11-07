@@ -16,17 +16,13 @@ module.exports = {
       type      : 'STRING',
       defaultsTo: ''
     },
-    name : {
-      type      : 'STRING',
-      defaultsTo: '0'
-    },
     story_id : {
-      type      : 'STRING',
-      defaultsTo: '0'
+      type      : 'INTEGER',
+      defaultsTo: 0
     },
-    order : {
-      type      : 'STRING',
-      defaultsTo: '0'
+    sort_index : {
+      type      : 'INTEGER',
+      defaultsTo: 0
     }
   },
 
@@ -75,10 +71,12 @@ module.exports = {
     };
 
     // Loop over croppable items and crop if necessary
-    var croppableItems = props.croppableItems;
-    for(var i=0; i<croppableItems.length; i++){
-      if(croppableItems[i].coords){
-        cropImage(props.url, props.story_id, props.id, croppableItems[i]);
+    if(props.cropoableItems){
+      var croppableItems = props.croppableItems;
+      for(var i=0; i<croppableItems.length; i++){
+        if(croppableItems[i].coords){
+          cropImage(props.url, props.story_id, props.id, croppableItems[i]);
+        }
       }
     }
 
