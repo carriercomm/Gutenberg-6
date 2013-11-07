@@ -12,6 +12,10 @@ html
     link(rel="stylesheet", href="/linker/styles/style.css")
     // STYLES END
 
+    // Populate the me object
+    script(type='text/javascript').
+        window.meAsPlainObject = !{JSON.stringify(me)}
+
     script(type="text/javascript" src="/vendor/require.js")
     script(type="text/javascript" src="/js/initialize.js")
 

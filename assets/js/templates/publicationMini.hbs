@@ -1,3 +1,5 @@
 {{title}}
-<span class='badge'>{{newsletter_ids.length}}</span>
-<a class='edit btn btn-info btn-xs pull-right' href='#'>Edit</a>
+
+{{#if editable}}
+  <a class='edit btn btn-info btn-xs pull-right' href='#'>Edit</a>
+{{/if}}
