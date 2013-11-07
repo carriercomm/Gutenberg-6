@@ -20,11 +20,7 @@ define([
     var params      = this.kollector();
     var publication = new Publication(params);
     publication.url = '/publication/create'
-    publication.save({
-      success : function(){
-        console.log('yehaw');
-      }
-    });
+    publication.save();
   };
 
 
@@ -40,13 +36,20 @@ define([
 
 
   view.prototype.kollector = function(){
+    // Collect and cleanup pasted in json
+    var channels = $(this.el).find('#channels').val().replace(/\n/g, '').replace(/\r/g, '');
+
     // Set a default value for channels if nothing specified
-    var channels = $(this.el).find('#channels').val();
-    if(!channels.length) channels = '[]'
+    if(!channels.length) channels = '[]';
+
+    var channelsJSON = '[]';
+    channelsJSON = JSON.parse(channels);
+    try{ channelsJSON = JSON.parse(channels); }
+    catch(e) { alert('bad json dude'); }
 
     return {
       title     : $(this.el).find('#title').val(),
-      channels  : JSON.parse(channels)
+      channels  : channelsJSON
     }
   };
 
