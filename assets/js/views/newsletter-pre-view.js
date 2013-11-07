@@ -24,6 +24,7 @@ define([
       'change model'                  : 'updateTemplateHelperAttrs'
     },
     events        : {
+      'click #publish'                : 'publish',
       'click .controls'               : 'toggleHelpers',
       'focus input'                   : 'inputFocused',
       'blur input'                    : 'inputBlurred',
