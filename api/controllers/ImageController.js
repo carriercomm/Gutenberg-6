@@ -37,13 +37,15 @@ module.exports = {
             key === 'limit' || key === 'skip' || key === 'sort';
         });
 
-        var options = {
-          limit: req.param('limit') || undefined,
-          skip: req.param('skip') || req.param('offset') || undefined,
-          sort: req.param('sort') || req.param('order') || undefined,
-          where: where || undefined
-        };
+        where = params;
       }
+
+      var options = {
+        limit: req.param('limit') || undefined,
+        skip: req.param('skip') || req.param('offset') || undefined,
+        sort: req.param('sort') || req.param('order') || undefined,
+        where: where || undefined
+      };
 
       Image.find(options).done(function(err, models){
 
