@@ -23,6 +23,12 @@ body{
 #newsletter-editor-view .newsletter-attrs .form-group{
   margin-bottom   : 0px;
 }
+#newsletter-editor-view label{
+  font-weight     : normal;
+}
+#newsletter-editor-view .channel_selectors input{
+  margin-left     : 5px;
+}
 #newsletter-editor-view .newsletter-attrs input{
   border-radius   : 5px 5px 0 0;
   margin          : 0;

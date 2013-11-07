@@ -61,6 +61,7 @@ define([
         var index    = params.templateIndex;
         if(index && index != 'create') channels[index].active = true
         self.model.set('channels', model.get('channels'));
+        self.collection.channels = model.get('channels');
 
         // Notify everyone that the channels are now registered and 
         // config options are available for use

@@ -30,10 +30,6 @@ module.exports = {
     sort_index : {
       type      : 'INTEGER',
       defaultsTo: 0
-    },
-    in_email : {
-      type      : 'BOOLEAN',
-      defaultsTo: false
     }
   },
 
