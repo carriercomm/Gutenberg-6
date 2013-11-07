@@ -6,10 +6,14 @@
  *
  */
 
+var fs = require('fs');
+
 module.exports = {
+
   attributes: {
     url : {
-      type      : 'STRING'
+      type      : 'STRING',
+      defaultsTo: ''
     },
     name : {
       type      : 'STRING',
@@ -23,5 +27,18 @@ module.exports = {
       type      : 'STRING',
       defaultsTo: '0'
     }
+  },
+
+  beforeDestroy : function(props, next){
+    Image.findOne({ id: props.where.id }).exec(function(err, model){
+      var imagePath = process.cwd() + model.url;
+
+      fs.unlink(imagePath, function (err) {
+        if (err) console.log(err);
+        else console.log('successfully deleted file');
+      });
+
+      next();
+    });
   }
 };
