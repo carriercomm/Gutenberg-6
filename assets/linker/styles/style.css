@@ -11,32 +11,32 @@ body{
 /* ----------------------- */
 
 /* Newsletter View */
-#newsletter-view .nav{
+#newsletter-editor-view .nav, #newsletter-pre-view .nav{
   margin-bottom   : 15px;
 }
-#newsletter-view .newsletter-attrs{
+#newsletter-editor-view .newsletter-attrs{
   padding         : 2% 2% 0.5% 2%;
   background-color: #f7f7f9;
   border          : 1px solid #e1e1e8;
   border-radius   : 5px;
 }
-#newsletter-view .newsletter-attrs .form-group{
+#newsletter-editor-view .newsletter-attrs .form-group{
   margin-bottom   : 0px;
 }
-#newsletter-view .newsletter-attrs input{
+#newsletter-editor-view .newsletter-attrs input{
   border-radius   : 5px 5px 0 0;
   margin          : 0;
 }
-#newsletter-view .newsletter-attrs input.tags{
+#newsletter-editor-view .newsletter-attrs input.tags{
   border-radius   : 0 0 5px 5px;
   border-top      : 0;
 }
-#newsletter-view .newsletter-attrs span.help-block{
+#newsletter-editor-view .newsletter-attrs span.help-block{
   margin-top      : 7px;
   margin-left     : 3px;
   font-size       : 90%;
 }
-#newsletter-view .add-story-wrapper{
+#newsletter-editor-view .add-story-wrapper{
   overflow        : hidden;
 }
 
