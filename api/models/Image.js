@@ -6,7 +6,6 @@
  *
  */
 
-var magik = require('gm');
 var fs    = require('fs');
 var path  = require('path');
 
@@ -27,18 +26,15 @@ module.exports = {
     }
   },
 
+
   beforeDestroy : function(props, next){
     // Delete the image reference when deleting the model
     Image.findOne({ id: props.where.id }).exec(function(err, model){
-      var imagePath = model.path;
-
-      fs.unlink(imagePath, function (err) {
-        if (err) console.log(err);
-      });
-
+      ImageService.destroy(model.url);
       next();
     });
   },
+
 
   beforeUpdate : function(props, next){
 
