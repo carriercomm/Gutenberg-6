@@ -13,16 +13,15 @@ module.exports = {
 
     // Ensure we're working with an array
     var files = req.files.images;
+    var story_id = req.body.story_id;
     if(!files.length) files = [files]
 
-    var filesWritten = 0;
+    var imagesWritten = [];
     for(var i=0; i<files.length; i++){
-      var tempPath  = files[i].path;
-      var newPath   = process.cwd() + '/uploads/' + files[i].name;
-      writeFile(tempPath, newPath, function(){
-        filesWritten++
-        if(filesWritten == files.length){
-          res.send({ 'kewl' : true })
+      writeFile(files[i], story_id, function(image){
+        imagesWritten.push(image);
+        if(imagesWritten.length == files.length){
+          res.send({ 'images' : imagesWritten });
         }
       });
     }
@@ -30,10 +29,22 @@ module.exports = {
 };
 
 
-var writeFile = function(tempPath, newPath, next){
+var writeFile = function(file, story_id, next){
+
+  var tempPath  = file.path;
+  var newPath   = process.cwd() + '/uploads/' + file.name;
+
   fs.readFile(tempPath, function(err, data){
     fs.writeFile(newPath, data, function(err){
-      next();
+      var image = Image.create({
+        url : newPath,
+        story_id : story_id
+      }).done(function(err, img){
+        if(err) {
+          console.log(err);
+          next({});
+        } else next(img);
+      });
     });
   });
 }

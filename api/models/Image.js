@@ -7,13 +7,21 @@
  */
 
 module.exports = {
-
   attributes: {
-  	
-  	/* e.g.
-  	nickname: 'string'
-  	*/
-    
+    url : {
+      type      : 'STRING'
+    },
+    name : {
+      type      : 'STRING',
+      defaultsTo: '0'
+    },
+    story_id : {
+      type      : 'STRING',
+      defaultsTo: '0'
+    },
+    order : {
+      type      : 'STRING',
+      defaultsTo: '0'
+    }
   }
-
 };
