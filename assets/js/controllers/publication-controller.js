@@ -54,7 +54,6 @@ define([
       }
       this.model.listen(function(){
         var allUserIds = _.union(self.model.get('editors'), self.model.get('owners'))
-        console.log(allUserIds);
         var users = new Collection(self.model.get);
 
         // update the crumb
@@ -81,17 +80,15 @@ define([
       var newsletters     = new Collection();
       newsletters.url     = '/newsletter';
       newsletters.params  = {
-        publication_id  : params.id,
-        published       : false
+        publication_id : params.id
       };
       newsletters.listen();
-
-      console.log(this.model)
 
       // Create the subviews
       var newslettersView = new NewslettersView({
         region      : 'newsletters',
-        collection  : newsletters
+        collection  : newsletters,
+        publication : this.model
       });
     },
 

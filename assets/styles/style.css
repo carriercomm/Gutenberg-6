@@ -28,6 +28,14 @@
   opacity         : .5 !important;
   font-style      : italic;
 }
+
+/* ----------------------- */
+
+/* Publication View */
+#publication #newsletters{
+  overflow        : hidden;
+}
+
 /* ----------------------- */
 
 /* Newsletter View */
