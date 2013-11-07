@@ -56,6 +56,12 @@ define([
         }
         stories.sort();
       });
+
+      // Listen for changes and rerender
+      newsletter.listenTo(stories, 'change', function(model){
+        stories.sort();
+        newsletter.renderAllItems();
+      });
     }
   });
 
