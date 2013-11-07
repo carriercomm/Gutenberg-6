@@ -10,7 +10,7 @@
   <% for(var i=0; i<stories.length; i++) {%>
     <% if(stories[i].sort_index == 0) { %>
       <tr draggable='true' class='draggable' data-storyId='<%= stories[i].id %>'>
-        <td>
+        <td style='vertical-align:top;'>
           <% if(stories[i].images[0]){ %>
             <img style='width:190px;' src='<%= stories[i].images[0] %>'>
           <% } %>
@@ -39,22 +39,25 @@
     <% } %>
   </tr>
 
+  <tr><td style='padding-bottom:40px;'></td></tr>
 
-  <% for(var i=0; i<stories.length; i++) {%>
+  <% var storyList = _.filter(stories, function(story){ return story.sort_index > 3 }) %>
 
-    <% if(stories[i].sort_index%2 == 0) { %>
+  <% for(var i=0; i<storyList.length; i++) {%>
+
+    <% if(storyList[i].sort_index%2 == 0) { %>
       <tr>
     <% } %>
 
-    <td colspan='2' class='draggable' draggable='true' data-storyId='<%= stories[i].id %>'>
-      <a draggable='false' style='color:#428bca; text-decoration:none; font-size:.8em; display:block; margin-bottom:12px;' href='#'><%= stories[i].title %></a>
+    <td colspan='2' class='draggable' draggable='true' data-storyId='<%= storyList[i].id %>'>
+      <a draggable='false' style='color:#428bca; text-decoration:none; font-size:.8em; display:block; margin-bottom:12px;' href='#'><%= storyList[i].title %></a>
     </td>
 
-    <% if(stories[i].sort_index%2 == 0) { %>
+    <% if(storyList[i].sort_index%2 == 0) { %>
       <td></td>
     <% } %>
 
-    <% if(stories[i].sort_index == stories.length - 1 || stories[i].sort_index%2 == 1) { %>
+    <% if(storyList[i].sort_index == storyList.length - 1 || storyList[i].sort_index%2 == 1) { %>
       </tr>
     <% } %>
 
