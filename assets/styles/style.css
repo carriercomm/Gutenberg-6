@@ -21,6 +21,41 @@ body{
 
 /* ----------------------- */
 
+/* Story View */
+#stories .image-list{
+  overflow        : hidden;
+}
+#stories .image-container{
+  float           : left;
+  margin-right    : 15px;
+  margin-bottom   : 15px;
+  width           : 95px;
+  height          : 95px;
+  position        : relative;    
+}
+#stories .image-container .image{
+  width           : 100%;
+  height          : 100%;
+  background-size : cover;
+  background-position : center;
+}
+#stories .image-container:hover .btn{
+  display         : block;
+}
+#stories .image-container .btn{
+  display         : none;
+  position        : absolute;
+  bottom          : 5px;
+}
+#stories .image-container .edit{
+  right           : 5px;
+}
+#stories .image-container .delete{
+  left            : 5px;
+}
+
+/* ----------------------- */
+
 /* Image Uploader */
 .qq-uploader .btn{
   width           : 100%;
