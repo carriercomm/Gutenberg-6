@@ -26,6 +26,19 @@ define([
   };
 
 
+  view.prototype.initialize = function(){
+    Chaplin.CollectionView.prototype.initialize.apply(this, arguments);
+
+    // Not sure why this is required, but for some reason these
+    // collection views do not get disposed of correctly. This forces
+    // the view into submission...
+    var self = this;
+    this.listenTo(this.options.publication, 'dispose', function(){
+      self.dispose();
+    });
+  }
+
+
   view.prototype.filterUsers = function(){
     var self = this;
 

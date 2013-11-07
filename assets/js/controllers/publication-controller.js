@@ -66,6 +66,20 @@ define([
             title : self.model.get('title')
           }
         ]);
+
+        // Only show the user manager if the user is an owner or a master
+        var myId = window.me.get('id').toString();
+        if(self.model.get('owners').indexOf(myId) != -1 || window.me.get('isMaster')){
+          var users = new Users();
+          users.url = '/user';
+          users.listen();
+
+          var usersView = new UsersView({
+            region      : 'users',
+            collection  : users,
+            publication : self.model
+          });
+        }
       });
 
       // Listen for owner editor updates to use in interface
@@ -88,20 +102,10 @@ define([
       };
       newsletters.listen();
 
-      // Set up the users collection
-      var users           = new Users();
-      users.url           = '/user';
-      users.listen();
-
-      // Create the subviews
+      // Create the newsletter subview
       var newslettersView = new NewslettersView({
         region      : 'newsletters',
         collection  : newsletters,
-        publication : this.model
-      });
-      var usersView = new UsersView({
-        region      : 'users',
-        collection  : users,
         publication : this.model
       });
     },
