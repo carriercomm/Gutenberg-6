@@ -30,8 +30,16 @@ define([
         'id' : 'crud-publication-modal'
       }
     });
-
   };
+
+
+  collectionView.prototype.render = function(){
+    Chaplin.CollectionView.prototype.render.apply(this, arguments);
+    if(!window.me.get('isMaster')){
+      $(this.el).find('#add-publication').hide()
+    }
+  }
+
 
   return collectionView;
 });
