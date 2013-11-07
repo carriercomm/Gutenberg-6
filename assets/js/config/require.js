@@ -1,5 +1,5 @@
 require.config({
-  baseUrl     : '/linker/js/',
+  baseUrl     : '/js/',
   paths       : {
     'jquery'      : './vendor/jquery',
     'underscore'  : './vendor/underscore',

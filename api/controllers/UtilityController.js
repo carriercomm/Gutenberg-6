@@ -11,13 +11,10 @@ module.exports = {
     var username = req.session.username || '';
 
     User.findOneByUsername(username).exec(function(err, userModel){
-      if(err) {
-        res.view('index', { me : {} });
-      } else {
-        res.view('index', { me : userModel });
-      }
+      var user = userModel || {}
+      if(err) console.log(err);
+      res.view('index', { me : user, env : process.env.NODE_ENV });
     });
   }
-  
 
 };

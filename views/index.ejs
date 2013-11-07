@@ -2,25 +2,26 @@
 <html>
     <head>
         <title>Gutenberg</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-        <!--STYLES-->
-        <link rel="stylesheet" href="/linker/styles/Jcrop.css">
-        <link rel="stylesheet" href="/linker/styles/bootstrap.css">
-        <link rel="stylesheet" href="/linker/styles/fineuploader-3.8.2.css">
-        <link rel="stylesheet" href="/linker/styles/style.css">
-        <!--STYLES END-->
+        <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
 
         <!-- Populate the me object for easy user reference -->
-        <script type="text/javascript">
+        <script type='text/javascript'>
             window.meAsPlainObject = <%- JSON.stringify(me) %>;
         </script>
 
-        <!--SCRIPTS-->
-        <script data-main="/linker/js/start.js" src="/linker/js/vendor/require.js"></script>
-        <!--SCRIPTS END-->
+        <! -- build assets dependent on environment -->
+        <% if(env == 'production'){ %>
+            <link rel='stylesheet' href='/styles/minified.css' />
+            
+        <% } else { %>
+            <link rel='stylesheet' href='/styles/bootstrap.css' />
+            <link rel='stylesheet' href='/styles/fineuploader-3.8.2.css' />
+            <link rel='stylesheet' href='/styles/Jcrop.css' />
+            <link rel='stylesheet' href='/styles/style.css' />
 
-        <script src="linker/js/require-config.js"></script>
+            <script data-main='/js/start' src='/js/vendor/require.js'></script>
+            <script src='/js/config/require.js'></script>
+        <% } %>
     </head>
 
     <body></body>
