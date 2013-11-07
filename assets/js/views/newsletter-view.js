@@ -12,6 +12,7 @@ define([
     },
     regions       : {
       'stories'   : '#stories',
+      'nav'       : '#nav-container'
     },
     events        : {
       'click #add-story'        : 'addNewStory',
@@ -20,6 +21,20 @@ define([
       'keyup input#story-title' : 'scheduleSave'
     }
   });
+
+
+  view.prototype.initialize = function(){
+    Chaplin.View.prototype.initialize.apply(this, arguments);
+    this.subscribeEvent('update_title', this.updateTitle);
+  };
+
+
+  view.prototype.updateTitle = function(){
+    var $el = $(this.el).find('#story-title');
+    if(!$el.hasClass('preventUpdate')){
+      $el.val(this.model.get('title'));
+    }
+  };
 
 
   view.prototype.inputFocused = function(e){

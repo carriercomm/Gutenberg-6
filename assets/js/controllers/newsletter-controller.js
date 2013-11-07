@@ -1,12 +1,14 @@
 define([
   'chaplin',
   'controllers/base/controller',
+  'models/base/model',
   'models/newsletter',
   'models/stories',
   'models/Story',
   'views/newsletter-view',
+  'views/newsletter-nav-view',
   'views/stories-view'
-], function(Chaplin, Controller, Newsletter, Stories, Story, NewsletterView, StoriesView){
+], function(Chaplin, Controller, Model, Newsletter, Stories, Story, NewsletterView, NewsletterNav, StoriesView){
   'use strict';
 
   var NewsletterController = Controller.extend({
@@ -18,17 +20,9 @@ define([
       this.subscribeEvent('delete_story', this.deleteStory);
     },
 
+
     show : function(params){
-
       var self = this;
-
-      // Set up the stories collection
-      this.collection        = new Stories();
-      this.collection.url    = '/story';
-      this.collection.params = {
-        newsletter_id : params.id
-      };
-      this.collection.listen();
 
       // Setup the newsletter model
       this.model        = new Newsletter();
@@ -37,7 +31,14 @@ define([
         model           : 'newsletter',
         id              : params.id
       };
-      this.model.listen();
+
+      // Set up the stories collection
+      this.collection        = new Stories();
+      this.collection.url    = '/story';
+      this.collection.params = {
+        newsletter_id : params.id
+      };
+      this.collection.listen();
       this.model.set('stories', this.collection);
 
       // Make the newsletter view
@@ -47,7 +48,14 @@ define([
         region      : 'main'
       });
 
-      // Make the newsletter view
+      // Setup the navigation
+      var nav = new NewsletterNav({
+        autoRender  : true,
+        model       : self.model,
+        region      : 'nav'
+      });
+
+      // Make the stories view
       var storiesView = new StoriesView({
         collection  : this.collection,
         autoRender  : true,
@@ -55,14 +63,23 @@ define([
       });
 
 
-      //TODO: can i  move these out of here into the initter
-      // Listen for newsletter model changes and update the view
-      var view = this.view;
+      // Go fetch the publication templates and apply to the newsletter
+      var publication = new Model();
+      this.model.listen(function(results){
+        publication.url = '/publication/' + results.publication_id
+        publication.listen(function(){
+          self.model.set('channels', publication.get('channels'));
+        });
+      });
+
+      // Listen for channel updates, update the newsletter
+      this.listenTo(publication, 'change:channels', function(model){
+        self.model.set('channels', model.get('channels'));
+      });
+
+      // Listen for newsletter model title changes and update the view
       this.listenTo(this.model, 'change:title', function(model){
-        var $el = $(view.el).find('#story-title');
-        if(!$el.hasClass('preventUpdate')){
-          $el.val(model.get('title'));
-        }
+        self.publishEvent('update_title', this.model);
       });
 
       // Listen for changes and rerender
