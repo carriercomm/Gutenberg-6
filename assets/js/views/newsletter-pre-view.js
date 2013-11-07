@@ -13,8 +13,7 @@ define([
     regions       : {
       'stories'   : '#stories',
       'nav'       : '#nav-container'
-    },
-    events        : {}
+    }
   });
 
 
