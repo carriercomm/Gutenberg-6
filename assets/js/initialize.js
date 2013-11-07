@@ -14,12 +14,17 @@ require.config({
     'bootstrap'   : '/vendor/bootstrap',
     'uploader'    : '/vendor/jquery.fineuploader-3.8.2',
     'sortable'    : '/vendor/jquery.sortable',
-    'wysiwyg'     : '/vendor/bootstrap-wysiwyg'
+    'wysiwyg'     : '/vendor/bootstrap-wysiwyg',
+    'hotkeys'     : '/vendor/jquery.hotkeys'
   },
   shim        : {
+    hotkeys       : {
+      exports         : 'hotkeys',
+      deps            : ['jquery']
+    },
     wysiwyg       : {
       exports         : 'wysiwyg',
-      deps            : ['bootstrap']
+      deps            : ['bootstrap', 'hotkeys']
     },
     sortable      : {
       exports         : 'sortable',
