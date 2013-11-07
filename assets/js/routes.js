@@ -3,6 +3,7 @@ define(function(){
 
   return function(match){
     match('', 'publication#showAll');
-    match('/publication/:id', 'publication#showOne');
+    match('publications', 'publication#showAll');
+    match('publication/:id', 'publication#showOne');
   }
 });
