@@ -41,13 +41,13 @@ module.exports = function (grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
 
-  // Project configuration.
-  grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
 
-    requirejs: {
-      compile: {
-        options: {
+  grunt.initConfig({
+    pkg : grunt.file.readJSON('package.json'),
+
+    requirejs : {
+      compile : {
+        options : {
           baseUrl         : 'assets/linker/js',
           name            : 'start',
           mainConfigFile  : 'assets/linker/js/require-config.js',
@@ -56,32 +56,21 @@ module.exports = function (grunt) {
       }
     },
 
-    copy: {
-      dev: {
-        files: [
+    copy : {
+      dev : {
+        files : [
           {
-          expand: true,
-          cwd: './assets',
-          src: ['**/*'],
-          dest: '.tmp/public'
-        }
-        ]
-      },
-      build: {
-        files: [
-          {
-          expand: true,
-          cwd: '.tmp/public',
-          src: ['**/*'],
-          dest: 'www'
-        }
+            expand  : true,
+            cwd     : './assets',
+            src     : ['**/*'],
+            dest    : '.tmp/public'
+          }
         ]
       }
     },
 
-    clean: {
-      dev: ['.tmp/public/**'],
-      build: ['www']
+    clean : {
+      dev   : ['.tmp/public/**']
     },
 
     jst: {
@@ -97,125 +86,110 @@ module.exports = function (grunt) {
       }
     },
 
-    concat: {
-      js: {
-        src: jsFilesToInject,
-        dest: '.tmp/public/concat/production.js'
+    concat : {
+      js : {
+        src  : jsFilesToInject,
+        dest : '.tmp/public/concat/production.js'
       },
       css: {
-        src: cssFilesToInject,
-        dest: '.tmp/public/concat/production.css'
+        src  : cssFilesToInject,
+        dest : '.tmp/public/concat/production.css'
       }
     },
 
-    uglify: {
-      dist: {
-        src: ['.tmp/public/concat/production.js'],
-        dest: '.tmp/public/min/production.js'
+    uglify : {
+      dist : {
+        src  : ['.tmp/public/concat/production.js'],
+        dest : '.tmp/public/min/production.js'
       }
     },
 
-    cssmin: {
-      dist: {
-        src: ['.tmp/public/concat/production.css'],
-        dest: '.tmp/public/min/production.css'
+    cssmin : {
+      dist : {
+        src  : ['.tmp/public/concat/production.css'],
+        dest  : '.tmp/public/min/production.css'
       }
     },
 
     'sails-linker': {
 
-      devJs: {
-        options: {
-          startTag: '<!--SCRIPTS-->',
-          endTag: '<!--SCRIPTS END-->',
-          fileTmpl: '<script data-main="/linker/js/start.js" src="%s"></script>',
-          appRoot: '.tmp/public'
+      devJs : {
+        options : {
+          startTag  : '<!--SCRIPTS-->',
+          endTag    : '<!--SCRIPTS END-->',
+          fileTmpl  : '<script data-main="/linker/js/start.js" src="%s"></script>',
+          appRoot   : '.tmp/public'
         },
-        files: {
-          '.tmp/public/**/*.html': jsFilesToInject,
-          'views/**/*.html': jsFilesToInject,
-          'views/**/*.ejs': jsFilesToInject
+        files : {
+          'views/**/*.ejs'        : jsFilesToInject
         }
       },
 
-      prodJs: {
-        options: {
-          startTag: '<!--SCRIPTS-->',
-          endTag: '<!--SCRIPTS END-->',
-          fileTmpl: '<script data-main="/linker/js/start.js" src="%s"></script>',
-          appRoot: '.tmp/public'
+      // TODO - fix files path here?
+      prodJs : {
+        options : {
+          startTag  : '<!--SCRIPTS-->',
+          endTag    : '<!--SCRIPTS END-->',
+          fileTmpl  : '<script data-main="/linker/js/start.js" src="%s"></script>',
+          appRoot   : '.tmp/public'
         },
-        files: {
-          '.tmp/public/**/*.html': ['assets/js/optimized.js', 'assets/js/require-config.js', 'assets/js/vendor/require.js'],
-          'views/**/*.html': ['assets/js/optimized.js', 'assets/js/require-config.js', 'assets/js/vendor/require.js'],
+        files : {
           'views/**/*.ejs': ['assets/js/optimized.js', 'assets/js/require-config.js', 'assets/js/vendor/require.js']
         }
       },
 
-      devStyles: {
-        options: {
-          startTag: '<!--STYLES-->',
-          endTag: '<!--STYLES END-->',
-          fileTmpl: '<link rel="stylesheet" href="%s">',
-          appRoot: '.tmp/public'
+      devStyles : {
+        options : {
+          startTag  : '<!--STYLES-->',
+          endTag    : '<!--STYLES END-->',
+          fileTmpl  : '<link rel="stylesheet" href="%s">',
+          appRoot   : '.tmp/public'
         },
 
-        // cssFilesToInject defined up top
-        files: {
-          '.tmp/public/**/*.html': cssFilesToInject,
-          'views/**/*.html': cssFilesToInject,
-          'views/**/*.ejs': cssFilesToInject
+        files : {
+          'views/**/*.ejs' : cssFilesToInject
         }
       },
 
       prodStyles: {
         options: {
-          startTag: '<!--STYLES-->',
-          endTag: '<!--STYLES END-->',
-          fileTmpl: '<link rel="stylesheet" href="%s">',
-          appRoot: '.tmp/public'
+          startTag  : '<!--STYLES-->',
+          endTag    : '<!--STYLES END-->',
+          fileTmpl  : '<link rel="stylesheet" href="%s">',
+          appRoot   : '.tmp/public'
         },
         files: {
-          '.tmp/public/index.html': ['.tmp/public/min/production.css'],
-          'views/**/*.html': ['.tmp/public/min/production.css'],
-          'views/**/*.ejs': ['.tmp/public/min/production.css']
+          'views/**/*.ejs' : ['.tmp/public/min/production.css']
         }
       },
 
-      // Bring in JST template object
-      devTpl: {
-        options: {
-          startTag: '<!--TEMPLATES-->',
-          endTag: '<!--TEMPLATES END-->',
-          fileTmpl: '<script type="text/javascript" src="%s"></script>',
-          appRoot: '.tmp/public'
+      // TODO - come back to this and implement
+      devTpl : {
+        options : {
+          startTag  : '<!--TEMPLATES-->',
+          endTag    : '<!--TEMPLATES END-->',
+          fileTmpl  : '<script type="text/javascript" src="%s"></script>',
+          appRoot   : '.tmp/public'
         },
-        files: {
-          '.tmp/public/index.html': ['.tmp/public/jst.js'],
-          'views/**/*.html': ['.tmp/public/jst.js'],
-          'views/**/*.ejs': ['.tmp/public/jst.js']
+        files : {
+          'views/**/*.ejs' : ['.tmp/public/jst.js']
         }
       }
     },
 
-    watch: {
-      api: {
-
-        // API files to watch:
-        files: ['api/**/*']
+    // TODO - is this even used?
+    watch : {
+      api : {
+        files : ['api/**/*']
       },
-      assets: {
-
-        // Assets to watch:
-        files: ['assets/**/*'],
-
-        // When assets are changed:
-        tasks: ['compileAssets', 'linkAssets']
+      assets : {
+        files   : ['assets/**/*'],
+        tasks   : ['compileAssets', 'linkAssets']
       }
     }
   });
 
-  // When Sails is lifted:
+
   grunt.registerTask('default', [
     'compileAssets',
     'linkAssets',
@@ -233,16 +207,6 @@ module.exports = function (grunt) {
     'sails-linker:devJs',
     'sails-linker:devStyles',
     'sails-linker:devTpl'
-  ]);
-
-
-  // Build the assets into a web accessible folder.
-  // (handy for phone gap apps, chrome extensions, etc.)
-  grunt.registerTask('build', [
-    'compileAssets',
-    'linkAssets',
-    'clean:build',
-    'copy:build'
   ]);
 
   // When sails is lifted in production
