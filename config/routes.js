@@ -32,8 +32,9 @@ module.exports.routes = {
   // located at `views/home/index.ejs`
   // 
   // (This would also work if you had a file at: `/views/home.ejs`)
-  '/ui/*'   : { view: 'index' },
-  '/ui'     : { view: 'index' }
+  '/ui/*'         : { view: 'index' },
+  '/ui'           : { view: 'index' },
+  '/uploadImage'  : 'Image.upload'
 
   /*
   // But what if you want your home page to display
@@ -60,7 +61,6 @@ module.exports.routes = {
   // If you decided to call your action `index` instead of `inbox`,
   // since the `index` action is the default, you can shortcut even further to:
   '/': 'MessageController'
-
 
   // Up until now, we haven't specified a specific HTTP method/verb
   // The routes above will apply to ALL verbs!
