@@ -42,7 +42,7 @@ module.exports = {
       }
 
       // Recrusively delete all images associated with this model
-      wrench.rmdirSyncRecursive('assets/uploads/' + props.where.id);
+      wrench.rmdirSyncRecursive('assets/uploads/' + props.where.id, function(){});
     });
 
     next();
