@@ -2,12 +2,12 @@ define([
   'chaplin',
   'controllers/base/controller',
   'models/base/collection',
-  'models/base/model',
+  'models/publication',
   'models/newsletter',
   'views/publications-view',
   'views/publication-view',
   'views/newsletters-view'
-], function(Chaplin, Controller, Collection, Model, Newsletter, PublicationsView, PublicationView, NewslettersView){
+], function(Chaplin, Controller, Collection, Publication, Newsletter, PublicationsView, PublicationView, NewslettersView){
   'use strict';
 
   var months  = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
@@ -42,7 +42,7 @@ define([
       var self = this;
 
       // Fetch model and setup listener
-      this.model        = new Model();
+      this.model        = new Publication();
       this.model.url    = '/publication/' + params.id;
       this.model.params = {
         model           : 'publication',
