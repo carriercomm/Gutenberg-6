@@ -39,7 +39,7 @@ define([
 
 
     show : function(params){
-      var self        = this;
+      var self = this;
 
       // Fetch model and setup listener
       this.model        = new Model();
@@ -48,7 +48,18 @@ define([
         model           : 'publication',
         id              : params.id
       }
-      this.model.listen();
+      this.model.listen(function(){
+        self.publishEvent('crumbUpdate', [
+          {
+            route : '/',
+            title : 'Publications'
+          },
+          {
+            route : '/publication/' + self.model.get('publication_id'),
+            title : self.model.get('title')
+          }
+        ]);
+      });
 
       // Set up published collections listener
       var published     = new Collection();

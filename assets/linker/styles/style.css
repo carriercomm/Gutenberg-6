@@ -5,6 +5,9 @@
 #site-navigation h3 a{
   color           : #333;
 }
+#site-navigation .breadcrumb:empty{
+  display         : none;
+}
 /* ----------------------- */
 
 /* Newsletter View */
