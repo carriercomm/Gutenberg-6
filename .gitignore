@@ -44,3 +44,10 @@ nbproject
 ########################
 config/local.js
 uploads
+
+
+########################
+# private libraries
+########################
+assets/vendor/fineuploader-3.8.2.css
+assets/vendor/jquery.fineuploader-3.8.2.js
