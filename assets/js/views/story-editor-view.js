@@ -7,10 +7,9 @@ define([
   'views/images-view',
   'text!templates/story-editor.hbs',
   'text!templates/text-editor.hbs',
-  'text!templates/uploader.hbs',
-  'text!templates/uploader-dumb.hbs'
+  'text!templates/uploader.hbs'
 ], function(Chaplin, Handlebars, Wysiwyg, Uploader, View, ImagesView, 
-  storyTemplate, textEditorTemplate, uploaderTemplate, dumbUploaderTemplate){
+  storyTemplate, textEditorTemplate, uploaderTemplate){
   'use strict';
 
   var view = View.extend({
