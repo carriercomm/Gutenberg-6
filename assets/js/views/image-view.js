@@ -11,7 +11,7 @@ define([
   var view = View.extend({
     template      : template,
     tagName       : 'li',
-    className     : 'image-container',
+    className     : 'image-container media-container',
     events        : {
       'click .delete' : 'deleteImage',
       'click .edit'   : 'editImage'

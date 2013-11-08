@@ -7,7 +7,7 @@ define([
 
   var view = CollectionView.extend({
     noWrap        : true,
-    template      : '<ul class="image-list"></ul>',
+    template      : '<ul class="media-list image-list"></ul>',
     listSelector  : '.image-list',
     itemView      : ImageView,
     listen        : {

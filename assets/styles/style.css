@@ -91,11 +91,6 @@
   border-radius   : 0 0 5px 5px;
   border-top      : 0;
 }
-#newsletter-editor-view .newsletter-attrs span.help-block{
-  margin-top      : 7px;
-  margin-left     : 3px;
-  font-size       : 90%;
-}
 #newsletter-editor-view .add-story-wrapper{
   overflow        : hidden;
 }
@@ -180,13 +175,13 @@
   background-color: #F2F2F2;
   margin-bottom   : 30px;
 }
-#stories .image-list{
+#stories .media-list{
   list-style-type : none;
   margin          : 0;
   padding         : 0;
   overflow        : hidden;
 }
-#stories .image-list li{
+#stories .media-list li{
   float           : left;
   margin-right    : 15px;
   margin-bottom   : 15px;
@@ -195,26 +190,26 @@
   position        : relative;
   cursor          : move;
 }
-#stories .image-list li.sortable-placeholder {
+#stories .media-list li.sortable-placeholder {
   border          : 1px dashed #CCC;
 }
-#stories .image-container .image{
+#stories .media-container .media{
   width           : 100%;
   height          : 100%;
   background-size : cover;
   background-position : center;
 }
-#stories .image-container:hover .btn-group{
+#stories .media-container:hover .btn-group{
   display         : block;
 }
-#stories .image-container .btn-group{
+#stories .media-container .btn-group{
   display         : none;
   position        : absolute;
   bottom          : 5px;
   right           : 5px;
 }
 @media (max-width: 1200px){
-  #stories .image-list li{
+  #stories .media-list li{
     width         : 86px;
     height        : 86px;
   }
@@ -223,7 +218,7 @@
   #stories .content-editor{
     margin-bottom : 50px;
   }
-  #stories .image-list li{
+  #stories .media-list li{
     margin-right  : 7px;
     margin-bottom : 7px;
     width         : 69px;
