@@ -5,11 +5,12 @@ define([
   'uploader',
   'views/base/view',
   'views/images-view',
+  'views/videoEdit-view',
   'text!templates/story-editor.hbs',
   'text!templates/text-editor.hbs',
   'text!templates/uploader.hbs'
 ], function(Chaplin, Handlebars, Wysiwyg, Uploader, View, ImagesView, 
-  storyTemplate, textEditorTemplate, uploaderTemplate){
+  VideoEditView, storyTemplate, textEditorTemplate, uploaderTemplate){
   'use strict';
 
   var view = View.extend({
@@ -19,6 +20,7 @@ define([
     events        : {
       'click .destroy'        : 'destroy',
       'click .sort-button'    : 'handleSort',
+      'click .add-video'      : 'addVideo',
       'focus input, textarea, div[contenteditable=true]' : 'inputFocused',
       'blur input, textarea, div[contenteditable=true]'  : 'inputBlurred',
       'keyup .model-input'    : 'scheduleSave',
@@ -255,6 +257,14 @@ define([
     return clean;
   };
 
+
+  view.prototype.addVideo = function(){
+    var videoModal = new VideoEditView({
+      autoRender  : true,
+      region      : 'main',
+      className   : 'modal'
+    });
+  }
 
   return view;
 });
