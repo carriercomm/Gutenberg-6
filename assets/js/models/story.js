@@ -1,8 +1,9 @@
 define([
   'chaplin',
   'models/base/model',
-  'models/images'
-], function(Chaplin, Model, Images){
+  'models/images',
+  'models/videos'
+], function(Chaplin, Model, Images, Videos){
   'use strict';
 
   var model = Model.extend({
@@ -15,6 +16,8 @@ define([
     initialize : function(data){
       Model.prototype.initialize.apply(this, arguments);
 
+      var self      = this;
+
       var images    = new Images();
       images.url    = '/image';
       images.params = {
@@ -22,10 +25,21 @@ define([
       };
       images.listen();
 
-      var self = this;
+      var videos    = new Videos();
+      videos.url    = '/video';
+      videos.params = {
+        story_id : data.id
+      }
+      videos.listen();
+
       this.set('images', images);
       this.listenTo(images, 'all', function(){
         self.set('images', images);
+      });
+
+      this.set('videos', videos);
+      this.listenTo(images, 'all', function(){
+        self.set('videos', images);
       });
     }
   });

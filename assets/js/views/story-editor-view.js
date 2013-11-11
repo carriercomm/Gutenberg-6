@@ -6,11 +6,12 @@ define([
   'uploader',
   'views/base/view',
   'views/images-view',
+  'views/videos-view',
   'views/videoEdit-view',
   'text!templates/story-editor.hbs',
   'text!templates/text-editor.hbs',
   'text!templates/uploader.hbs'
-], function(Chaplin, Model, Handlebars, Wysiwyg, Uploader, View, ImagesView, 
+], function(Chaplin, Model, Handlebars, Wysiwyg, Uploader, View, ImagesView, VideosView, 
   VideoEditView, storyTemplate, textEditorTemplate, uploaderTemplate){
   'use strict';
 
@@ -221,6 +222,11 @@ define([
     var imagesView = new ImagesView({
       collection  : this.model.get('images'),
       container   : $(this.el).find('.image-list-container')
+    });
+
+    var videosView = new VideosView({
+      collection  : this.model.get('videos'),
+      container   : $(this.el).find('.video-list-container')
     });
   };
 

@@ -17,7 +17,7 @@ module.exports = {
     },
     image_url : {
       type      : 'STRING',
-      defaultsTo: ''
+      defaultsTo: '/images/video.jpg'
     },
     story_id : {
       type      : 'STRING',
@@ -38,15 +38,14 @@ module.exports = {
         // If url is passed in, go get the video image
         var requestEarl = '';
 
-        // YouTube
+        
         if(props.url.indexOf('youtube.com') != -1 ){
+          // YouTube
           var splits = props.url.split('?v=');
           props.image_url = 'http://img.youtube.com/vi/' + splits[1] + '/1.jpg';
           next();
-        }
-
-        // Vimeo
-        if(props.url.indexOf('vimeo.com') != -1 ){
+        } else if(props.url.indexOf('vimeo.com') != -1 ){
+          // Vimeo
           var splits = props.url.split('/')
           var vidId  = splits[splits.length - 1];
           var requestEarl = 'http://vimeo.com/api/v2/video/' + vidId + '.json';
@@ -56,11 +55,8 @@ module.exports = {
             else props.image_url = JSON.parse(body)[0].thumbnail_medium
             next();
           });
-        }
-      } else {
-        props.image_url = '/images/video.jpg';
-        next();
-      }
+        } else next()
+      } else next()
     });
   }
 

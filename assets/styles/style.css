@@ -181,6 +181,11 @@
   padding         : 0;
   overflow        : hidden;
 }
+#stories .video-list-container{
+  border-top      : 1px solid #eee;
+  margin-top      : 20px;
+  padding-top     : 20px;
+}
 #stories .media-list li{
   float           : left;
   margin-right    : 15px;
