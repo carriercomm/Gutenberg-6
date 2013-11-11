@@ -15,6 +15,9 @@ define([
     events        : {
       'click .delete' : 'deleteVideo',
       'click .edit'   : 'editVideo'
+    },
+    listen        : {
+      'change model' : 'render'
     }
   });
 
