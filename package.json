@@ -14,7 +14,8 @@
     "knox": "~0.8.6",
     "underscore": "~1.5.2",
     "grunt-contrib-requirejs": "~0.4.1",
-    "grand_master_cas": "git://github.com/joelongstreet/grand_master_cas.git#master"
+    "grand_master_cas": "git://github.com/joelongstreet/grand_master_cas.git#master",
+    "request": "~2.27.0"
   },
   "devDependencies": {
     "forever": "0.10.0",
