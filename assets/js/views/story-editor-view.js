@@ -1,5 +1,6 @@
 define([
   'chaplin',
+  'models/base/model',
   'handlebars',
   'wysiwyg',
   'uploader',
@@ -9,7 +10,7 @@ define([
   'text!templates/story-editor.hbs',
   'text!templates/text-editor.hbs',
   'text!templates/uploader.hbs'
-], function(Chaplin, Handlebars, Wysiwyg, Uploader, View, ImagesView, 
+], function(Chaplin, Model, Handlebars, Wysiwyg, Uploader, View, ImagesView, 
   VideoEditView, storyTemplate, textEditorTemplate, uploaderTemplate){
   'use strict';
 
@@ -259,10 +260,14 @@ define([
 
 
   view.prototype.addVideo = function(){
-    var videoModal = new VideoEditView({
-      autoRender  : true,
-      region      : 'main',
-      className   : 'modal'
+    var video       = new Model({ 'story_id' : this.model.get('id') });
+    video.url       = '/video/create';
+
+    var videoModal  = new VideoEditView({
+      model         : video,
+      autoRender    : true,
+      region        : 'main',
+      className     : 'modal'
     });
   }
 

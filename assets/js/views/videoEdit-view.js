@@ -7,6 +7,9 @@ define([
 
   var view = View.extend({
     template  : template,
+    events    : {
+      'click .save' : 'saveModel'
+    },
     attributes : {
       'id' : 'video-edit-modal'
     }
@@ -24,6 +27,13 @@ define([
         $('#video-edit-modal').remove();
       });
     });
+  };
+
+
+  view.prototype.saveModel = function(){
+    var inputVal = $(this.el).find('input#title').val();
+    this.model.set('url', inputVal);
+    this.model.save();
   };
 
 

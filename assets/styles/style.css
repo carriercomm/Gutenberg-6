@@ -199,6 +199,9 @@
   background-size : cover;
   background-position : center;
 }
+#stories .media-container .media{
+  background-color : #f5f5f5;
+}
 #stories .media-container:hover .btn-group{
   display         : block;
 }
