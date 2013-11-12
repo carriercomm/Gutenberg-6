@@ -17,7 +17,7 @@ define([
   // Returns an array (not collection) of stories with an
   // array (not collection) of images. Intended use is for
   // templating
-  collection.prototype.getSortedStoriesWithImages = function(channelTitle){
+  collection.prototype.prepForTemplateUsage = function(channelTitle){
 
     var sortBy  = 'sort_channel_' + channelTitle + '_index';
     var stories = [];
@@ -30,26 +30,31 @@ define([
       var images    = model.get('images');
       var imageURLS = [];
 
-      if(images instanceof Backbone.Collection){
-        if(images){
-          images.each(function(model){
-            var url   = model.get('url');
-            var crops = model.get('crops');
-            var image = _.findWhere(crops, { title : channelTitle });
+      images.each(function(img){
+        var url   = img.get('url');
+        var crops = img.get('crops');
 
-            if(image) url = image.url
-
-            imageURLS.push(url);
-          });
+        if(crops){
+          var image = _.findWhere(crops, { title : channelTitle });
+          if(image) url = image.url
         }
-      } else{
-        imageURLS = images;
-      }
+
+        imageURLS.push(url);
+      });
+
+      var videos = [];
+      model.get('videos').each(function(vid){
+        videos.push({
+          poster  : vid.get('image_url'),
+          url     : vid.get('url')
+        })
+      });
 
       // Make a standard index property available for the templates
       var sortIndex     = clone[sortBy];
       clone.sort_index  = sortIndex;
       clone.images      = imageURLS;
+      clone.videos      = videos;
 
       stories.push(clone);
     });

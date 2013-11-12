@@ -60,7 +60,7 @@ define([
   view.prototype.publish = function(){
     // Find the correct channel and then get all stories
     var activeChannel = _.findWhere(this.channels, { active : true });
-    var stories       = this.collection.getSortedStoriesWithImages(activeChannel.title);
+    var stories       = this.collection.prepForTemplateUsage(activeChannel.title);
 
     // Generate the html for the publish view
     var html          = this.userTemplate({
