@@ -19,10 +19,13 @@ define([
   // templating
   collection.prototype.prepForTemplateUsage = function(channelTitle){
 
-    var sortBy  = 'sort_channel_' + channelTitle + '_index';
-    var stories = [];
+    var channelSort     = 'sort_channel_' + channelTitle + '_index';
+    var filteredStories = [];
+    var stories         = this.reject(function(model){
+      return model.get(channelSort) == -1
+    });
 
-    this.each(function(model){
+    _.each(stories, function(model){
       // The shroud of the dark side has fallen. Begun the Clone War has.
       var clone     = _.clone(model.attributes);
 
@@ -50,19 +53,19 @@ define([
       });
 
       // Make a standard index property available for the templates
-      var sortIndex     = clone[sortBy];
+      var sortIndex     = clone[channelSort];
       clone.sort_index  = sortIndex;
       clone.images      = images;
       clone.videos      = videos;
 
-      stories.push(clone);
+      filteredStories.push(clone);
     });
 
-    stories = _.sortBy(stories, function(item){
-      return item[sortBy]
+    filteredStories = _.sortBy(filteredStories, function(item){
+      return item[channelSort]
     });
 
-    return stories
+    return filteredStories
   };
 
   return collection;
