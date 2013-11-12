@@ -29,7 +29,7 @@ define([
       videos.url    = '/video';
       videos.params = {
         story_id : data.id
-      }
+      };
       videos.listen();
 
       this.set('images', images);
