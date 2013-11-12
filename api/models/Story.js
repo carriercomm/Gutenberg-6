@@ -34,6 +34,55 @@ module.exports = {
   },
 
 
+  beforeUpdate : function(props, next){
+
+    // When setting a sort property to -1, reindex some models
+    Story.findOne({ id: props.id }).exec(function(err, modelToBeUpdated){
+      var resortKey = '';
+      var oldSortId = 0;
+
+      // Loop over the keys to find the changed sort propert
+      for(var key in modelToBeUpdated){
+        if(key.indexOf('sort_') != -1) {
+          // Is this a sort prop which has just now been changed to -1?
+          if(props[key] != modelToBeUpdated[key] && props[key] == -1){
+            resortKey = key;
+            oldSortId = modelToBeUpdated[key];
+          }
+        }
+      }
+
+      // If a sort key has changed...
+      if(resortKey){
+        var modelsToReindex = []
+        Story.find().where({ newsletter_id : modelToBeUpdated.newsletter_id }).exec(function(err, collection){
+
+          // Create an array of models to reindex
+          collection.forEach(function(model){
+            if(model[resortKey] > oldSortId) {
+              modelsToReindex.push(model);
+            }
+          });
+
+          // Deincrement the new index
+          modelsToReindex.forEach(function(model){
+            var newIndex      = model[resortKey] - 1;
+            model[resortKey]  = newIndex;
+
+            // Save the update and publish
+            model.save(function(err){
+              var update = JSON.stringify(model);
+              Story.publishUpdate(model.id, JSON.parse(update));
+            });
+          });
+        });
+      }
+
+      next();
+    });
+  },
+
+
   beforeDestroy : function(props, next){
 
     // Delete all Image models associated with this story
@@ -58,6 +107,7 @@ module.exports = {
       }
     });
 
+    // Reindex all the models
     Story.findOne({ id: props.where.id }).exec(function(err, modelToBeDeleted){
       if(modelToBeDeleted){
         Story.find().where({ newsletter_id : modelToBeDeleted.newsletter_id }).exec(function(err, collection){
@@ -72,7 +122,9 @@ module.exports = {
             if(key.indexOf('sort_') != -1) {
               var modelsToReindex = [];
               currentModels.forEach(function(model){
-                if(model[key] > modelToBeDeleted[key]) modelsToReindex.push(model)
+                if(model[key] > modelToBeDeleted[key] && model[key] != -1) {
+                  modelsToReindex.push(model)
+                }
               });
 
               if(modelsToReindex){

@@ -26,7 +26,7 @@ define([
       'focus input, textarea, div[contenteditable=true]' : 'inputFocused',
       'blur input, textarea, div[contenteditable=true]'  : 'inputBlurred',
       'keyup .model-input'    : 'scheduleSave',
-      'change input[type="checkbox"]' : 'checkboxChanged'
+      'change input[type="checkbox"]' : 'toggleChannelInclude'
     },
     listen        : {
       'change model' : 'updateDomWithModel',
@@ -45,9 +45,19 @@ define([
   };
 
 
-  view.prototype.checkboxChanged = function(e){
-    // The only thing this does is ensure the model property is present
-    this.model.set(e.target.name, false);
+  view.prototype.toggleChannelInclude = function(e){
+    var channelSort  = e.target.name;
+    var checkedVal   = $(e.target).is(':checked');
+
+    if(!checkedVal) this.model.set(channelSort, -1)
+    else {
+      var items = this.model.collection.reject(function(model){
+        return model.get(channelSort) == -1
+      });
+
+      this.model.set(channelSort, items.length);
+    }
+
     this.scheduleSave();
   };
 
@@ -74,16 +84,16 @@ define([
     var $channels = $(this.el).find('.channel_selectors');
 
     for(var i=0; i<channels.length; i++){
-      var namespace = 'in_channel_' + channels[i].title;
+      var namespace = 'sort_channel_' + channels[i].title + '_index';
       var checked   = '';
-      if(this.model.get(namespace)) checked = 'checked'
+      if(this.model.get(namespace) != -1) checked = 'checked'
 
       var template  = "<label class='pull-right'>" +
         "Include Story in " + channels[i].title + "?" +
         "<input type='checkbox' " + checked + " class='" + namespace + "' name='" + namespace + "'>"
       "</label>";
 
-      //$channels.append(template)
+      $channels.append(template)
     }
 
   };
@@ -110,11 +120,8 @@ define([
       if($el.length){
         // If some kind of form element, get the val
         if($el[0].nodeName == 'INPUT' || $el[0].nodeName == 'TEXTAREA'){
-          if($el.attr('type') == 'checkbox'){
-            attrs[key] = $el.prop('checked');
-          } else {
-            attrs[key] = $el.val();
-          }
+          // Don't do checkboxes since we're using those to set -1 indeces on sort
+          if($el.attr('type') != 'checkbox') attrs[key] = $el.val();
         } else {
           // If a regular element, get the html
           attrs[key] = $el.html();
@@ -138,9 +145,8 @@ define([
       if($el.length && !$el.hasClass('preventUpdate')){
         // If some kind of form element, set the val
         if($el[0].nodeName == 'INPUT' || $el[0].nodeName == 'TEXTAREA'){
-          if($el.attr('type') == 'checkbox'){
-            attrs[key] ? $el.prop('checked', true) : $el.prop('checked', false)
-          } else $el.val(attrs[key]);
+          // Checkboxes are handled by the redrawChannels method
+          if($el.attr('type') != 'checkbox') $el.val(attrs[key]);
         } else {
           // If a regular element, set the html
           $el.html(attrs[key]);
