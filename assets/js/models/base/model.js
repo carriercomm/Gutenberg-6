@@ -16,7 +16,7 @@ define([
       socket.on('message', function(message){
 
         // ugh...
-        if(model.url.indexOf(message.model.url) != -1){
+        if(model.url.indexOf(message.model) != -1){
 
           // Loop over the message data and decide id the params match
           if(message.verb == 'update'){
