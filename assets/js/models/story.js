@@ -38,8 +38,8 @@ define([
       });
 
       this.set('videos', videos);
-      this.listenTo(images, 'all', function(){
-        self.set('videos', images);
+      this.listenTo(videos, 'all', function(){
+        self.set('videos', videos);
       });
     }
   });
