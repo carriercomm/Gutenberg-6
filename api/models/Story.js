@@ -47,6 +47,17 @@ module.exports = {
       }
     });
 
+    // Delete all Video models associated with this story
+    Video.find().where({ story_id: props.where.id }).exec(function(err, models){
+      if(err) console.log(err)
+
+      for(var i = 0; i<models.length; i++){
+        models[i].destroy(function(error){
+          if(error) console.log(error);
+        });
+      }
+    });
+
     Story.findOne({ id: props.where.id }).exec(function(err, modelToBeDeleted){
       if(modelToBeDeleted){
         Story.find().where({ newsletter_id : modelToBeDeleted.newsletter_id }).exec(function(err, collection){
