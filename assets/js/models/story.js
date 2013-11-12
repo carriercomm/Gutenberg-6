@@ -8,7 +8,7 @@ define([
 
   var model = Model.extend({
 
-    blacklist : ['images'],
+    blacklist : ['images', 'videos'],
     toJSON    : function(options){
       return _.omit(this.attributes, this.blacklist);
     },

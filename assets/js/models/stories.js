@@ -27,10 +27,8 @@ define([
       var clone     = _.clone(model.attributes);
 
       // Deal with the images better for templating
-      var images    = model.get('images');
-      var imageURLS = [];
-
-      images.each(function(img){
+      var images = [];
+      model.get('images').each(function(img){
         var url   = img.get('url');
         var crops = img.get('crops');
 
@@ -39,21 +37,22 @@ define([
           if(image) url = image.url
         }
 
-        imageURLS.push(url);
+        images.push(url);
       });
 
+      // Deal with videos better for templating
       var videos = [];
       model.get('videos').each(function(vid){
         videos.push({
           poster  : vid.get('image_url'),
           url     : vid.get('url')
-        })
+        });
       });
 
       // Make a standard index property available for the templates
       var sortIndex     = clone[sortBy];
       clone.sort_index  = sortIndex;
-      clone.images      = imageURLS;
+      clone.images      = images;
       clone.videos      = videos;
 
       stories.push(clone);
