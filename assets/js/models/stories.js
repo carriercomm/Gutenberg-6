@@ -37,7 +37,7 @@ define([
 
         if(crops){
           var image = _.findWhere(crops, { title : channelTitle });
-          if(image) url = image.url
+          if(image.url) url = image.url
         }
 
         images.push(url);
