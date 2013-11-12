@@ -55,6 +55,8 @@
                 <% } else{ %>
                   <div class='wysiwyg-two-col row-fluid draggable' draggable='true' data-storyId='<%= stories[i].id %>'>
                     <div class='wysiwyg-left-col span4'>
+
+                      <!-- Images -->
                       <% if(stories[i].images[0]){ %>
                         <% if(stories[i].images.length > 1){ %>
                           <div class='gallery'>
@@ -64,6 +66,18 @@
                           <img style='width:100%;' src='<%= stories[i].images[0] %>'>
                         <% } %>
                       <% } %>
+
+                      <!-- Videos -->
+                      <% if(stories[i].videos[0]){ %>
+                        <div class='videos' style='margin-top:15px;'>
+                          <% for(var j=0; j<stories[i].videos.length; j++){%>
+                            <div style='background-color:#eee; width:100%; height:150px; margin-top:5px; text-align:center;'>
+                              Video Placeholder : <%= stories[i].videos[j].url %>
+                            </div>
+                          <% } %>
+                        </div>
+                      <% } %>
+
                     </div>
                     <div class='wysiwyg-right-col span7'>
                       <h2><%= stories[i].title %></h2>

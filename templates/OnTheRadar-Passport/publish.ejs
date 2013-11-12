@@ -5,6 +5,8 @@
   <% } else{ %>
     <div class='wysiwyg-two-col row-fluid' id='<%= stories[i].id %>'>
       <div class='wysiwyg-left-col span4'>
+
+        <!-- Images / Image Gallery -->
         <% if(stories[i].images[0]){ %>
           <% if(stories[i].images.length > 1){ %>
             <img style='width:100%;' alt='inline-gallery' data-id='<%= stories[i].id %>' src='<%= stories[i].images[0] %>'>
@@ -15,6 +17,16 @@
             <img style='width:100%;' src='<%= stories[i].images[0] %>'>
           <% } %>
         <% } %>
+
+        <!-- Videos -->
+        <% if(stories[i].videos[0]){ %>
+          <div class='videos'>
+            <% for(var j=0; j<stories[i].videos.length; j++){%>
+              [embed]<%= stories[i].videos[j].url %>[/embed]
+            <% } %>
+          </div>
+        <% } %>
+
       </div>
       <div class='wysiwyg-right-col span7'>
         <h2><%= stories[i].title %></h2>
