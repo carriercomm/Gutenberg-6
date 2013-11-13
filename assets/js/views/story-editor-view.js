@@ -206,6 +206,7 @@ define([
     // Attach an on paste method to the editor
     var $editor = $(this.el).find('.editor');
     $editor[0].onpaste = function(e){
+
       var pasteContent = e.clipboardData.getData('text/html');
       if(pasteContent == '') pasteContent = e.clipboardData.getData('text/plain');
       var cleanContent = self.cleanHTML(pasteContent);
@@ -240,34 +241,35 @@ define([
   // Pasting from Microsoft word is an ABSOLUTE DISASTER
   // this method removes the endless gobs of garbage produced
   // by the world's worst, yet most popular, text editor
-  var allowedTags = ['A', 'DIV', 'SPAN', 'B', 'I', 'EM', 'STRONG', 'P'];
-  view.prototype.cleanHTML = function(htmlString){
+  view.prototype.cleanHTML = function(pastedString){
 
-    // If it doesn't look like a tag, return the string
-    if(htmlString.charAt(0) != '<') return htmlString
-    try{ $(htmlString) }
-    catch(e){ return htmlString }
+    // If this looks like some kind of raunchy ass microsoft bull shit,
+    // rip off it's effing <HEAD></HEAD>
+    var headRegex = new RegExp("<head[\\d\\D]*?\/head>", "g");
+    pastedString  = pastedString.replace(headRegex, '');
 
-    var self  = this;
-    var $html = $(htmlString);
-    var clean = '';
+    // Take the body, and ELMINIATE GARBAGE
+    var pattern   = /<body[^>]*>((.|[\n\r])*)<\/body>/im;
+    var cleaned   = pattern.exec(pastedString);
+    if(cleaned && cleaned.length && cleaned[1]) pastedString = cleaned[1]
 
-    $html.each(function(){
-      if(allowedTags.indexOf(this.nodeName) != -1){
-        var innards = self.cleanHTML($(this).html());
-        // Create a special template for A tags
-        if(this.nodeName == 'A'){
-          var href = $(this).attr('href');
-          var template = '<' + this.nodeName + ' href="' + href + '">' + innards + '</' + this.nodeName + '>';
-        } else {
-          var template = '<' + this.nodeName + '>' + innards + '</' + this.nodeName + '>';
-        }
-        
-        clean += template
-      }
-    });
+    // Remove meaningless HTML Comments... you have no idea how
+    // meaningless these comments are. NO IDEA...
+    var commentRegex = /<!--[\s\S]*?-->/g;
+    pastedString     = pastedString.replace(commentRegex, '');
 
-    return clean;
+    // Remove whatever <o:p> and </o:p> is... JUST WHATEVER!!!
+    pastedString  = pastedString.replace(/<o:p>/g, '');
+    pastedString  = pastedString.replace(/<\/o:p>/g, '');
+
+    // Take Microsoft's atrocious formatting and correcting it by
+    // creating a jQuery object, wrapping it in a series of some random 
+    // div(s) and then finally making it HTML again
+    var tranny  = $('<div>' + pastedString + '</div>').html();
+    tranny      = '<div><div>' + tranny.replace(/&quot;/g, '') + '</div></div>';
+    tranny      = $(tranny).find('*').attr('style', '').html();
+
+    return tranny
   };
 
 
