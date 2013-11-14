@@ -1,4 +1,7 @@
 /* Global Styles */
+body{
+  padding-bottom  : 10px;
+}
 .logout{
   font-size       : 90%;
   float           : right;
@@ -96,6 +99,9 @@
 }
 #newsletter-pre-view #publish-buttons{
   overflow        : hidden;
+}
+#newsletter-pre-view #publish{
+  margin-left     : 10px;
 }
 
   /* Templates Helper Widget */

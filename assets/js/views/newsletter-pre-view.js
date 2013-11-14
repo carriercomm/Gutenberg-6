@@ -38,6 +38,9 @@ define([
     Chaplin.View.prototype.render.apply(this, arguments);
     $(this.el).find('iframe').attr('src', this.options.iframeURL);
 
+    var href = '/ui/preview/' + this.model.get('id') + window.location.search;
+    $(this.el).find('#new_tab').attr('href', href);
+
     // Just make sure the render is done
     var self = this;
     setTimeout(function(){
