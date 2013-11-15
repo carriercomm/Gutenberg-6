@@ -21,7 +21,8 @@ define([
 
   view.prototype.deleteImage = function(e) {
     e.preventDefault();
-    this.model.destroy();
+    var confirm = window.confirm('Are you sure you want to delete this image?');
+    if(confirm) this.model.destroy();
   };
 
 
