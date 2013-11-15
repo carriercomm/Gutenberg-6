@@ -267,7 +267,7 @@ define([
     // div(s) and then finally making it HTML again
     var tranny  = $('<div>' + pastedString + '</div>').html();
     tranny      = '<div><div>' + tranny.replace(/&quot;/g, '') + '</div></div>';
-    tranny      = $(tranny).find('*').attr('style', '').html();
+    tranny      = $(tranny).find('*').attr('style', '').attr('class', '').html();
 
     return tranny
   };
