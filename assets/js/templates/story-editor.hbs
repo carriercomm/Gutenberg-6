@@ -1,13 +1,6 @@
 <div class='row' data-id='{{id}}'>
 
-  <div class='col-lg-1 col-md-1 col-sm-1 story-controls'>
-    <div class='btn-group-vertical'>
-      <button class='btn btn-default glyphicon glyphicon-arrow-up sort-button up' type='button' />
-      <button class='btn btn-default glyphicon glyphicon-arrow-down sort-button down' type='button' />
-    </div>
-  </div>
-
-  <div class='col-lg-7 col-md-7 col-sm-7 story-editor'>
+  <div class='col-lg-8 col-md-8 col-sm-8 story-editor'>
 
     <div class='form-group'>
       <input class='form-control title model-input' name='title' value='{{title}}' placeholder='Story Title'>
@@ -20,11 +13,21 @@
     </div>
 
     <div class='row'>
-      <div class='col-lg-4 col-md-4 col-sm-4'>
-        <a class='btn btn-danger btn-sm destroy' href='#'>Delete Story<a/>
+      <div class='col-lg-6 col-md-6 col-sm-6'>
+          
+          <div class='btn-group'>
+            <button class='btn btn-default btn-sm sort-button up' type='button'>
+              <span class='glyphicon glyphicon-arrow-up'></span>
+            </button>
+            <button class='btn btn-default btn-sm sort-button down' type='button'>
+              <span class='glyphicon glyphicon-arrow-down'></span>
+            </button>
+          </div>
+
+        <button class='btn btn-danger btn-sm destroy' href='#'>Delete Story</button>
       </div>
 
-      <div class='channel_selectors col-lg-7 col-md-7 col-sm-7 pull-right'></div>
+      <div class='channel_selectors col-lg-6 col-md-6 col-sm-6 pull-right'></div>
     </div>
 
   </div>

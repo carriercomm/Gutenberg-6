@@ -88,7 +88,7 @@ define([
       var checked   = '';
       if(this.model.get(namespace) != -1) checked = 'checked'
 
-      var template  = "<label class='pull-right'>" +
+      var template  = "<label>" +
         "Include Story in " + channels[i].title + "?" +
         "<input type='checkbox' " + checked + " class='" + namespace + "' name='" + namespace + "'>"
       "</label>";

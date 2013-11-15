@@ -86,6 +86,10 @@ body{
 #newsletter-editor-view .channel_selectors input{
   margin-left     : 5px;
 }
+#newsletter-editor-view .channel_selectors label{
+  text-align      : right;
+  display         : block;
+}
 #newsletter-editor-view .newsletter-attrs input{
   border-radius   : 5px 5px 0 0;
   margin          : 0;
@@ -173,13 +177,6 @@ body{
 #stories .story{
   position        : relative;
   background-color: white;
-}
-#stories div.sortable-placeholder {
-  width           : 100%;
-  height          : 95px;
-  border          : 1px dashed #ccc;
-  background-color: #F2F2F2;
-  margin-bottom   : 30px;
 }
 #stories .media-list{
   list-style-type : none;
