@@ -66,7 +66,7 @@ define([
     e.preventDefault();
 
     var direction = 'up';
-    if($(e.target).hasClass('down')) direction = 'down'
+    if($(e.currentTarget).hasClass('down')) direction = 'down'
 
     this.publishEvent('story_index_update', this.model, direction);
   };
@@ -223,7 +223,11 @@ define([
     this.attachUploader();
     this.attachEditor();
 
+    // Redraw the channel selectors
     if(this.model.collection.channels) this.redrawChannels(this.model.collection.channels);
+
+    // Attach some bootstrappy events
+    $(this.el).find('.btn-tooltip').tooltip();
 
     // Create the images view
     var imagesView = new ImagesView({
